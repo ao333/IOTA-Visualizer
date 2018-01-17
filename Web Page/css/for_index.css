@@ -1,0 +1,114 @@
+
+.clearfix:before,
+.clearfix:after{
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/*for header*/
+
+.normal_width{
+  width: 1200px;
+  margin: auto;
+}
+
+#header{
+  width: 100%;
+  height: 86px;
+  background-color: #92A6AD;
+  opacity: 0.7;
+  position: fixed;
+}
+
+#header img{
+  padding-top: 10px;
+  width: 200px;
+  height: 67px;
+}
+
+.nav_bar{
+  padding-top: 30px;
+  float: right;
+}
+
+.nav_bar li{
+  float: left;
+  margin: 0px 30px;
+}
+
+.nav_bar li .team{
+  color: #e6e6e6;
+}
+
+.nav_bar li a{
+  font: 26px "georgia";
+  color: white;
+}
+
+/*------------------------------------------------------------------------*/
+/*for node map*/
+#node_map{
+  height: 750px;
+  background-color: lightgrey;
+  padding-top: 86px;
+}
+
+#node_map .right-top{
+  float: right;
+}
+
+#node_map .right-top div{
+  margin: 10px 10px;
+  font-size: 20px;
+
+}
+
+.left-top img{
+  height: 20px;
+  width: 20px;
+}
+
+/*---------------------------------------------------------------------------*/
+#information{
+  height: 100px;
+/*  background-color: white;*/
+}
+
+#information div{
+  height: 100px;
+  width: 25%;
+  float: right;
+  position: relative;
+}
+
+#information{
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+#information span{
+  color: black;
+  font-size: 20px;
+  font-family: "华文新魏";
+}
+#information img{
+  height: 100px;
+  width: 100px;
+}
+
+#information span{
+  position: absolute;
+  left: 100px;
+  top: 10px;
+}
+
+#information .num{
+  color: skyblue;
+  font-weight: bold;
+  font-size: 40px;
+  position: absolute;
+  left: 100px;
+  top: 40px;
+  font-family: "华文彩云";
+}
