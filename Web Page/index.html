@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="UTF-8">
+  <title>IOTA node visualizer</title>
+  <link rel="stylesheet" href="css/reset.css">
+  <script type="text/javascript" src="javascript/jquery-3.2.1.js"></script>
+  <script type="text/javascript" src="javascript/main.js"></script>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/for_index.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/SimpleSwitch.css">
+  <script type="text/javascript" src="javascript/SimpleSwitch.min.js"></script>
+
+
+</head>
+<body>
+  <div id="header">
+    <div id="header2" class ="normal_width">
+      <ul class="nav_bar">
+        <li>
+          <a href="#" class="team">Team</a>
+        </li>
+        <li>
+          <a href="#">Statistics</a>
+        </li>
+        <li>
+          <a href="#">Latest Discussion</a>
+        </li>
+      </ul>
+      <div>
+        <img src="pic/logo.png" alt="IOTA logo">
+      </div>
+    </div>
+  </div>
+
+  <div id="node_map" class ="normal_width">
+    <canvas id="space" class="normal_width"></canvas>
+    <a href="#" id="warp"></a>
+
+    <div class="right-top">
+      <div>
+        remove floating
+        <input type="checkbox" name="my-checkbox" data-type="simple-switch" />
+      </div>
+      <div>
+        limit to 4k
+        <input type="checkbox" name="my-checkbox" data-type="simple-switch" />
+      </div>
+      <div>
+        size by nodes
+        <input type="checkbox" name="my-checkbox" data-type="simple-switch" />
+      </div>
+    </div>
+
+    <div class="left-top" >
+      <img src="img/transaction.png" alt="">
+      Transaction <br>
+      <img src="img/mean_confirmation_time.png" alt="">
+      Confirmation <br>
+      <img src="img/value_transfer_per_second.png" alt="">
+      Tips <br>
+
+    </div>
+
+
+    <div class="left-bottom">
+
+    </div>
+    <div class="right-bottom">
+
+    </div>
+  </div>
+
+  <div id="information" class="normal_width clearfix">
+    <div>
+      <img src="img/value_transfer_per_second.png" alt="">
+      <span>Placeholder</span>
+      <span class="num">1234567</span>
+    </div>
+    <div>
+      <img src="img/value_transfer_per_second.png" alt="">
+      <span>Value Transfer / Sec</span>
+      <span class="num">1234567</span>
+    </div>
+    <div>
+      <img src="img/mean_confirmation_time.png" alt="">
+      <span>Mean Confirm Time</span>
+      <span class="num">1234567</span>
+    </div>
+    <div>
+      <img src="img/transaction.png" alt="">
+      <span>Total Tips</span>
+      <span class="num">1234567</span>
+
+    </div>
+
+  </div>
+
+  <div class="limiter normal_width">
+    <div class="container-table100">
+      <div class="wrap-table100">
+        <div class="table100 ver1 m-b-110">
+          <table data-vertable="ver1">
+            <thead>
+            <tr class="row100 head">
+              <th class="column100 column1" data-column="column1"></th>
+              <th class="column100 column2" data-column="column2">Sunday</th>
+              <th class="column100 column3" data-column="column3">Monday</th>
+              <th class="column100 column4" data-column="column4">Tuesday</th>
+              <th class="column100 column5" data-column="column5">Wednesday</th>
+              <th class="column100 column6" data-column="column6">Thursday</th>
+              <th class="column100 column7" data-column="column7">Friday</th>
+              <th class="column100 column8" data-column="column8">Saturday</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="row100">
+              <td class="column100 column1" data-column="column1">Lawrence Scott</td>
+              <td class="column100 column2" data-column="column2">8:00 AM</td>
+              <td class="column100 column3" data-column="column3">--</td>
+              <td class="column100 column4" data-column="column4">--</td>
+              <td class="column100 column5" data-column="column5">8:00 AM</td>
+              <td class="column100 column6" data-column="column6">--</td>
+              <td class="column100 column7" data-column="column7">5:00 PM</td>
+              <td class="column100 column8" data-column="column8">8:00 AM</td>
+            </tr>
+
+            <tr class="row100">
+              <td class="column100 column1" data-column="column1">Jane Medina</td>
+              <td class="column100 column2" data-column="column2">--</td>
+              <td class="column100 column3" data-column="column3">5:00 PM</td>
+              <td class="column100 column4" data-column="column4">5:00 PM</td>
+              <td class="column100 column5" data-column="column5">--</td>
+              <td class="column100 column6" data-column="column6">9:00 AM</td>
+              <td class="column100 column7" data-column="column7">--</td>
+              <td class="column100 column8" data-column="column8">--</td>
+            </tr>
+
+            <tr class="row100">
+              <td class="column100 column1" data-column="column1">Billy Mitchell</td>
+              <td class="column100 column2" data-column="column2">9:00 AM</td>
+              <td class="column100 column3" data-column="column3">--</td>
+              <td class="column100 column4" data-column="column4">--</td>
+              <td class="column100 column5" data-column="column5">--</td>
+              <td class="column100 column6" data-column="column6">--</td>
+              <td class="column100 column7" data-column="column7">2:00 PM</td>
+              <td class="column100 column8" data-column="column8">8:00 AM</td>
+            </tr>
+
+            <tr class="row100">
+              <td class="column100 column1" data-column="column1">Beverly Reid</td>
+              <td class="column100 column2" data-column="column2">--</td>
+              <td class="column100 column3" data-column="column3">5:00 PM</td>
+              <td class="column100 column4" data-column="column4">5:00 PM</td>
+              <td class="column100 column5" data-column="column5">--</td>
+              <td class="column100 column6" data-column="column6">9:00 AM</td>
+              <td class="column100 column7" data-column="column7">--</td>
+              <td class="column100 column8" data-column="column8">--</td>
+            </tr>
+
+            <tr class="row100">
+              <td class="column100 column1" data-column="column1">Tiffany Wade</td>
+              <td class="column100 column2" data-column="column2">8:00 AM</td>
+              <td class="column100 column3" data-column="column3">--</td>
+              <td class="column100 column4" data-column="column4">--</td>
+              <td class="column100 column5" data-column="column5">8:00 AM</td>
+              <td class="column100 column6" data-column="column6">--</td>
+              <td class="column100 column7" data-column="column7">5:00 PM</td>
+              <td class="column100 column8" data-column="column8">8:00 AM</td>
+            </tr>
+
+            <tr class="row100">
+              <td class="column100 column1" data-column="column1">Sean Adams</td>
+              <td class="column100 column2" data-column="column2">--</td>
+              <td class="column100 column3" data-column="column3">5:00 PM</td>
+              <td class="column100 column4" data-column="column4">5:00 PM</td>
+              <td class="column100 column5" data-column="column5">--</td>
+              <td class="column100 column6" data-column="column6">9:00 AM</td>
+              <td class="column100 column7" data-column="column7">--</td>
+              <td class="column100 column8" data-column="column8">--</td>
+            </tr>
+
+            <tr class="row100">
+              <td class="column100 column1" data-column="column1">Rachel Simpson</td>
+              <td class="column100 column2" data-column="column2">9:00 AM</td>
+              <td class="column100 column3" data-column="column3">--</td>
+              <td class="column100 column4" data-column="column4">--</td>
+              <td class="column100 column5" data-column="column5">--</td>
+              <td class="column100 column6" data-column="column6">--</td>
+              <td class="column100 column7" data-column="column7">2:00 PM</td>
+              <td class="column100 column8" data-column="column8">8:00 AM</td>
+            </tr>
+
+            <tr class="row100">
+              <td class="column100 column1" data-column="column1">Mark Salazar</td>
+              <td class="column100 column2" data-column="column2">8:00 AM</td>
+              <td class="column100 column3" data-column="column3">--</td>
+              <td class="column100 column4" data-column="column4">--</td>
+              <td class="column100 column5" data-column="column5">8:00 AM</td>
+              <td class="column100 column6" data-column="column6">--</td>
+              <td class="column100 column7" data-column="column7">5:00 PM</td>
+              <td class="column100 column8" data-column="column8">8:00 AM</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <script type="text/javascript" src="javascript/back.js"></script>
+<script type="text/javascript">
+  SimpleSwitch.init();
+</script>
+</body>
+</html>
