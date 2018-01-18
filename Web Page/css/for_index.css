@@ -13,7 +13,7 @@ body{
 /*for header*/
 
 .normal_width{
-  width: 1200px;
+  width: 1180px;
   margin: auto;
 }
 
@@ -54,13 +54,49 @@ body{
 #node_map{
   height: 750px;
   position: relative;
-  padding-bottom: 25px;
+  margin-bottom: 25px;
   border-bottom: 1px solid #404040;
+  overflow: hidden;
+}
+
+#node_map .all{
+  position: absolute;
+  top: 0px;
+}
+
+#node_map .Home{
+  height: 750px;
+}
+
+#node_map .Discussion{
+  height: 750px;
+  color: white;
+  font-size: 20px;
+  font-family: "Futura Bk BT";
+  line-height: 1.5;
+}
+
+#node_map .Discussion p{
+  padding: 30px 10px;
+}
+
+#node_map .Members{
+  height: 750px;
+  color: white;
+  font-size: 20px;
+  font-family: "Futura Bk BT";
+  line-height: 1.5;
+}
+
+#node_map .Members .name{
+  font: bold 30px "Trebuchet MS";
+  color: white;
+
 }
 
 #node_map .right-top{
   position: absolute;
-  left: 950px;
+  left: 940px;
   top: 25px;
 }
 
@@ -86,6 +122,7 @@ body{
 }
 
 /*---------------------------------------------------------------------------*/
+/*for information*/
 #information{
   padding-bottom: 25px;
   border-bottom: 1px solid #404040;
@@ -108,7 +145,7 @@ body{
 #information span{
   color: white;
   font-size: 20px;
-  font-family: "华文新魏";
+  font-family: "Trebuchet MS";
 }
 #information img{
   height: 100px;
@@ -119,6 +156,7 @@ body{
   position: absolute;
   left: 100px;
   top: 10px;
+  font-weight: bold;
 }
 
 #information .num{
@@ -128,10 +166,11 @@ body{
   position: absolute;
   left: 100px;
   top: 40px;
-  font-family: "华文彩云";
+  font-family: "Lucida Bright";
 }
 
 /*-------------------------------------------------------------------------------------*/
+/*for table*/
 #table{
   background-color: black;
   margin-bottom: 20px;
@@ -143,16 +182,17 @@ body{
 }
 
 tr{
-  font: 30px "华文宋体";
+  font: 30px "Comic Sans MS";
+  color: white;
 }
 
 td{
-  font: 20px "华文楷体";
+  font: 20px "Arial";
+  color: lightgrey;
 }
 
 td, th{
   border: 1px solid white;
-  color: white;
   text-align: center;
 }
 
@@ -162,10 +202,15 @@ tr:hover{
 
 /*-------------------------------------------------------------------------*/
 /*for footer*/
-/*设置footer*/
-.footer{
-  height: 173px;
+#footer{
+  height: 80px;
+  width: 100%;
   background: #333;
-  /*设置上边框*/
   border-top: 10px solid #4c4c4c;
+  padding-top: 20px;
+  color: white;
+  line-height: 1.5;
+}
+#footer .copy{
+  float: right;
 }
