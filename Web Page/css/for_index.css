@@ -40,8 +40,8 @@ body{
   margin: 0px 30px;
 }
 
-.nav_bar li .team{
-  color: #e6e6e6;
+.nav_bar .current{
+  color: #c0c0c0;
 }
 
 .nav_bar li a{
