@@ -1,14 +1,11 @@
-
 $(function () {
   // force numbers in "information" to change randomly. This is just for current showing.
   // We will delete this later
   var nums = $("#information .num");
   setInterval(function () {
-    for(var i = 0; i < nums.length; i++){
+    for(var i = 0; i < nums.length; i++)
       nums[i].innerHTML = parseInt(Math.random() * 1000000 + "")
-    }
   }, 2000)
-
 
   /*set the events when mouse click the navigator bar*/
   // index records current clicked button in navigator bar, default is 0

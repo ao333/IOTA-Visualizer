@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/IOTA.iml" filepath="$PROJECT_DIR$/.idea/IOTA.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Web Page.iml" filepath="$PROJECT_DIR$/Web Page.iml" />
     </modules>
   </component>
 </project>

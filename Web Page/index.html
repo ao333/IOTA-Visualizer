@@ -1,35 +1,32 @@
 <!DOCTYPE html>
 <head>
   <meta charset="UTF-8">
-  <title>IOTA node visualizer</title>
-  <link rel="stylesheet" href="css/reset.css">
-  <script type="text/javascript" src="javascript/jquery-3.2.1.js"></script>
-  <script type="text/javascript" src="javascript/tools.js"></script>
+  <title>IOTA Node Visualizer</title>
+  <script type="text/javascript" src="js/jquery-3.2.1.js"></script>
+  <script type="text/javascript" src="js/tools.js"></script>
   <link rel="stylesheet" href="css/for_index.css">
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/SimpleSwitch.css">
-  <script type="text/javascript" src="javascript/SimpleSwitch.min.js"></script>
-  <script type="text/javascript" src="javascript/for_index.js"></script>
-
-
+  <script type="text/javascript" src="js/SimpleSwitch.min.js"></script>
+  <script type="text/javascript" src="js/for_index.js"></script>
 </head>
+
 <body>
   <div id="header">
     <div id="header2" class ="normal_width">
       <ul class="nav_bar">
         <li>
-          <a href="#" class="current">Home</a>
+          <a href="#" class="current">Map</a>
         </li>
         <li>
-          <a href="#">Latest Discussion</a>
+          <a href="#">About</a>
         </li>
         <li>
-          <a href="#">Group Members</a>
+          <a href="#">Contact Us</a>
         </li>
-
       </ul>
       <div class="img">
-        <img src="pic/logo.png" alt="IOTA logo">
+        <img src="img/logo.png" alt="IOTA logo">
       </div>
     </div>
   </div>
@@ -67,9 +64,9 @@
             <img src="img/value_transfer_per_second.png" alt="">
             Tips
           </div>
-
         </div>
       </div>
+
       <div class="Discussion normal_width">
         <p>IOTA is an open-source distributed ledger (cryptocurrency) focused on providing
         secure communications and payments between machines on the Internet of Things.
@@ -81,6 +78,7 @@
         IOTA has a collaboration with Deutsche Telekom, Microsoft, and Fujitsu,[6] the Foundation
         opened up a data marketplace using IOTA technology.[7]</p>
       </div>
+
       <div class="Members normal_width">
         <p><span class="name">Jiangbo Yu</span> -- most handsome man. He is so brilliant.</p>
         <p><span class="name">Ao Shen</span></p>
@@ -90,11 +88,9 @@
         <p><span class="name">Ruikun Cao</span></p>
       </div>
     </div>
-
-
   </div>
 
-  <div id="information" class="normal_width clearfix">
+  <div id="information" class="normal_width">
     <div>
       <img src="img/value_transfer_per_second.png" alt="">
       <span>Placeholder</span>
@@ -113,11 +109,33 @@
     <div>
       <img src="img/transaction.png" alt="">
       <span>Total Tips</span>
-      <span class="num">1234567</span>
-
+      <span class="num"></span>
     </div>
-
   </div>
+  <!--<script>-->
+      <!--var request = require('request');-->
+
+      <!--var command = {-->
+          <!--'command': 'getTips'-->
+      <!--}-->
+
+      <!--var options = {-->
+          <!--url: 'http://localhost:14265',-->
+          <!--method: 'POST',-->
+          <!--headers: {-->
+              <!--'Content-Type': 'application/json',-->
+              <!--'X-IOTA-API-Version': '1',-->
+              <!--'Content-Length': Buffer.byteLength(JSON.stringify(command))-->
+          <!--},-->
+          <!--json: command-->
+      <!--};-->
+
+      <!--request(options, function (error, response, data) {-->
+          <!--if (!error && response.statusCode == 200) {-->
+              <!--console.log(data);-->
+          <!--}-->
+      <!--});-->
+  <!--</script>-->
 
   <div id="table" class="normal_width">
     <table>
@@ -205,10 +223,9 @@
       <p>Data Analysis 好难啊</p>
       <p>大家学习javascript 加油啊！！！</p>
     </div>
-
   </div>
 
-  <script type="text/javascript" src="javascript/back.js"></script>
+  <script type="text/javascript" src="js/back.js"></script>
 <script type="text/javascript">
   SimpleSwitch.init();
 </script>
