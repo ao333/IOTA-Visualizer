@@ -4,12 +4,12 @@
   <title>IOTA node visualizer</title>
   <link rel="stylesheet" href="css/reset.css">
   <script type="text/javascript" src="javascript/jquery-3.2.1.js"></script>
-  <script type="text/javascript" src="javascript/main.js"></script>
-  <link rel="stylesheet" href="css/main.css">
+  <script type="text/javascript" src="javascript/tools.js"></script>
   <link rel="stylesheet" href="css/for_index.css">
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/SimpleSwitch.css">
   <script type="text/javascript" src="javascript/SimpleSwitch.min.js"></script>
+  <script type="text/javascript" src="javascript/for_index.js"></script>
 
 
 </head>
@@ -18,57 +18,80 @@
     <div id="header2" class ="normal_width">
       <ul class="nav_bar">
         <li>
-          <a href="#" class="team">Team</a>
-        </li>
-        <li>
-          <a href="#">Statistics</a>
+          <a href="#" class="current">Home</a>
         </li>
         <li>
           <a href="#">Latest Discussion</a>
         </li>
+        <li>
+          <a href="#">Group Members</a>
+        </li>
+
       </ul>
-      <div>
+      <div class="img">
         <img src="pic/logo.png" alt="IOTA logo">
       </div>
     </div>
   </div>
 
   <div id="node_map" class ="normal_width">
-    <canvas id="space" class="normal_width"></canvas>
+    <canvas id="space" class="normal_width" style="height: 100%;"></canvas>
     <a href="#" id="warp"></a>
+    <div class="all">
+      <div class="Home normal_width">
+        <div class="right-top">
+          <div>
+            remove floating
+            <input type="checkbox" name="my-checkbox" data-type="simple-switch" />
+          </div>
+          <div>
+            limit to 4k
+            <input type="checkbox" name="my-checkbox" data-type="simple-switch" />
+          </div>
+          <div>
+            size by nodes
+            <input type="checkbox" name="my-checkbox" data-type="simple-switch" />
+          </div>
+        </div>
 
-    <div class="right-top">
-      <div>
-        remove floating
-        <input type="checkbox" name="my-checkbox" data-type="simple-switch" />
+        <div class="left-top" >
+          <div>
+            <img src="img/transaction.png" alt="">
+            Transaction
+          </div>
+          <div>
+            <img src="img/mean_confirmation_time.png" alt="">
+            Confirmation
+          </div>
+          <div>
+            <img src="img/value_transfer_per_second.png" alt="">
+            Tips
+          </div>
+
+        </div>
       </div>
-      <div>
-        limit to 4k
-        <input type="checkbox" name="my-checkbox" data-type="simple-switch" />
+      <div class="Discussion normal_width">
+        <p>IOTA is an open-source distributed ledger (cryptocurrency) focused on providing
+        secure communications and payments between machines on the Internet of Things.
+        Using directed acyclic graph (DAG) technology instead of the traditional blockchain,
+        IOTA's transactions are free regardless of the size of the transaction, confirmation
+        times are fast, the number of transactions the system can handle simultaneously is
+        unlimited, and the system can easily scale.[2][3] IOTA was founded in 2015 by David
+        Sønstebø, Sergey Ivancheglo, Dominik Schiener, and Dr. Serguei Popov.[4][5]
+        IOTA has a collaboration with Deutsche Telekom, Microsoft, and Fujitsu,[6] the Foundation
+        opened up a data marketplace using IOTA technology.[7]</p>
       </div>
-      <div>
-        size by nodes
-        <input type="checkbox" name="my-checkbox" data-type="simple-switch" />
+      <div class="Members normal_width">
+        <p><span class="name">Jiangbo Yu</span> -- most handsome man. He is so brilliant.</p>
+        <p><span class="name">Ao Shen</span></p>
+        <p><span class="name">Xiao Luo</span></p>
+        <p><span class="name">Yuxiang Wu</span></p>
+        <p><span class="name">Dongxiao Huang</span></p>
+        <p><span class="name">Ruikun Cao</span></p>
       </div>
     </div>
 
-    <div class="left-top" >
-      <img src="img/transaction.png" alt="">
-      Transaction <br>
-      <img src="img/mean_confirmation_time.png" alt="">
-      Confirmation <br>
-      <img src="img/value_transfer_per_second.png" alt="">
-      Tips <br>
 
-    </div>
-
-
-    <div class="left-bottom">
-
-    </div>
-    <div class="right-bottom">
-
-    </div>
   </div>
 
   <div id="information" class="normal_width clearfix">
@@ -96,118 +119,94 @@
 
   </div>
 
-  <div class="limiter normal_width">
-    <div class="container-table100">
-      <div class="wrap-table100">
-        <div class="table100 ver1 m-b-110">
-          <table data-vertable="ver1">
-            <thead>
-            <tr class="row100 head">
-              <th class="column100 column1" data-column="column1"></th>
-              <th class="column100 column2" data-column="column2">Sunday</th>
-              <th class="column100 column3" data-column="column3">Monday</th>
-              <th class="column100 column4" data-column="column4">Tuesday</th>
-              <th class="column100 column5" data-column="column5">Wednesday</th>
-              <th class="column100 column6" data-column="column6">Thursday</th>
-              <th class="column100 column7" data-column="column7">Friday</th>
-              <th class="column100 column8" data-column="column8">Saturday</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr class="row100">
-              <td class="column100 column1" data-column="column1">Lawrence Scott</td>
-              <td class="column100 column2" data-column="column2">8:00 AM</td>
-              <td class="column100 column3" data-column="column3">--</td>
-              <td class="column100 column4" data-column="column4">--</td>
-              <td class="column100 column5" data-column="column5">8:00 AM</td>
-              <td class="column100 column6" data-column="column6">--</td>
-              <td class="column100 column7" data-column="column7">5:00 PM</td>
-              <td class="column100 column8" data-column="column8">8:00 AM</td>
-            </tr>
+  <div id="table" class="normal_width">
+    <table>
+      <thead>
+        <tr>
+          <th>Node Name</th>
+          <th>Node Type</th>
+          <th>Value</th>
+          <th>Confirmation Time</th>
+          <th>Hash</th>
+        </tr>
+      </thead>
 
-            <tr class="row100">
-              <td class="column100 column1" data-column="column1">Jane Medina</td>
-              <td class="column100 column2" data-column="column2">--</td>
-              <td class="column100 column3" data-column="column3">5:00 PM</td>
-              <td class="column100 column4" data-column="column4">5:00 PM</td>
-              <td class="column100 column5" data-column="column5">--</td>
-              <td class="column100 column6" data-column="column6">9:00 AM</td>
-              <td class="column100 column7" data-column="column7">--</td>
-              <td class="column100 column8" data-column="column8">--</td>
-            </tr>
-
-            <tr class="row100">
-              <td class="column100 column1" data-column="column1">Billy Mitchell</td>
-              <td class="column100 column2" data-column="column2">9:00 AM</td>
-              <td class="column100 column3" data-column="column3">--</td>
-              <td class="column100 column4" data-column="column4">--</td>
-              <td class="column100 column5" data-column="column5">--</td>
-              <td class="column100 column6" data-column="column6">--</td>
-              <td class="column100 column7" data-column="column7">2:00 PM</td>
-              <td class="column100 column8" data-column="column8">8:00 AM</td>
-            </tr>
-
-            <tr class="row100">
-              <td class="column100 column1" data-column="column1">Beverly Reid</td>
-              <td class="column100 column2" data-column="column2">--</td>
-              <td class="column100 column3" data-column="column3">5:00 PM</td>
-              <td class="column100 column4" data-column="column4">5:00 PM</td>
-              <td class="column100 column5" data-column="column5">--</td>
-              <td class="column100 column6" data-column="column6">9:00 AM</td>
-              <td class="column100 column7" data-column="column7">--</td>
-              <td class="column100 column8" data-column="column8">--</td>
-            </tr>
-
-            <tr class="row100">
-              <td class="column100 column1" data-column="column1">Tiffany Wade</td>
-              <td class="column100 column2" data-column="column2">8:00 AM</td>
-              <td class="column100 column3" data-column="column3">--</td>
-              <td class="column100 column4" data-column="column4">--</td>
-              <td class="column100 column5" data-column="column5">8:00 AM</td>
-              <td class="column100 column6" data-column="column6">--</td>
-              <td class="column100 column7" data-column="column7">5:00 PM</td>
-              <td class="column100 column8" data-column="column8">8:00 AM</td>
-            </tr>
-
-            <tr class="row100">
-              <td class="column100 column1" data-column="column1">Sean Adams</td>
-              <td class="column100 column2" data-column="column2">--</td>
-              <td class="column100 column3" data-column="column3">5:00 PM</td>
-              <td class="column100 column4" data-column="column4">5:00 PM</td>
-              <td class="column100 column5" data-column="column5">--</td>
-              <td class="column100 column6" data-column="column6">9:00 AM</td>
-              <td class="column100 column7" data-column="column7">--</td>
-              <td class="column100 column8" data-column="column8">--</td>
-            </tr>
-
-            <tr class="row100">
-              <td class="column100 column1" data-column="column1">Rachel Simpson</td>
-              <td class="column100 column2" data-column="column2">9:00 AM</td>
-              <td class="column100 column3" data-column="column3">--</td>
-              <td class="column100 column4" data-column="column4">--</td>
-              <td class="column100 column5" data-column="column5">--</td>
-              <td class="column100 column6" data-column="column6">--</td>
-              <td class="column100 column7" data-column="column7">2:00 PM</td>
-              <td class="column100 column8" data-column="column8">8:00 AM</td>
-            </tr>
-
-            <tr class="row100">
-              <td class="column100 column1" data-column="column1">Mark Salazar</td>
-              <td class="column100 column2" data-column="column2">8:00 AM</td>
-              <td class="column100 column3" data-column="column3">--</td>
-              <td class="column100 column4" data-column="column4">--</td>
-              <td class="column100 column5" data-column="column5">8:00 AM</td>
-              <td class="column100 column6" data-column="column6">--</td>
-              <td class="column100 column7" data-column="column7">5:00 PM</td>
-              <td class="column100 column8" data-column="column8">8:00 AM</td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
+      <tbody>
+        <tr>
+          <td>dongxiao huang</td>
+          <td>most niubi man</td>
+          <td>112312</td>
+          <td>200</td>
+          <td>asfsdiarfh203rhfeawh12304y0hrfshasdfh023f</td>
+        </tr>
+        <tr>
+          <td>dongxiao huang</td>
+          <td>most niubi man</td>
+          <td>112312</td>
+          <td>200</td>
+          <td>asfsdiarfh203rhfeawh12304y0hrfshasdfh023f</td>
+        </tr>
+        <tr>
+          <td>dongxiao huang</td>
+          <td>most niubi man</td>
+          <td>112312</td>
+          <td>200</td>
+          <td>asfsdiarfh203rhfeawh12304y0hrfshasdfh023f</td>
+        </tr>
+        <tr>
+          <td>dongxiao huang</td>
+          <td>most niubi man</td>
+          <td>112312</td>
+          <td>200</td>
+          <td>asfsdiarfh203rhfeawh12304y0hrfshasdfh023f</td>
+        </tr>
+        <tr>
+          <td>dongxiao huang</td>
+          <td>most niubi man</td>
+          <td>112312</td>
+          <td>200</td>
+          <td>asfsdiarfh203rhfeawh12304y0hrfshasdfh023f</td>
+        </tr>
+        <tr>
+          <td>dongxiao huang</td>
+          <td>most niubi man</td>
+          <td>112312</td>
+          <td>200</td>
+          <td>asfsdiarfh203rhfeawh12304y0hrfshasdfh023f</td>
+        </tr>
+        <tr>
+          <td>dongxiao huang</td>
+          <td>most niubi man</td>
+          <td>112312</td>
+          <td>200</td>
+          <td>asfsdiarfh203rhfeawh12304y0hrfshasdfh023f</td>
+        </tr>
+        <tr>
+          <td>dongxiao huang</td>
+          <td>most niubi man</td>
+          <td>112312</td>
+          <td>200</td>
+          <td>asfsdiarfh203rhfeawh12304y0hrfshasdfh023f</td>
+        </tr>
+        <tr>
+          <td>dongxiao huang</td>
+          <td>most niubi man</td>
+          <td>112312</td>
+          <td>200</td>
+          <td>asfsdiarfh203rhfeawh12304y0hrfshasdfh023f</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 
+  <div id="footer">
+    <div class="normal_width">
+      <p class="copy">Copyright 2017. IOTA group project . All Rights Reserved.</p>
+      <p>Data Analysis 好难啊</p>
+      <p>大家学习javascript 加油啊！！！</p>
+    </div>
+
+  </div>
 
   <script type="text/javascript" src="javascript/back.js"></script>
 <script type="text/javascript">
