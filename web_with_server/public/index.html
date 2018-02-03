@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="UTF-8">
+  <title>IOTA Node Visualizer</title>
+  <script type="text/javascript" src="./js/jquery-3.2.1.js"></script>
+  <script type="text/javascript" src="./js/tools.js"></script>
+  <link rel="stylesheet" href="./stylesheets/for_index.css">
+  <link rel="stylesheet" href="./stylesheets/styles.css">
+  <link rel="stylesheet" href="./stylesheets/SimpleSwitch.css">
+  <script type="text/javascript" src="./js/SimpleSwitch.min.js"></script>
+  <script type="text/javascript" src="./js/for_index.js"></script>
+
+  <script type="text/javascript" src="./js/vis.js"></script>
+  <link type="text/css" rel="stylesheet" href="./stylesheets/vis-network.min.css">
+</head>
+
+<body class="normal_width">
+  <!-- all contents in header-->
+  <div id="header">
+    <div id="header2" class ="normal_width">
+      <ul class="nav_bar">
+        <li>
+          <a href="#" class="current">Map</a>
+        </li>
+        <li>
+          <a href="#">About</a>
+        </li>
+        <li>
+          <a href="#">Contact Us</a>
+        </li>
+      </ul>
+      <div class="img">
+        <img src="img/logo.png" alt="IOTA logo">
+      </div>
+    </div>
+  </div>
+
+  <!-- the whole area for node_map (including three parts according to headers) -->
+  <div id="node_map" class ="normal_width">
+    <canvas id="space" class="normal_width" style="height: 100%;"></canvas>
+    <a href="#" id="warp"></a>
+    <div class="all">
+      <div class="Home normal_width">
+        <div id="main_for_show"></div>
+        <div class="right-top">
+          <div>
+            remove floating
+            <input type="checkbox" name="my-checkbox" data-type="simple-switch" />
+          </div>
+          <div>
+            limit to 4k
+            <input type="checkbox" name="my-checkbox" data-type="simple-switch" />
+          </div>
+          <div>
+            size by nodes
+            <input type="checkbox" name="my-checkbox" data-type="simple-switch" />
+          </div>
+        </div>
+
+        <div class="left-top" >
+          <div>
+            <img src="img/transaction.png" alt="">
+            Transaction
+          </div>
+          <div>
+            <img src="img/mean_confirmation_time.png" alt="">
+            Confirmation
+          </div>
+          <div>
+            <img src="img/value_transfer_per_second.png" alt="">
+            Tips
+          </div>
+        </div>
+      </div>
+
+      <div class="Discussion normal_width">
+        <p>IOTA is an open-source distributed ledger (cryptocurrency) focused on providing
+        secure communications and payments between machines on the Internet of Things.
+        Using directed acyclic graph (DAG) technology instead of the traditional blockchain,
+        IOTA's transactions are free regardless of the size of the transaction, confirmation
+        times are fast, the number of transactions the system can handle simultaneously is
+        unlimited, and the system can easily scale.[2][3] IOTA was founded in 2015 by David
+        Sønstebø, Sergey Ivancheglo, Dominik Schiener, and Dr. Serguei Popov.[4][5]
+        IOTA has a collaboration with Deutsche Telekom, Microsoft, and Fujitsu,[6] the Foundation
+        opened up a data marketplace using IOTA technology.[7]</p>
+      </div>
+
+      <div class="Members normal_width">
+        <p><span class="name">Jiangbo Yu</span> -- most handsome man. He is so brilliant.</p>
+        <p><span class="name">Ao Shen</span></p>
+        <p><span class="name">Xiao Luo</span></p>
+        <p><span class="name">Yuxiang Wu</span></p>
+        <p><span class="name">Dongxiao Huang</span></p>
+        <p><span class="name">Ruikun Cao</span></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- the area to show statistics in information area -->
+  <div id="information" class="normal_width">
+    <div>
+      <img src="img/value_transfer_per_second.png" alt="">
+      <span>Placeholder</span>
+      <span class="num">1234567</span>
+    </div>
+    <div>
+      <img src="img/value_transfer_per_second.png" alt="">
+      <span>Value Transfer / Sec</span>
+      <span class="num">1234567</span>
+    </div>
+    <div>
+      <img src="img/mean_confirmation_time.png" alt="">
+      <span>Mean Confirm Time</span>
+      <span class="num">1234567</span>
+    </div>
+    <div>
+      <img src="img/transaction.png" alt="">
+      <span>Total Tips</span>
+      <span class="num"></span>
+    </div>
+  </div>
+
+  <!-- the area to show the table -->
+  <div id="table" class="normal_width">
+    <table>
+      <thead>
+        <tr>
+          <th>Node Name</th>
+          <th>Node Type</th>
+          <th>Value</th>
+          <th>Confirmation Time</th>
+          <th>Hash</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr>
+          <td>dongxiao huang</td>
+          <td>most niubi man</td>
+          <td>112312</td>
+          <td>200</td>
+          <td>asfsdiarfh203rhfeawh12304y0hrfshasdfh023f</td>
+        </tr>
+        <tr>
+          <td>dongxiao huang</td>
+          <td>most niubi man</td>
+          <td>112312</td>
+          <td>200</td>
+          <td>asfsdiarfh203rhfeawh12304y0hrfshasdfh023f</td>
+        </tr>
+        <tr>
+          <td>dongxiao huang</td>
+          <td>most niubi man</td>
+          <td>112312</td>
+          <td>200</td>
+          <td>asfsdiarfh203rhfeawh12304y0hrfshasdfh023f</td>
+        </tr>
+        <tr>
+          <td>dongxiao huang</td>
+          <td>most niubi man</td>
+          <td>112312</td>
+          <td>200</td>
+          <td>asfsdiarfh203rhfeawh12304y0hrfshasdfh023f</td>
+        </tr>
+        <tr>
+          <td>dongxiao huang</td>
+          <td>most niubi man</td>
+          <td>112312</td>
+          <td>200</td>
+          <td>asfsdiarfh203rhfeawh12304y0hrfshasdfh023f</td>
+        </tr>
+        <tr>
+          <td>dongxiao huang</td>
+          <td>most niubi man</td>
+          <td>112312</td>
+          <td>200</td>
+          <td>asfsdiarfh203rhfeawh12304y0hrfshasdfh023f</td>
+        </tr>
+        <tr>
+          <td>dongxiao huang</td>
+          <td>most niubi man</td>
+          <td>112312</td>
+          <td>200</td>
+          <td>asfsdiarfh203rhfeawh12304y0hrfshasdfh023f</td>
+        </tr>
+        <tr>
+          <td>dongxiao huang</td>
+          <td>most niubi man</td>
+          <td>112312</td>
+          <td>200</td>
+          <td>asfsdiarfh203rhfeawh12304y0hrfshasdfh023f</td>
+        </tr>
+        <tr>
+          <td>dongxiao huang</td>
+          <td>most niubi man</td>
+          <td>112312</td>
+          <td>200</td>
+          <td>asfsdiarfh203rhfeawh12304y0hrfshasdfh023f</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!--footer-->
+  <div id="footer">
+    <div class="normal_width">
+      <p class="copy">Copyright 2017. IOTA group project . All Rights Reserved.</p>
+    </div>
+  </div>
+
+  <!-- this is to show the background of node map -->
+  <script type="text/javascript" src="js/back.js"></script>
+
+<!-- 这是nodemap上的那几个按钮 -->
+<script type="text/javascript">
+  SimpleSwitch.init();
+</script>
+
+  <!--use vis.js library to show our iota nodes-->
+  <script type="text/javascript" src="./js/show_nodes.js"></script>
+</body>
+</html>
