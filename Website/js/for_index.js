@@ -3,9 +3,13 @@ $(function () {
   // We will delete this later
   var nums = $("#information .num");
   setInterval(function () {
-    for(var i = 0; i < nums.length; i++)
-      nums[i].innerHTML = parseInt(Math.random() * 1000000 + "")
-  }, 2000)
+      for (var index = 0; index < 4; index++) {
+          $.getJSON("http://51.140.113.215:3000/info_" + index, function (data) {
+              nums[index].innerHTML = parseInt(data);
+          })
+      }
+
+  }, 2000);
 
   /*set the events when mouse click the navigator bar*/
   // index records current clicked button in navigator bar, default is 0
