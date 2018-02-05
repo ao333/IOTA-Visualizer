@@ -15,18 +15,18 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="160">
-              <caret line="22" column="45" lean-forward="true" selection-start-line="22" selection-start-column="45" selection-end-line="22" selection-end-column="45" />
+            <state relative-caret-position="210">
+              <caret line="14" column="7" lean-forward="false" selection-start-line="14" selection-start-column="7" selection-end-line="14" selection-end-column="7" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="show_nodes.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="show_nodes.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/show_nodes.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-579">
-              <caret line="173" column="4" lean-forward="false" selection-start-line="173" selection-start-column="4" selection-end-line="173" selection-end-column="4" />
+            <state relative-caret-position="1466">
+              <caret line="245" column="8" lean-forward="false" selection-start-line="245" selection-start-column="8" selection-end-line="245" selection-end-column="8" />
               <folding />
             </state>
           </provider>
@@ -72,11 +72,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="try.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="try.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/try.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="8" column="0" lean-forward="true" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+            <state relative-caret-position="336">
+              <caret line="112" column="33" lean-forward="true" selection-start-line="112" selection-start-column="33" selection-end-line="112" selection-end-column="33" />
               <folding />
             </state>
           </provider>
@@ -114,8 +114,8 @@
         <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/js/for_index.js" />
         <option value="$PROJECT_DIR$/js/info_table.js" />
-        <option value="$PROJECT_DIR$/js/try.js" />
         <option value="$PROJECT_DIR$/js/show_nodes.js" />
+        <option value="$PROJECT_DIR$/js/try.js" />
       </list>
     </option>
   </component>
@@ -338,12 +338,12 @@
       <workItem from="1517750595062" duration="94000" />
       <workItem from="1517750712621" duration="14467000" />
       <workItem from="1517772206955" duration="1891000" />
-      <workItem from="1517786030580" duration="335000" />
+      <workItem from="1517786030580" duration="241000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="19796000" />
+    <option name="totallyTimeSpent" value="19702000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="698" extended-state="6" />
@@ -593,10 +593,26 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="14" column="7" lean-forward="false" selection-start-line="14" selection-start-column="7" selection-end-line="14" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/js/Readme.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
           <caret line="6" column="17" lean-forward="true" selection-start-line="6" selection-start-column="17" selection-end-line="6" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/show_nodes.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1466">
+          <caret line="245" column="8" lean-forward="false" selection-start-line="245" selection-start-column="8" selection-end-line="245" selection-end-column="8" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -634,24 +650,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/try.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="0" lean-forward="true" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
-          <caret line="22" column="45" lean-forward="true" selection-start-line="22" selection-start-column="45" selection-end-line="22" selection-end-column="45" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/show_nodes.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-579">
-          <caret line="173" column="4" lean-forward="false" selection-start-line="173" selection-start-column="4" selection-end-line="173" selection-end-column="4" />
+        <state relative-caret-position="336">
+          <caret line="112" column="33" lean-forward="true" selection-start-line="112" selection-start-column="33" selection-end-line="112" selection-end-column="33" />
           <folding />
         </state>
       </provider>

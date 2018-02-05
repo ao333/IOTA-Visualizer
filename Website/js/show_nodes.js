@@ -7,7 +7,7 @@ var edges = [];
 //var nodes_hash = [];
 var network;
 
-$.getJSON("http://51.140.113.215:3000/initial", function(data) {
+$.getJSON("http://localhost:3000/tangle/initial", function(data) {
         for (var i = 0; i < data.length; i++) {
             var gro;
             if (data[i]["type"] === "tip") gro = 0;
@@ -171,7 +171,11 @@ function redrawAll() {
             // ,2:{color:'ff6666'}
         }
     };
-    
+
+
+
+
+
     // Note: data is coming from ./datasources/WorldCup2014.js
     network = new vis.Network(container, data, options);
 }
@@ -180,7 +184,8 @@ setInterval(function () {
     for(var i = 0;i < nodes.length; i++)
         if (nodes[i]['group'] === 0 || nodes[i]['group'] === 1)
             updata_hash.push(nodes[i]['id']);
-    $.post("http://51.140.113.215:3000/update", updata_hash, function(data){
+    var obj1 = {'update_hash' : updata_hash};
+    $.post("11", obj1, function(data){
         var new_data = [];
         for (var i = 0; i < data.length; i++) {
             var flag = false;
@@ -238,7 +243,7 @@ setInterval(function () {
         network.setData(data);
         network.redraw();
 
-    }, json)
-},2000);
+    }, "json")
+},10000);
 // create a network
 

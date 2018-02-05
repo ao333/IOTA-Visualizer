@@ -3,10 +3,12 @@ $(function () {
   // We will delete this later
   var nums = $("#information .num");
   setInterval(function () {
-      for (var index = 0; index < 4; index++) {
-          $.getJSON("http://51.140.113.215:3000/info_" + index, function (data) {
-              nums[index].innerHTML = parseInt(data);
-          })
+      for (var index = 3; index < 4; index++) {
+      	(function(index){
+			$.getJSON("http://localhost:3000/info_" + index, function (data) {
+              nums[index].innerHTML = data + "";
+            })
+      	})(index) 
       }
 
   }, 2000);
