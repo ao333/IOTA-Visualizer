@@ -1,0 +1,216 @@
+
+.clearfix:before,
+.clearfix:after{
+  content: "";
+  display: table;
+  clear: both;
+}
+
+body{
+  background-color: black;
+}
+
+/*for header*/
+
+.normal_width{
+  width: 1180px;
+  margin: auto;
+}
+
+#header{
+  width: 100%;
+  height: 86px;
+  background-color: #333;
+}
+
+
+#header img{
+  padding-top: 10px;
+  width: 200px;
+  height: 67px;
+}
+
+.nav_bar{
+  padding-top: 30px;
+  float: right;
+}
+
+.nav_bar li{
+  float: left;
+  margin: 0px 30px;
+}
+
+.nav_bar .current{
+  color: #c0c0c0;
+}
+
+.nav_bar li a{
+  font: 26px "georgia";
+  color: white;
+}
+
+/*------------------------------------------------------------------------*/
+/*for node map*/
+#node_map{
+  height: 750px;
+  position: relative;
+  margin-bottom: 25px;
+  border-bottom: 1px solid #404040;
+  overflow: hidden;
+}
+
+#node_map .all{
+  position: absolute;
+  top: 0px;
+}
+
+#node_map .Home{
+  height: 750px;
+}
+
+#node_map .Discussion{
+  height: 750px;
+  color: white;
+  font-size: 20px;
+  font-family: "Futura Bk BT";
+  line-height: 1.5;
+}
+
+#node_map .Discussion p{
+  padding: 30px 10px;
+}
+
+#node_map .Members{
+  height: 750px;
+  color: white;
+  font-size: 20px;
+  font-family: "Futura Bk BT";
+  line-height: 1.5;
+}
+
+#node_map .Members .name{
+  font: bold 30px "Trebuchet MS";
+  color: white;
+
+}
+
+#node_map .right-top{
+  position: absolute;
+  left: 940px;
+  top: 25px;
+}
+
+#node_map .right-top div{
+  margin: 10px 10px;
+  font-size: 20px;
+  color: white;
+}
+
+.left-top img{
+  height: 20px;
+  width: 20px;
+}
+#node_map .left-top{
+  position: absolute;
+  left: 25px;
+  top: 30px;
+  color: white;
+  font-size: 20px;
+}
+#node_map .left-top div{
+  padding-top: 5px;
+}
+
+/*---------------------------------------------------------------------------*/
+/*for information*/
+#information{
+  padding-bottom: 25px;
+  border-bottom: 1px solid #404040;
+  height: 100px;
+/*  background-color: white;*/
+}
+
+#information div{
+  height: 100px;
+  width: 25%;
+  float: right;
+  position: relative;
+}
+
+#information{
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+#information span{
+  color: white;
+  font-size: 20px;
+  font-family: "Trebuchet MS";
+}
+#information img{
+  height: 100px;
+  width: 100px;
+}
+
+#information span{
+  position: absolute;
+  left: 100px;
+  top: 10px;
+  font-weight: bold;
+}
+
+#information .num{
+  color: skyblue;
+  font-weight: bold;
+  font-size: 40px;
+  position: absolute;
+  left: 100px;
+  top: 40px;
+  font-family: "Lucida Bright";
+}
+
+/*-------------------------------------------------------------------------------------*/
+/*for table*/
+#table{
+  background-color: black;
+  margin-bottom: 20px;
+}
+
+#table table{
+  width: 100%;
+  border-collapse: collapse;
+}
+
+tr{
+  font: 30px "Comic Sans MS";
+  color: white;
+}
+
+td{
+  font: 20px "Arial";
+  color: lightgrey;
+}
+
+td, th{
+  border: 1px solid white;
+  text-align: center;
+}
+
+tr:hover{
+  background-color: #5d5d5d;
+}
+
+/*-------------------------------------------------------------------------*/
+/*for footer*/
+#footer{
+  height: 80px;
+  width: 100%;
+  background: #333;
+  border-top: 10px solid #4c4c4c;
+  padding-top: 20px;
+  color: white;
+  line-height: 1.5;
+}
+#footer .copy{
+  float: right;
+}
