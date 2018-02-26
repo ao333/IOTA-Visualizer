@@ -1,29 +1,34 @@
 //This file is used to track each user and update information for each user
 
-const Track = require('../models/track');
 const iota = require("./get_tips");
 const tools = require("./tools");
 
 /**
  *
  */
-function update_users(){
+function update_users(Track){
   let cursor = Track.find({}).cursor();
   cursor.on('data', function(doc) {
-    let allOldValues = doc["oldValue"]; // obtain user's old information
-    let allhashes = []; // store all hashes for old information
-    let allOldValueshash = []; // only store old information for tip
-    let possible_to_update = []; // store unconfirmed and tip
+    if(!doc || doc["oldValue"].length === 0)
+      return;
+    var allOldValues = doc["oldValue"].slice(); // obtain user's old information
+    var updateValue = doc["updateValue"].slice();
+    var allhashes = []; // store all hashes for old information
+    var allOldValueshash = []; // only store old information for tip
+    let unconfirmed = [];
     let record = 0;
     for(let i = 0; i < allOldValues.length; i++){
       allhashes.push(allOldValues[i]["this_hash"]);
       if(allOldValues[i]["type"] === "tip"){
         allOldValueshash.push(allOldValues[i]["this_hash"]);
       }
-      if(allOldValues[i]["type"] === "unconfirmed" && record === 0){
-        allOldValueshash.push(allOldValues[i]["this_hash"]);
-        record++;
+      if(allOldValues[i]["type"] === "unconfirmed"){
+        unconfirmed.push(allOldValues[i]["this_hash"]);
       }
+    }
+    unconfirmed = tools.getArrayItems(unconfirmed, Math.min(unconfirmed.length, 3));
+    for(let i = 0; i< unconfirmed.length; i++){
+      allOldValueshash.push(unconfirmed[i]);
     }
     let index = allOldValueshash.indexOf("999999999999999999999999999999999999999999999999999999999999999999999999999999999");
     allOldValueshash.splice(index, 1);
@@ -34,8 +39,7 @@ function update_users(){
           if(allhashes.indexOf(tips_objects[i]["hash"]) < 0){
             let tip_object = tools.getobj(tips_objects[i]["hash"], tips_objects[i]["trunkTransaction"],
               tips_objects[i]["branchTransaction"],"tip",tips_objects[i]["value"]);
-            doc["updateValue"].push(tip_object);
-            console.log(tip_object);
+            updateValue.push(tip_object);
             break;
           }
         }
@@ -57,7 +61,7 @@ function update_users(){
                 }
                 let item = allOldValues[index];
                 item["type"] = "confirmed";
-                doc["updateValue"].push(item);
+                updateValue.push(item);
                 allOldValues.splice(index, 1);
               }
             }
@@ -88,29 +92,15 @@ function update_users(){
                     }
                     let item = allOldValues[index];
                     item["type"] = "unconfirmed";
-                    doc["updateValue"].push(item);
+                    updateValue.push(item);
                     allOldValues.splice(index, 1);
                   }
                 }
                 Track.findById(doc._id, function(){
-                  doc["oldValue"] = allOldValues;
-                  for(let i = 0; i < doc["updateValue"].length; i++){
-                    doc["oldValue"].push(doc["updateValue"][i]);
+                  for(let i = 0; i < updateValue.length; i++){
+                    allOldValues.push(updateValue[i]);
                   }
-                  doc["updateValue"] = [];
-                  console.log("before: ", doc["oldValue"].length);
-                  doc["oldValue"] = tools.deleteDuplicates(doc["oldValue"]);
-                  console.log("after: ", doc["oldValue"].length);
-                  for(let i = 0; i < doc["oldValue"].length; i++){
-                    let forward = doc["oldValue"][i]["trunkTransaction"];
-                    let backward = doc["oldValue"][i]["branchTransaction"];
-                    for(let j = 0; j < doc["oldValue"].length; j++){
-                      if(doc["oldValue"][j]["type"] === "tip" && (doc["oldValue"][j]["this_hash"] === forward || doc["oldValue"][j]["this_hash"] === backward)){
-                        doc["oldValue"][j]["type"] = "unconfirmed";
-                        console.log(doc["oldValue"][j]);
-                      }
-                    }
-                  }
+                  doc["oldValue"] = tools.deleteDuplicates(allOldValues);
                   doc.save(function(err, afterupdate){
                     if(err) console.log(err);
                     else{

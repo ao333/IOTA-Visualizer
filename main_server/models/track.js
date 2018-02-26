@@ -14,6 +14,6 @@ const track = new Schema({
   timestamps:true
 });
 
-var Track = mongoose.model('TRACK', track);
+let Track = mongoose.model('track_tree', track);
 
 module.exports = Track;

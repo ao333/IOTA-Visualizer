@@ -28,7 +28,26 @@ function deleteDuplicates(results){
   return results;
 }
 
+function getArrayItems(arr, num) {
+  let temp_array = new Array();
+  for (let index in arr) {
+    temp_array.push(arr[index]);
+  }
+  let return_array = new Array();
+  for (let i = 0; i<num; i++) {
+    if (temp_array.length>0) {
+      let arrIndex = Math.floor(Math.random()*temp_array.length);
+      return_array[i] = temp_array[arrIndex];
+      temp_array.splice(arrIndex, 1);
+    } else {
+      break;
+    }
+  }
+  return return_array;
+}
+
 module.exports = {
   deleteDuplicates,
-  getobj
+  getobj,
+  getArrayItems
 };

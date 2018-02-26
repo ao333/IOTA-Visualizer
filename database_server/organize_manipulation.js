@@ -6,6 +6,9 @@ const update_users = require('./otherjs/updateUsers');
 const calculateStat = require('./otherjs/calculateStat');
 const IOTAes = require('./models/iotaes');
 
+const Track_tree = require('./models/track');
+const Track_sphere = require('./models/track1');
+
 function organize(){
   // we will update all unchecked tips every half day and check and update every 10 seconds
   // to calculate mean confirmation time
@@ -24,13 +27,16 @@ function organize(){
   //we will update our initial information sent to the users every one hour
 
  setInterval(function(){
-   IOTAes.remove({}).then(function () {
-     query_interval();
-   });
+   query_interval();
 }, 3600000);
 
  // goes through to update all current users looking our website every 10 seconds
- setInterval(update_users, 10000);
+ setInterval(function () {
+   update_users(Track_tree);
+ }, 20000);
+ setInterval(function () {
+   update_users(Track_sphere)
+ }, 25000)
 }
 
 

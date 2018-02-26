@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+
 const track = new Schema({
   oldValue:{
     type:Array,
@@ -14,6 +15,6 @@ const track = new Schema({
   timestamps:true
 });
 
-let Track = mongoose.model('track_tree', track);
+let Track = mongoose.model('track_sphere', track);
 
 module.exports = Track;

@@ -34,11 +34,12 @@ $(function () {
       console.log(parseInt(height_of_nodemap) * -i)
       move(all_in_nodemap, "top", parseInt(height_of_nodemap) * -i, 20)
     }
-  }
+  };
+  window.onbeforeunload = function () {
+    $.get("/tangle/delete");
+  };
 });
 
-function whenexit(){
-  $.get("/tangle/delete");
-}
+
 
 

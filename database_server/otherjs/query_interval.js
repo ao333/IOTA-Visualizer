@@ -15,7 +15,7 @@ const IOTAes = require('../models/iotaes');
 function query_tip(){
   iota.api.getTips(function(error, alltips){
     //here we only choose 40 tips because we cannot send too much to front end
-    let length = Math.min(alltips.length, 40);
+    let length = Math.min(alltips.length, 150);
     let remaining_tips = [];
     for(let i = 0; i < length; i++){
       remaining_tips.push(alltips[i]);
@@ -61,12 +61,19 @@ function create_father(tips, results){
           results = tools.deleteDuplicates(results);
           for(let j = 0; j < results.length; j++){
           }
-          IOTAes.create(results, function(error, docs){
-            if(error) console.log(error);
-            else{
-              console.log("update finish");
-            }
-          });
+          IOTAes.remove({})
+            .then(() => {
+              setTimeout(function () {
+                IOTAes.create(results, function(error, docs){
+                  if(error) console.log(error);
+                  else{
+                    console.log("update finish");
+                  }
+                });
+              }, 1000);
+
+            });
+
           return;
         }
       }
