@@ -72,12 +72,20 @@ tangleRouter.route('/tree_update')
   .get(cors.corsWithOptions, (req, res, next) => {
     let id = req.cookies.id_tree;
     Track_tree.findById(id, function (error, docs) {
-      if(error) console.log(error);
-      if(docs){
-        let update_data = docs["oldValue"];
-        res.statusCode = 200;
-        res.setHeader("Content-Type", "application/json");
-        res.json(update_data);
+      if(error){
+        console.log(error);
+        res.statusCode = 204;
+        res.end();
+      }else{
+        if(docs){
+          let update_data = docs["oldValue"];
+          res.statusCode = 200;
+          res.setHeader("Content-Type", "application/json");
+          res.json(update_data);
+        }else{
+          res.statusCode = 204;
+          res.end();
+        }
       }
     })
   });
@@ -86,10 +94,22 @@ tangleRouter.route('/sphere_update')
   .get(cors.corsWithOptions, (req, res, next) => {
     let id = req.cookies.id_sphere;
     Track_sphere.findById(id, function (error, docs) {
-      let update_data = docs["oldValue"];
-      res.statusCode = 200;
-      res.setHeader("Content-Type", "application/json");
-      res.json(update_data);
+      if(error){
+        console.log(error);
+        res.statusCode = 204;
+        res.end();
+      }else{
+        if(docs){
+          let update_data = docs["oldValue"];
+          res.statusCode = 200;
+          res.setHeader("Content-Type", "application/json");
+          res.json(update_data);
+        }else{
+          res.statusCode = 204;
+          res.end();
+        }
+      }
+
     })
   });
 

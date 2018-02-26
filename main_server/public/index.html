@@ -3,6 +3,12 @@
   <meta charset="UTF-8">
   <title>IOTA Node Visualizer</title>
   <script type="text/javascript" src="./js/jquery-3.2.1.js"></script>
+  <script type="text/javascript">
+    window.onbeforeunload = function () {
+      $.get("/tangle/delete");
+      return "确定退出吗";
+    };
+  </script>
   <script type="text/javascript" src="./js/tools.js"></script>
   <link rel="stylesheet" href="./stylesheets/for_index.css">
   <link rel="stylesheet" href="./stylesheets/styles.css">
