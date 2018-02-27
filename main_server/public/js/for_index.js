@@ -6,7 +6,7 @@ $(function () {
       for (var index = 0; index < 4; index++) {
       	(function(index){
 			$.getJSON("/stat/" + index, function (data) {
-			        console.log("data: " + data);
+			        //console.log("data: " + data);
               nums[3 - index].innerHTML = data + "";
             })
       	})(index);
