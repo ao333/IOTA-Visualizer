@@ -1,0 +1,7 @@
+Suite/Test/Step Name,Browser,Description,Start time,End time,Duration,Status
+New Test Suite,Chrome 64.0.3282.186,,2018-02-27 18:33:39,2018-02-27 18:33:41,2.146s,FAILED
+,,,,,,
+Test Cases/1,Chrome 64.0.3282.186,,2018-02-27 18:33:39,2018-02-27 18:33:41,1.687s,FAILED
+openBrowser,Chrome 64.0.3282.186,,2018-02-27 18:33:40,2018-02-27 18:33:41,1.126s,PASSED
+navigateToUrl,Chrome 64.0.3282.186,,2018-02-27 18:33:41,2018-02-27 18:33:41,0.050s,PASSED
+click,Chrome 64.0.3282.186,,2018-02-27 18:33:41,2018-02-27 18:33:41,0.107s,FAILED

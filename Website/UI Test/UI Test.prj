@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Project>
+   <description></description>
+   <name>UI Test</name>
+   <tag></tag>
+   <UUID>0abec41a-5ef6-46bb-9508-eb1708fe1bb6</UUID>
+   <pageLoadTimeout>30</pageLoadTimeout>
+</Project>
