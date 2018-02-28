@@ -39,6 +39,4 @@ function organize(){
  }, 25000)
 }
 
-
-
 module.exports = organize;

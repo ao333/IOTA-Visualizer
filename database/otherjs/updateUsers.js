@@ -1,11 +1,7 @@
 //This file is used to track each user and update information for each user
-
 const iota = require("./get_tips");
 const tools = require("./tools");
 
-/**
- *
- */
 function update_users(Track){
   let cursor = Track.find({}).cursor();
   cursor.on('data', function(doc) {
