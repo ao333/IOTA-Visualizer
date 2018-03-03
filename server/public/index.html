@@ -2,21 +2,21 @@
 <head>
   <meta charset="UTF-8">
   <title>IOTA Node Visualizer</title>
-  <script type="text/javascript" src="./js/jquery-3.2.1.js"></script>
+  <script type="text/javascript" src="helpers/jquery-3.2.1.js"></script>
   <script type="text/javascript">
     window.onbeforeunload = function () {
       $.get("/tangle/delete");
-      return "确定退出吗";
+      return "do you want to exit our beautiful website?";
     };
   </script>
-  <script type="text/javascript" src="./js/tools.js"></script>
+  <script type="text/javascript" src="helpers/tools.js"></script>
   <link rel="stylesheet" href="./stylesheets/for_index.css">
   <link rel="stylesheet" href="./stylesheets/styles.css">
-  <link rel="stylesheet" href="./stylesheets/SimpleSwitch.css">
-  <script type="text/javascript" src="./js/SimpleSwitch.min.js"></script>
-  <script type="text/javascript" src="./js/for_index.js"></script>
+  <link rel="stylesheet" href="./css/simple-switch.min.css">
+  <script type="text/javascript" src="./helpers/jquery.simpleswitch.min.js"></script>
+  <script type="text/javascript" src="helpers/for_index.js"></script>
 
-  <script type="text/javascript" src="./js/vis.js"></script>
+  <script type="text/javascript" src="helpers/vis.js"></script>
   <link type="text/css" rel="stylesheet" href="./stylesheets/vis-network.min.css">
 </head>
 
@@ -51,15 +51,15 @@
         <div class="right-top">
           <div>
             remove floating
-            <input type="checkbox" name="my-checkbox" data-type="simple-switch" />
+            <input type="checkbox" class="mybox"/>
           </div>
           <div>
             limit to 4k
-            <input type="checkbox" name="my-checkbox" data-type="simple-switch" />
+            <input type="checkbox" class = "mybox"/>
           </div>
           <div>
             Toggle Graph Mode
-            <input id = "graphmode" type="checkbox" name="my-checkbox" data-type="simple-switch" />
+            <input id = "graphmode" type="checkbox" class="mybox"/>
           </div>
         </div>
 
@@ -205,15 +205,14 @@
   </div>
 
   <!-- this is to show the background of node map -->
-  <script type="text/javascript" src="js/back.js"></script>
+  <script type="text/javascript" src="helpers/back.js"></script>
 
 <!-- 这是nodemap上的那几个按钮 -->
-<script type="text/javascript">
-  SimpleSwitch.init();
-</script>
+  <script>
+    $(".mybox").simpleSwitch();
+  </script>
 
-  <!--use vis.js library to show our iota nodes-->
-  <script type="text/javascript" src="./js/show_nodes.js"></script>
-  <!-- <script type="text/javascript" src="./js/info_table.js"></script> -->
+  <!--use vis.helpers library to show our iota nodes-->
+  <script type="text/javascript" src="helpers/show_nodes.js"></script>
 </body>
 </html>

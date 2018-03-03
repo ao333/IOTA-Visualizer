@@ -236,29 +236,27 @@ var init_graph = function (data, nodeList, edgeList, mode) {
 }
 var container;
 var network;
-$.getJSON("http://localhost:3000/tangle/tree_initial", function(data) {
+$.getJSON("/tangle/tree_initial", function(data) {
     treeMode = true
     init_graph(data, tree_nodes, tree_edges, 0);
     redrawAll(0);
 });
-$.getJSON("http://localhost:3000/tangle/sphere_initial", function(data) {
+$.getJSON("/tangle/sphere_initial", function(data) {
     init_graph(data, sphere_nodes, sphere_edges, 1);
 });
 
 var treeMode;
-$('#graphmode').on('click',function() {
-    console.log('hello')
-    e.preventDefault();
-    if (e.checked)
-    {
-        treeMode = true;
-        redrawAll(0);
-    }
-    else
-    {
-        treeMode = false;
-        redrawAll(1);
-    }
+$('#graphmode').change(function() {
+  if (!this.checked)
+  {
+    treeMode = true;
+    redrawAll(0);
+  }
+  else
+  {
+    treeMode = false;
+    redrawAll(1);
+  }
 });
 
 
@@ -266,14 +264,14 @@ $('#graphmode').on('click',function() {
 
 var sphere_graph_timer = setInterval(function () {
     if (!treeMode)
-        $.getJSON("http://localhost:3000/tangle/sphere_update", function(data){
+        $.getJSON("/tangle/sphere_update", function(data){
             update_data(data, sphere_nodes, sphere_edges);
         }, "json")
 },10000);
 
 var tree_graph_timer = setInterval(function () {
     if (treeMode)
-        $.getJSON("http://localhost:3000/tangle/tree_update", function(data){
+        $.getJSON("/tangle/tree_update", function(data){
             update_data(data, tree_nodes, tree_edges);
         }, "json")
 },10000);
@@ -328,7 +326,7 @@ var update_data = function (data, nodeList, edgeList)
                     {}
                 }
             }
-}
+};
 
 
 

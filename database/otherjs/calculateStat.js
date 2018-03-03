@@ -35,7 +35,7 @@ function checkFinished() {
   states.findOne({}, function(error, doc){
     if(error) console.log(error);
     if(doc){
-      let notfinished = doc["notFinished"];
+      var notfinished = doc["notFinished"];
       let allhashes = [];
       for(let i = 0; i < notfinished.length; i++){
         allhashes.push(notfinished[i]["hash"]);
@@ -51,6 +51,8 @@ function checkFinished() {
               doc["Finished"].push(obj);
               //delete tip which is confirmed in notFinished array in database collection
               notfinished.splice(i,1);
+              values.splice(i,1);
+              i--;
             }
           }
           doc.save(function(error, status){
@@ -75,8 +77,14 @@ function updateMeanCon(){
       for(let i = 0; i < n; i++){
         sum = sum + updateArray[i]["finishtime"] - updateArray[i]["createtime"];
       }
-      let average = sum / n;
-      let minites = average/1000/60;
+      let average;
+      let minites;
+      if(n === 0)
+        minites = 0;
+      else{
+        average = sum / n;
+        minites = average/1000/60;
+      }
       STATs.findOne({}, function (error, doc) {
         if(error) console.log(error);
         if(doc){
@@ -85,7 +93,7 @@ function updateMeanCon(){
             if(error) console.log(error)
           })
         }
-      })
+      });
     }
   })
 }
@@ -107,9 +115,39 @@ function getTips(){
   });
 }
 
+function getTranserPerSecond(){
+  iota.api.getTips(function(error, alltips){
+    iota.api.getTransactionsObjects(alltips, function(error, objs){
+      let totalValue = 0;
+      let mintime = objs[0].timestamp;
+      let maxtime = objs[0].timestamp;
+      for(let i = 0; i < objs.length; i++){
+        if(objs[i].value > 0){
+          totalValue = totalValue + objs[i].value;
+          if(objs[i].timestamp > maxtime)
+            maxtime = objs[i].timestamp;
+          if(objs[i].timestamp < mintime)
+            mintime = objs[i].timestamp;
+        }
+      }
+      let meanPerSecond = totalValue / ((maxtime - mintime)/1000);
+      STATs.findOne({}, function (error, doc) {
+        if(error) console.log(error);
+        if(doc){
+          doc["ValuePerSec"] = meanPerSecond;
+          doc.save(function (error, aa) {
+            if(error) console.log(error)
+          })
+        }
+      });
+    })
+  });
+}
+
 module.exports = {
   checkFinished,
   createUnfinished,
   updateMeanCon,
-  getTips
+  getTips,
+  getTranserPerSecond
 };

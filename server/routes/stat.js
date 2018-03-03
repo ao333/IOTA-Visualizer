@@ -30,7 +30,7 @@ statRouter.route('/:id')
           res.json(json_array[0]["MeanConTime"].toFixed(2));
         }
         else if(req.params.id === "2"){
-          res.json(json_array[0]["ValuePerSec"]);
+          res.json(Math.floor(json_array[0]["ValuePerSec"]));
         }
         else{
           res.end();

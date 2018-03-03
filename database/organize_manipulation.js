@@ -6,8 +6,8 @@ const update_users = require('./otherjs/updateUsers');
 const calculateStat = require('./otherjs/calculateStat');
 const IOTAes = require('./models/iotaes');
 
-const Track_tree = require('./models/track');
-const Track_sphere = require('./models/track1');
+const Track_tree = require('./models/track_tree');
+const Track_sphere = require('./models/track_sphere');
 
 function organize(){
   // we will update all unchecked tips every half day and check and update every 10 seconds
@@ -24,6 +24,9 @@ function organize(){
     query_interval();
   });
 
+  //update Mean confirmation time every 3 minutes
+  setInterval(calculateStat.getTranserPerSecond, 300000);
+
   //we will update our initial information sent to the users every one hour
 
  setInterval(function(){
@@ -38,5 +41,7 @@ function organize(){
    update_users(Track_sphere)
  }, 25000)
 }
+
+
 
 module.exports = organize;

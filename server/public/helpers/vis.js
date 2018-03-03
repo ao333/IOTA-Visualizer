@@ -175,7 +175,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
 
 // utility functions
 
-// first check if moment.js is already loaded in the browser window, if so,
+// first check if moment.helpers is already loaded in the browser window, if so,
 // use this instance. Else, load via commonjs.
 
 
@@ -383,7 +383,7 @@ exports.selectiveExtend = function (props, a, b) {
  *
  * **Note:** Previous version of this routine implied that multiple source objects
  *           could be used; however, the implementation was **wrong**.
- *           Since multiple (>1) sources weren't used anywhere in the `vis.js` code,
+ *           Since multiple (>1) sources weren't used anywhere in the `vis.helpers` code,
  *           this has been removed
  *
  * @param {Array.<string>} props names of first-level properties to copy over
@@ -1873,7 +1873,7 @@ module.exports = { "default": __webpack_require__(140), __esModule: true };
 "use strict";
 
 
-// first check if moment.js is already loaded in the browser window, if so,
+// first check if moment.helpers is already loaded in the browser window, if so,
 // use this instance. Else, load via commonjs.
 module.exports = typeof window !== 'undefined' && window['moment'] || __webpack_require__(154);
 
@@ -1885,7 +1885,7 @@ module.exports = typeof window !== 'undefined' && window['moment'] || __webpack_
 
 
 /**
- * Setup a mock hammer.js object, for unit testing.
+ * Setup a mock hammer.helpers object, for unit testing.
  *
  * Inspiration: https://github.com/uber/deck.gl/pull/658
  *
@@ -1917,7 +1917,7 @@ if (typeof window !== 'undefined') {
   });
 } else {
   module.exports = function () {
-    // hammer.js is only available in a browser, not in node.js. Replacing it with a mock object.
+    // hammer.helpers is only available in a browser, not in node.helpers. Replacing it with a mock object.
     return hammerMock();
   };
 }
@@ -6106,7 +6106,7 @@ Item.prototype._updateEditStatus = function () {
           remove: this.data.editable
         };
       } else if ((0, _typeof3['default'])(this.data.editable) === 'object') {
-        // TODO: in vis.js 5.0, we should change this to not reset options from the timeline configuration.
+        // TODO: in vis.helpers 5.0, we should change this to not reset options from the timeline configuration.
         // Basically just remove the next line...
         this.editable = {};
         util.selectiveExtend(['updateTime', 'updateGroup', 'remove'], this.editable, this.data.editable);
@@ -6654,11 +6654,11 @@ TimeAxis.prototype.setOptions = function (options) {
       }
     }
 
-    // apply locale to moment.js
-    // TODO: not so nice, this is applied globally to moment.js
+    // apply locale to moment.helpers
+    // TODO: not so nice, this is applied globally to moment.helpers
     if ('locale' in options) {
       if (typeof moment.locale === 'function') {
-        // moment.js 2.8.1+
+        // moment.helpers 2.8.1+
         moment.locale(options.locale);
       } else {
         moment.lang(options.locale);
@@ -9579,7 +9579,7 @@ Core.prototype._create = function (container) {
       this.emit('mousewheel', event);
     }
 
-    // deltaX and deltaY normalization from jquery.mousewheel.js
+    // deltaX and deltaY normalization from jquery.mousewheel.helpers
     var deltaX = 0;
     var deltaY = 0;
 
@@ -13164,7 +13164,7 @@ var Configurator = function () {
   /**
    * @param {Object} parentModule        | the location where parentModule.setOptions() can be called
    * @param {Object} defaultContainer    | the default container of the module
-   * @param {Object} configureOptions    | the fully configured and predefined options set found in allOptions.js
+   * @param {Object} configureOptions    | the fully configured and predefined options set found in allOptions.helpers
    * @param {number} pixelRatio          | canvas pixel ratio
    */
   function Configurator(parentModule, defaultContainer, configureOptions) {
@@ -24625,7 +24625,7 @@ function parseDOT(data) {
   return parseGraph();
 }
 
-// mapping of attributes from DOT (the keys) to vis.js (the values)
+// mapping of attributes from DOT (the keys) to vis.helpers (the values)
 var NODE_ATTR_MAPPING = {
   'fontsize': 'font.size',
   'fontcolor': 'font.color',
@@ -25390,10 +25390,10 @@ function setProp(object, path, value) {
 }
 
 /**
- * Convert an object with DOT attributes to their vis.js equivalents.
+ * Convert an object with DOT attributes to their vis.helpers equivalents.
  * @param {Object} attr     Object with DOT attributes
  * @param {Object} mapping
- * @return {Object}         Returns an object with vis.js attributes
+ * @return {Object}         Returns an object with vis.helpers attributes
  */
 function convertAttr(attr, mapping) {
   var converted = {};
@@ -27427,7 +27427,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
  *
  * After adding a new endpoint here, you also need to do the following things:
  *
- * - Add the new endpoint name to `network/options.js` in array `endPoints`.
+ * - Add the new endpoint name to `network/options.helpers` in array `endPoints`.
  * - Add the new endpoint name to the documentation.
  *   Scan for 'arrows.to.type` and add it to the description.
  * - Add the endpoint to the examples. At the very least, add it to example
@@ -29663,9 +29663,9 @@ __webpack_require__(62)('observable');
 /* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(module) {var require;//! moment.js
+/* WEBPACK VAR INJECTION */(function(module) {var require;//! moment.helpers
 //! version : 2.19.1
-//! authors : Tim Wood, Iskren Chernev, Moment.js contributors
+//! authors : Tim Wood, Iskren Chernev, Moment.helpers contributors
 //! license : MIT
 //! momentjs.com
 
@@ -32029,10 +32029,10 @@ function configFromString(config) {
 }
 
 hooks.createFromInputFallback = deprecate(
-    'value provided is not in a recognized RFC2822 or ISO format. moment construction falls back to js Date(), ' +
+    'value provided is not in a recognized RFC2822 or ISO format. moment construction falls back to helpers Date(), ' +
     'which is not reliable across all browsers and versions. Non RFC2822/ISO date formats are ' +
     'discouraged and will be removed in an upcoming major release. Please refer to ' +
-    'http://momentjs.com/guides/#/warnings/js-date/ for more info.',
+    'http://momentjs.com/guides/#/warnings/helpers-date/ for more info.',
     function (config) {
         config._d = new Date(config._i + (config._useUTC ? ' UTC' : ''));
     }
@@ -34259,7 +34259,7 @@ if (!_rng) {
   };
 }
 
-//     uuid.js
+//     uuid.helpers
 //
 //     Copyright (c) 2010-2012 Robert Kieffer
 //     MIT License - http://opensource.org/licenses/mit-license.php
@@ -37692,7 +37692,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   var _firstTarget = null; // singleton, will contain the target element where the touch event started
 
   /**
-   * Extend an Hammer.js instance with event propagation.
+   * Extend an Hammer.helpers instance with event propagation.
    *
    * Features:
    * - Events emitted by hammer will propagate in order from child to parent
@@ -39110,7 +39110,7 @@ var TOUCH_ACTION_MAP = getTouchActionProps();
 
 /**
  * Touch Action
- * sets the touchAction property or uses the js alternative
+ * sets the touchAction property or uses the helpers alternative
  * @param {Manager} manager
  * @param {String} value
  * @constructor
@@ -52066,7 +52066,7 @@ var Cluster = function (_Node) {
   /**
    * Transfer child cluster data to current and disconnect the child cluster.
    *
-   * Please consult the header comment in 'Clustering.js' for the fields set here.
+   * Please consult the header comment in 'Clustering.helpers' for the fields set here.
    *
    * @param {string|number} childClusterId  id of child cluster to open
    */
@@ -52153,13 +52153,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 /**
  * Initializes window.requestAnimationFrame() to a usable form.
  *
- * Specifically, set up this method for the case of running on node.js with jsdom enabled.
+ * Specifically, set up this method for the case of running on node.helpers with jsdom enabled.
  *
  * NOTES:
  *
- * * On node.js, when calling this directly outside of this class, `window` is not defined.
+ * * On node.helpers, when calling this directly outside of this class, `window` is not defined.
  *   This happens even if jsdom is used.
- * * For node.js + jsdom, `window` is available at the moment the constructor is called.
+ * * For node.helpers + jsdom, `window` is available at the moment the constructor is called.
  *   For this reason, the called is placed within the constructor.
  * * Even then, `window.requestAnimationFrame()` is not defined, so it still needs to be added.
  * * During unit testing, it happens that the window object is reset during execution, causing

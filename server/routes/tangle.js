@@ -2,8 +2,8 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const IOTAes = require('../models/iotaes');
 const cors = require('./cors');
-const Track_tree = require('../models/track');
-const Track_sphere = require('../models/track1');
+const Track_tree = require('../models/track_tree');
+const Track_sphere = require('../models/track_sphere');
 
 const tangleRouter = express.Router();
 
