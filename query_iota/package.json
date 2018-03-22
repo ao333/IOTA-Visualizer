@@ -1,0 +1,17 @@
+{
+  "name": "query_iota",
+  "version": "1.0.0",
+  "description": "query data from iota api and store them in neo4j database",
+  "main": "main.js",
+  "scripts": {
+    "start": "node main.js"
+  },
+  "author": "Imperial IOTA group",
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^3.5.1",
+    "iota.lib.js": "^0.4.7",
+    "mongoose": "^5.0.11",
+    "neo4j-driver": "^1.5.3"
+  }
+}
