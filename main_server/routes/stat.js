@@ -16,7 +16,6 @@ statRouter.route('/:id')
 
   .get(cors.corsWithOptions, (req, res, next) => {
     Statistics.findOne({},function (error, doc) {
-      console.log(req.params.id);
       if(error){
         next(error);
         return;

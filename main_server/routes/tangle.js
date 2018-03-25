@@ -78,7 +78,6 @@ tangleRouter.route('/sphere_update')
         res.statusCode = 200;
         res.setHeader("Content-Type", "application/json");
         res.cookie('time', time_now);
-        console.log('transaction: ' + transactions.length);
         res.json(transactions);
         session.close();
       })

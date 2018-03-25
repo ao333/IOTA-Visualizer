@@ -11,6 +11,7 @@ const index = require('./routes/index');
 const users = require('./routes/users');
 const tanglerouter = require('./routes/tangle');
 const statRouter = require('./routes/stat');
+const infoRouter = require('./routes/info');
 
 const mongo_db = require('./config_mongo');
 
@@ -37,6 +38,8 @@ app.use('/', index);
 app.use('/users', users);
 app.use('/tangle', tanglerouter);
 app.use('/stat', statRouter);
+app.use('/info',infoRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
