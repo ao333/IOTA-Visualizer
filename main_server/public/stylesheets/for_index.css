@@ -129,7 +129,7 @@ body{
 /*---------------------------------------------------------------------------*/
 /*for information*/
 #information{
-  padding-bottom: 25px;
+  padding-bottom: 115px;
   border-bottom: 1px solid #404040;
   height: 100px;
 /*  background-color: white;*/
@@ -184,6 +184,8 @@ body{
 #table table{
   width: 100%;
   border-collapse: collapse;
+  table-layout:fixed;
+  word-break: break-all;
 }
 
 tr{

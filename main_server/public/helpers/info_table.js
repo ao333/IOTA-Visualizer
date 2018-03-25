@@ -11,14 +11,11 @@ $(function () {
                            'value':data[index]['value'],
                            'confirmation_time':data[index]['time']})
         }
-        console.log(dataList);
         updateTable(dataList)
     })
     var timer = setInterval(function () {
         resetColor(0);
-        changeColor(8);
         setTimeout(myFunction = function () {
-            resetColor(8);
             $.getJSON("/info/infor_table_update", function (data) {
                 dataList.pop();
                 dataList.unshift({'hash':data[0]['hash'],
@@ -26,7 +23,7 @@ $(function () {
                     'value':data[0]['value'],
                     'confirmation_time':data[0]['time']});
                 updateTable(dataList);
-            })
+            });
             changeColor(0);
 
         }, 500)
@@ -37,18 +34,11 @@ $(function () {
 });
 
 var changeColor = function (index) {
-    if (index===0)
-    {
-        items[index].style.color = '#66ff66';
-    }
-    else{
-        items[index].style.color = '#ff471a';
-    }
-
+    items[index].style.backgroundColor =  '#44556655';
 }
 
 var resetColor = function (index) {
-    items[index].style.color = '#c0c0c0';
+    items[index].style.backgroundColor = '#000000';
 }
 
 var updateTable = function(lst){

@@ -20,15 +20,21 @@ statRouter.route('/:id')
         next(error);
         return;
       }
-      if(req.params.id === "0"){
+      if(req.params.id === "3"){
         res.json(doc["TotalTips"]);
       }
 
-      else if(req.params.id === "1"){
+      else if(req.params.id === "2"){
         res.json(doc["MeanConTime"].toFixed(2));
       }
-      else if(req.params.id === "2"){
+      else if(req.params.id === "1"){
         res.json(doc["ValuePerSec"].toExponential(3));
+      }
+      else if(req.params.id === '0'){
+        res.json(doc["Price"]);
+      }
+      else if(req.params.id === '7'){
+        res.json(doc["Non_value_Percent"]);
       }
       else{
           next();

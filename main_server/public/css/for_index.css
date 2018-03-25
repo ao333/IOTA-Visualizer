@@ -125,7 +125,7 @@ body{
 /*for information*/
 #information{
   padding-bottom: 25px;
-  border-bottom: 1px solid #404040;
+  /*border-bottom: 1px solid #404040;*/
   height: 100px;
 /*  background-color: white;*/
 }

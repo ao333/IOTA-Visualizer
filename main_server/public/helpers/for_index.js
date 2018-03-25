@@ -3,11 +3,11 @@ $(function () {
   // We will delete this later
   var nums = $("#information .num");
   setInterval(function () {
-      for (var index = 0; index < 4; index++) {
+      for (var index = 0; index < 8; index++) {
       	(function(index){
 			$.getJSON("/stat/" + index, function (data) {
 			        //console.log("data: " + data);
-              nums[3 - index].innerHTML = data + "";
+              nums[index].innerHTML = data + "";
             })
       	})(index);
       }

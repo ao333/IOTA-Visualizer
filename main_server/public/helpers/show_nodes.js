@@ -64,9 +64,9 @@ var tree_options = {
 
     },
     groups:{
-        0:{color:'#888888bb'},//tips
-        1:{color:'#aa0000bb'},//unconfirmed
-        2:{color:'#00aa00bb'},//confirmed
+        0:{color:'#ffff99'},
+        1:{color:'#33ccff'},
+        2:{color:'#e00b20'},
         4: {hidden: false, color:'#0000ff00'}
     }
 };
@@ -91,7 +91,7 @@ var sphere_options = {
         chosen: {
             node: function(opt)
             {
-                opt['color'] = '#db2b3d';
+                opt['color'] = '#5d4585';
             }
         }
     },
@@ -112,9 +112,9 @@ var sphere_options = {
     physics: {
         stabilization: false,
         barnesHut: {
-            gravitationalConstant: -8000,
+            gravitationalConstant: -3000,
             springConstant: 0.001,
-            springLength: 200
+            springLength: 100
         }
     },
     layout: {
@@ -129,9 +129,10 @@ var sphere_options = {
 
     },
     groups:{
-        0:{color:'#ffff99'},
-        1:{color:'#33ccff'},
-        3:{color:'#996633'}
+        0:{color:'#ffff99'},//tips
+        1:{color:'#33ccff'},//unconfirmed
+        2:{color:'#e00b20'},//confirmed
+        4: {hidden: false, color:'#0000ff00'}
         //3:{hidden: true}
         // ,2:{color:'ff6666'}
     }
@@ -158,6 +159,27 @@ function redrawAll(mode) {
     network = new vis.Network(container, data, options);
 }
 
+var init_title = function (lst)
+{
+    var para = document.createElement("p");
+    var node = document.createTextNode("Hash: "+lst["hash"]);
+    var br = document.createElement('br');
+    para.appendChild(node);
+    para.appendChild(br);
+    node = document.createTextNode("Value: "+lst["value"])
+    var br = document.createElement('br');
+    para.appendChild(node);
+    para.appendChild(br);
+    node = document.createTextNode("Address: "+lst["address"])
+    para.appendChild(node);
+    var br = document.createElement('br');
+    para.appendChild(node);
+    para.appendChild(br);
+    node = document.createTextNode("Node Type: "+lst["type"])
+    para.appendChild(node);
+    return para
+}
+
 //mode 0 = tree  mode 1 = sphere
 var init_graph = function (data, nodeList, edgeList, mode) {
     for (var i = 0; i < data.length; i++) {
@@ -165,46 +187,43 @@ var init_graph = function (data, nodeList, edgeList, mode) {
         if (data[i]["type"] === "tip") gro = 0;
         else if (data[i]["type"] === "unconfirmed") gro = 1;
         else gro = 2;
+        var para = init_title(data[i])
         var obj = {
             "id": data[i]["hash"],
-            "title": data[i]["value"],
+            "title": para,
             "group": gro,
             "trunkTransaction": data[i]["trunkTransaction"],
             "branchTransaction": data[i]["branchTransaction"]
         };
         nodeList.add(obj);
     }
-    if(mode==0) {
-        nodeList.add({
-            "id": "invisible_root",
-            "title": "root",
-            "group": 4,
-        })
-    }
+    nodeList.add({
+        "id": "invisible_root",
+        "title": "root",
+        "group": 4
+    })
 
     for (var i = 0; i < data.length; i++) {
-        if (mode==0 && (data[i]["type"] === "unconfirmed" || data[i]["type"] ==='tip'))
-        {
-            if (nodeList.get(data[i]["trunkTransaction"]) == null && nodeList.get(data[i]["branchTransaction"])==null){
-                var from = "invisible_root"
-                var to = data[i]["hash"];
 
-                var obj = {
-                    "id": from+"-"+to,
-                    "from": from,
-                    "to": to,
-                    "color": {color:'#0000ff00'},
-                    chosen: {
-                        "edge": function(opt)
-                        {
-                        }
-                    }};
+        if (nodeList.get(data[i]["trunkTransaction"]) == null && nodeList.get(data[i]["branchTransaction"])==null){
+            var from = "invisible_root"
+            var to = data[i]["hash"];
 
-                try{
-                    edgeList.add(obj);
-                }
-                catch(err){}
+            var obj = {
+                "id": from+"-"+to,
+                "from": from,
+                "to": to,
+                "color": {color:'#0000ff00'},
+                chosen: {
+                    "edge": function(opt)
+                    {
+                    }
+                }};
+
+            try{
+                edgeList.add(obj);
             }
+            catch(err){}
         }
         var to = data[i]["hash"];
         var from1 = data[i]["trunkTransaction"];
@@ -265,16 +284,25 @@ $('#graphmode').change(function() {
 var sphere_graph_timer = setInterval(function () {
     if (!treeMode)
         $.getJSON("/tangle/sphere_update", function(data){
-            console.log(1);
             update_data(data, sphere_nodes, sphere_edges);
         }, "json")
 },10000);
-
+var updata_hash = [];
 var tree_graph_timer = setInterval(function () {
-    if (treeMode)
-        $.getJSON("/tangle/tree_update", function(data){
+    if (treeMode) {
+        updata_hash = [];
+        tree_nodes.forEach(function (entry) {
+            if (entry["group"] < 2)
+                updata_hash.push(entry['id']);
+            
+        })
+
+
+        $.post("/tangle/tree_update", updata_hash, function (data) {
             update_data(data, tree_nodes, tree_edges);
-        }, "json")
+        })
+    }
+
 },10000);
 
 var update_data = function (data, nodeList, edgeList)
@@ -284,10 +312,11 @@ var update_data = function (data, nodeList, edgeList)
                 if (data[i]["type"] === "tip") gro = 0;
                 else if (data[i]["type"] === "unconfirmed") gro = 1;
                 else gro = 2;
+                var para = init_title(data[i])
                 if(nodeList.get(data[i]["hash"]) != null)
                     nodeList.update({
                     id:data[i]["hash"],
-                    "title": data[i]["value"],
+                    "title": para,
                     "group": gro,
                 })
                 else
@@ -295,7 +324,7 @@ var update_data = function (data, nodeList, edgeList)
                     nodeList.add(
                         {
                             "id": data[i]["hash"],
-                            "title": data[i]["value"],
+                            "title": para,
                             "group": gro,
                             "trunkTransaction": data[i]["trunkTransaction"],
                             "branchTransaction": data[i]["branchTransaction"]
