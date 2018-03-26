@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require('./cors');
 const driver = require('../config_neo4j');
+const queryStatement = require('../helpers/QueryStatement');
 
 const tangleRouter = express.Router();
 tangleRouter.use(bodyParser.json());
@@ -86,6 +87,35 @@ tangleRouter.route('/sphere_update')
         next(error);
       });
   });
+
+tangleRouter.route('/tree_update')
+  .post(cors.corsWithOptions, (req, res, next) => {
+    let old_data = JSON.parse('[' + Object.keys(req.body)[0] + ']');
+
+    let query_string = queryStatement.updateTreeHashString(old_data);
+    let session = driver.session();
+    session
+      .run(query_string)
+      .then(function (result) {
+        let transactions = [];
+        result.records.forEach(function (record) {
+          let obj = Object.assign({}, record.toObject().item.properties);
+          obj.value = obj.value.toInt();
+          obj.type = record.toObject().item.labels[0];
+          transactions.push(obj);
+        });
+        res.statusCode = 200;
+        res.setHeader("Content-Type", "application/json");
+        res.end();
+        session.close();
+      })
+      .catch(function (error) {
+        session.close();
+        next(error);
+      });
+  });
+
+
 module.exports = tangleRouter;
 
 function initialTreeString(){

@@ -14,9 +14,14 @@ infoRouter.route('/:query')
       limit = '10';
     else if(req.params.query === 'infor_table_update')
       limit = '1';
+    let random = parseInt(Math.random() * 3);
+    let type;
+    if(random === 0) type = 'tip';
+    else if(random === 1) type = 'unconfirmed';
+    else if(random === 2) type = 'confirmed';
     let session = driver.session();
     session
-      .run('MATCH (tran:confirmed) WITH tran, rand() AS number ' +
+      .run('MATCH (tran:' + type + ') WITH tran, rand() AS number ' +
         'RETURN tran ORDER BY number LIMIT ' + limit)
       .then(function (result) {
         let transactions = [];
@@ -24,7 +29,7 @@ infoRouter.route('/:query')
           let obj = Object.assign({}, record.toObject().tran.properties);
           obj.value = obj.value.toInt();
           obj.type = record.toObject().tran.labels[0];
-          obj.time = new Date(Number(obj.time));
+          obj.time = new Date(Number(obj.time)).toLocaleString();
           transactions.push(obj);
         });
         res.statusCode = 200;

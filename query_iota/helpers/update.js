@@ -215,6 +215,8 @@ function addMoreTransactionsIntodb(type, callback){
             hashes.push(record.get('tran').properties.hash);
           });
           // get approvees of transactions specified by hashes
+          let index = hashes.indexOf("999999999999999999999999999999999999999999999999999999999999999999999999999999999");
+          hashes.splice(index,1);
           iota.api.findTransactionObjects({'approvees': hashes},function (error, results) {
             if(error){
               session.close();
@@ -230,7 +232,6 @@ function addMoreTransactionsIntodb(type, callback){
               }
             }
             if(transactions.length > 0){
-              console.log('add' + transactions.length + 'more');
               session
               // first get all transactions that are likely to be updated
                 .run(addTransactionsIntoDbString(transactions))

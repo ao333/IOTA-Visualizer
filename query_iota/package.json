@@ -12,6 +12,7 @@
     "bluebird": "^3.5.1",
     "iota.lib.js": "^0.4.7",
     "mongoose": "^5.0.11",
-    "neo4j-driver": "^1.5.3"
+    "neo4j-driver": "^1.5.3",
+    "xmlhttprequest": "^1.8.0"
   }
 }

@@ -7,6 +7,7 @@ const Statistics = require('../models/Statistics');
 const ConfirmTime = require('../models/ConfirmTime');
 const iota = require('../config/config_iota');
 const update = require('./update');
+const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 /**
  * update mean confirmation time
@@ -51,7 +52,7 @@ function updateTips(callback){
   iota.api.getTips(function(error, alltips){
     Statistics.findOne({}, function (error, doc) {
       if(error) console.log(error);
-      if(alltips){
+      if(alltips && doc){
         doc["TotalTips"] = alltips.length;
         doc.save(function (error, aa) {
           if(error) console.log(error);
@@ -74,23 +75,46 @@ function updateValuePerSecond(callback){
       let latest_time = Number.MAX_SAFE_INTEGER;
       let earliest_time = -1;
       let sum = 0;
+      let total_amount = 0;
+      let non_zero_amount = 0;
       result.records.forEach(function (record) {
+        total_amount++;
         if(record.toObject().tran.properties.value > 0){
-            sum += record.toObject().tran.properties.value.toInt();
-            if(record.toObject().tran.properties.create_time > latest_time)
-              latest_time = record.toObject().tran.properties.create_time;
-            else if(record.toObject().tran.properties.create_time < earliest_time)
-              earliest_time = record.toObject().tran.properties.create_time;
+          non_zero_amount++;
+          sum += record.toObject().tran.properties.value.toInt();
+          if(record.toObject().tran.properties.create_time > latest_time)
+            latest_time = record.toObject().tran.properties.create_time;
+          else if(record.toObject().tran.properties.create_time < earliest_time)
+            earliest_time = record.toObject().tran.properties.create_time;
         }
       });
-      let meanPerSecond = sum / ((latest_time - earliest_time)/1000);
+      let meanPerSecond;
+      let non_zero_percent;
+      let valuePerTran;
+      if(latest_time - earliest_time !== 0)
+        meanPerSecond = sum / ((latest_time - earliest_time)/1000);
+      else
+        meanPerSecond = 0;
+      if(total_amount !== 0)
+        non_zero_percent = non_zero_amount / total_amount;
+      else
+        non_zero_percent = 0;
+      if(non_zero_amount !== 0)
+        valuePerTran = sum / non_zero_amount;
+      else
+        valuePerTran = 0;
       Statistics.findOne({}, function (error, doc) {
         if(error) {
           callback(error, null);
           session.close();
         }
         if(doc){
-          doc["ValuePerSec"] = meanPerSecond;
+          if(meanPerSecond !== 0)
+            doc["ValuePerSec"] = meanPerSecond;
+          if(non_zero_percent !== 0)
+            doc["Non_value_Percent"] = non_zero_percent;
+          if(valuePerTran !== 0)
+            doc["ValuePerTran"] = valuePerTran;
           doc.save(function (error, aa) {
             if(error) {
               callback(error, null);
@@ -145,9 +169,31 @@ function extractConfirmed(update_transactions) {
     });
 }
 
+function updatePrice(callback){
+  let xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      let price = JSON.parse(xhttp.responseText).GBP;
+      Statistics.findOne({}, function (error, doc) {
+        if(error) console.log(error);
+        if(doc){
+          doc["Price"] = price;
+          doc.save(function (error, aa) {
+            if(error) console.log(error);
+            callback();
+          })
+        }
+      })
+    }
+  };
+  xhttp.open("GET", "https://min-api.cryptocompare.com/data/price?fsym=IOTA&tsyms=GBP", true);
+  xhttp.send();
+}
+
 module.exports = {
   extractConfirmed,
   updateMeanCon,
   updateTips,
-  updateValuePerSecond
+  updateValuePerSecond,
+  updatePrice
 };

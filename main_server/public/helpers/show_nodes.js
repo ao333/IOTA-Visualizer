@@ -295,12 +295,11 @@ var tree_graph_timer = setInterval(function () {
             if (entry["group"] < 2)
                 updata_hash.push(entry['id']);
             
-        })
+        });
 
-
-        $.post("/tangle/tree_update", updata_hash, function (data) {
+        $.post("/tangle/tree_update", JSON.stringify(updata_hash), function (data) {
             update_data(data, tree_nodes, tree_edges);
-        })
+        },'text')
     }
 
 },10000);

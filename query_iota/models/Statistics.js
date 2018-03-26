@@ -13,6 +13,18 @@ const statistics = new Schema({
   ValuePerSec:{
     type:Number,
     default:0
+  },
+  Non_value_Percent:{
+    type:Number,
+    default:0
+  },
+  Price:{
+    type:Number,
+    default:0
+  },
+  ValuePerTran:{
+    type:Number,
+    default:0
   }
 },{
   timestamps:true

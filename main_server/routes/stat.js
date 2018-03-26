@@ -34,7 +34,10 @@ statRouter.route('/:id')
         res.json(doc["Price"]);
       }
       else if(req.params.id === '7'){
-        res.json(doc["Non_value_Percent"]);
+        res.json((doc["Non_value_Percent"] * 100).toFixed(2) + '%');
+      }
+      else if(req.params.id === '6'){
+        res.json(doc["ValuePerTran"].toExponential(3));
       }
       else{
           next();

@@ -92,6 +92,11 @@ function determineState(hashes, callback){
       if(results[i])
         states[i] = 'confirmed';
     }
+    let index = hashes.indexOf("999999999999999999999999999999999999999999999999999999999999999999999999999999999");
+    if(index >= 0){
+      hashes.splice(index, 1);
+      states.splice(index, 1);
+    }
     iota.api.findTransactionObjects({'approvees': hashes},function (error, results) {
       if(error){
         callback(error, null);
@@ -106,6 +111,9 @@ function determineState(hashes, callback){
         if(potential_unconfirms.indexOf(hashes[i]) >= 0 && states[i] !== 'confirmed'){
           states[i] = "unconfirmed";
         }
+      }
+      if(index >= 0){
+        states.splice(index, 0, 'unconfirmed');
       }
       callback(null, states);
     })
