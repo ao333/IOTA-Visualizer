@@ -51,6 +51,7 @@ $(function () {
 
 var update_data = function (data) {
 
+    console.log(data)
     hash = $("#hash")
     address = $("#address")
     amount = $("#amount")
@@ -83,7 +84,7 @@ var update_data = function (data) {
         branch.html(data["branchTransaction"]);
         trunk.html(data["trunkTransaction"]);
         bundle.html(data["bundle"]);
-        signiture.html(data["signiture"]);
+        signiture.html(data["signature"]);
     }
     else
     {
