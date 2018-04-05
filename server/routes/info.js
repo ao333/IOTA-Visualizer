@@ -1,7 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require('./cors');
-const driver = require('../config_neo4j');
+const driver = require('../config/config_neo4j');
 
 const infoRouter = express.Router();
 infoRouter.use(bodyParser.json());

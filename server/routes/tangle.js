@@ -1,7 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require('./cors');
-const driver = require('../config_neo4j');
+const driver = require('../config/config_neo4j');
 const queryStatement = require('../helpers/QueryStatement');
 
 const tangleRouter = express.Router();
@@ -106,7 +106,8 @@ tangleRouter.route('/tree_update')
         });
         res.statusCode = 200;
         res.setHeader("Content-Type", "application/json");
-        res.end();
+        console.log(transactions.length);
+        res.json(transactions);
         session.close();
       })
       .catch(function (error) {

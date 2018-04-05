@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<head>
+    <meta content="text/html;charset=UTF-8" http-equiv="content-type" />
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+          name="viewport" />
+    <meta content="IOTA Transaction Searcher"
+          name="description" />
+    <script type="text/javascript" src="jquery-3.2.1.js"></script>
+    <script type="text/javascript" src="jquery.simpleswitch.min.js"></script>
+    <link rel="stylesheet" href="./stylesheets/search.css">
+    <style type="text/css">
+        .turbolinks-progress-bar {
+            position: fixed;
+            display: block;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: #0076ff;
+            z-index: 9999;
+            transition: width 300ms ease-out, opacity 150ms 150ms ease-in;
+            transform: translate3d(0, 0, 0);
+        }
+    </style>
+    <link rel="stylesheet" media="all" href="stylesheets/search_page.css" data-turbolinks-track="reload">
+    <title>
+        IOTA Search - Transaction
+    </title>
+
+
+</head>
+<body>
+<section id="search_header">
+    <div id = 'main_div'>
+        <header id = 'header'>
+            <div class = 'header_container'>
+                <h1 id = 'h1'>IOTA Search</h1>
+            </div>
+        </header>
+        <div class = header_container>
+            <h2 id = 'h2'>IOTA Tango Explorer</h2>
+            <p id = 'h2_desc'>
+                Search the Iota Tangle for a transaction hash, address, or bundle hash using the search box above
+            </p>
+            <form id = 'main-search' onsubmit="return false;" style = 'margin-bottom: 0' >
+                <button id = 'search_button' type="submit"></button>
+                <input id = 'search_input' placeholder="Search for hash and address" type="text">
+            </form>
+            <p id = 'search_desc'>
+                Enter an <b>address </b>or<b> transaction hash</b>
+            </p>
+
+        </div>
+    </div>
+</section>
+
+
+
+<section id="search_detail" hidden> 
+    <div class="container bundle" display="none">
+        <div class="row">
+            <div class="col-xs-12">
+                <h3 class="section-title">
+                    Transaction details
+                </h3>
+                <div class="section-white big-padding" id="information_list">
+                    <div class="info-row bb">
+                        <label class="info-row__label">
+                            Transaction hash
+                        </label>
+                        <a class="info-row__value" id="hash">
+                            -
+                        </a>
+                    </div>
+                    <div class="info-row">
+                        <label class="info-row__label">
+                            Iota address
+                        </label>
+                        <a class="info-row__value linkable" id="address">
+                            -
+                        </a>
+                    </div>
+                    <div class="summary-info mb30">
+                        <div class="summary-info__col">
+    								<span class="summary-info__col-title">
+    									Amount
+    								</span>
+                            <span class="summary-info__col-value" id="amount">
+    									-
+    								</span>
+                        </div>
+                        <div class="summary-info__col">
+    								<span class="summary-info__col-title">
+    									Time
+    								</span>
+                            <span class="summary-info__col-value" id="time">
+    									- days ago
+    								</span>
+                        </div>
+                        <div class="summary-info__col">
+    								<span class="summary-info__col-title">
+    									Status
+    								</span>
+                            <span class="summary-info__col-value unconfirmed" id="status">
+    									-
+    								</span>
+                        </div>
+                    </div>
+
+                    <div class="info-row bb">
+                        <label class="info-row__label">
+                            Branch
+                        </label>
+                        <a class="info-row__value linkable" id="branch">
+                            -
+                        </a>
+                    </div>
+                    <div class="info-row bb">
+                        <label class="info-row__label">
+                            Trunk
+                        </label>
+                        <a class="info-row__value linkable" id="trunk">
+                            -
+                        </a>
+                    </div>
+                    <div class="info-row bb">
+                        <label class="info-row__label">
+                            Bundle
+                            <div class="read-more">
+    									<span>
+    										Transactions which are grouped together during the creation of a transfer.
+    									</span>
+                            </div>
+                        </label>
+                        <a class="info-row__value linkable" id="bundle">
+                            -
+                        </a>
+                    </div>
+                    <div class="info-row">
+                        <label class="info-row__label">
+                            Signature
+                        </label>
+                        <p class="info-row__value short" id="signature">
+                            -
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="info_search.js"></script>
+</section>
+</body>
+
+</html>

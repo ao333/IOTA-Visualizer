@@ -298,7 +298,7 @@ var tree_graph_timer = setInterval(function () {
         });
 
         $.post("/tangle/tree_update", JSON.stringify(updata_hash), function (data) {
-            update_data(data, tree_nodes, tree_edges);
+            update_data(JSON.parse(data), tree_nodes, tree_edges);
         },'text')
     }
 
