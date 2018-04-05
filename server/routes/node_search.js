@@ -36,7 +36,7 @@ function extractInfo(data, callback){
   result.hash = data.hash;
   result.address = data.address;
   result.amount = data.value;
-  result.time = new Date(data.timestamp).toLocaleString();
+  result.time = new Date(data.timestamp*1000).toLocaleString();
   result.branchTransaction = data.branchTransaction;
   result.trunkTransaction = data.trunkTransaction;
   result.bundle = data.bundle;

@@ -13,7 +13,6 @@ $(function () {
         times++;
         style_change(times);
         $.post("/node_search", {value:value}, function (data) {
-            console.log(data);
             update_data(data);
         },"json")
 
@@ -55,7 +54,7 @@ var update_data = function (data) {
     hash = $("#hash")
     address = $("#address")
     amount = $("#amount")
-    status = $("#status")
+    stat = $("#status")
     time = $("#time")
     branch = $("#branch")
     trunk = $("#trunk")
@@ -63,10 +62,23 @@ var update_data = function (data) {
     signiture = $("#signature")
     if (data['valid'] == true)
     {
+        status_text = data['status']
+        if (status_text == "confirmed") {
+            stat.css('color', "#00ff00aa");
+            status_text = '✔ ' + status_text;
+        }
+        else if (status_text == "unconfirmed"){
+            stat.css('color', "#ff0000aa");
+            status_text = '✖ ' + status_text
+        }
+        else {
+            status_text = status_text;
+            stat.css('color', "#000000ff");
+        }
         hash.html(data["hash"]);
         address.html(data["address"]);
         amount.html(data["amount"]);
-        status.html(data["status"]);
+        stat.html(status_text);
         time.html(data["time"]);
         branch.html(data["branchTransaction"]);
         trunk.html(data["trunkTransaction"]);
@@ -78,7 +90,7 @@ var update_data = function (data) {
         hash.html('-');
         address.html('-');
         amount.html('-');
-        status.html('-');
+        stat.html('-');
         time.html('-');
         branch.html('-');
         trunk.html('-');
@@ -94,7 +106,7 @@ function style_change(times) {
     if (times == 1){
         var search_header = document.getElementById('search_header');
 
-        search_header.style.paddingBottom = '270px';
+        search_header.style.paddingBottom = '240px';
 
         var search_detail = document.getElementById('search_detail');
 
