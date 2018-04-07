@@ -1,0 +1,15 @@
+{
+  "name": "testfiles",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --timeout 10000 && mocha test --reporter markdown > coverage.md",
+    "coverage": "istanbul cover _mocha -- -R spec"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "mocha": "^5.0.5"
+  }
+}
