@@ -4,3 +4,4 @@ config_mongo.js
 */node_modules/
 
 *.DS_Store
+testfiles
