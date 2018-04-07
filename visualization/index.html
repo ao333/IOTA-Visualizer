@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>IOTA price</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="day_chart.js"></script>
+    <script type="text/javascript" src="min_chart.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+  </head>
+  <body>
+    <div class="wrapper">
+      <h1>IOTA price over the every three days</h1>
+      <h2>show in GBP</h2>
+      <canvas id="priceChart" width="1600" height="900"></canvas>
+    </div>
+    <script>
+      dayChart();
+    </script>
+    <button id = "btn_min">min</button>
+    <button id = "btn_day">day</button>
+    <script>
+      $("#btn_min").click(function(){
+          minChart();
+      });
+    </script>
+    <script>
+      $("#btn_day").click(function(){
+          dayChart();
+      });
+    </script>
+    <!-- <script src="cc.js"></script> -->
+  </body>
+</html>
