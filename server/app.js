@@ -13,6 +13,7 @@ const tanglerouter = require('./routes/tangle');
 const statRouter = require('./routes/stat');
 const infoRouter = require('./routes/info');
 const searchRouter = require('./routes/node_search');
+const chartRouter = require('./routes/chart');
 
 const mongo_db = require('./config/config_mongo');
 
@@ -41,6 +42,7 @@ app.use('/tangle', tanglerouter);
 app.use('/stat', statRouter);
 app.use('/info',infoRouter);
 app.use('/node_search', searchRouter);
+app.use('/chart', chartRouter);
 
 
 // catch 404 and forward to error handler

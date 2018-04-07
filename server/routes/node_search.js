@@ -17,6 +17,7 @@ searchRouter.route('/')
         res.statusCode = 200;
         res.setHeader("Content-Type", "application/json");
         res.json({'valid': false});
+        return;
       }
       let tran = trans[0];
       extractInfo(tran, function (error, result) {
@@ -36,7 +37,7 @@ function extractInfo(data, callback){
   result.hash = data.hash;
   result.address = data.address;
   result.amount = data.value;
-  result.time = new Date(data.timestamp).toLocaleString();
+  result.time = new Date(data.timestamp*1000).toLocaleString();
   result.branchTransaction = data.branchTransaction;
   result.trunkTransaction = data.trunkTransaction;
   result.bundle = data.bundle;

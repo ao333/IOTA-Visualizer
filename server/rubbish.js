@@ -6,4 +6,6 @@ iota.api.getTips(function (error, tips) {
     console.log(obj[0]);
   } );
 });
+//
+// console.log(new Date(1522944066000));
 
