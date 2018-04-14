@@ -109,14 +109,17 @@ b{
     margin-right: 15px;
     line-height: 32px;
     color: #fafafa;
+    font-size:20px;
 }
 
 #select_mode{
-    margin-left: 650px;
+    margin-left: 70px;
     margin-top: 20px;
+    margin-bottom: 0px;
     border-radius: 8px;
     height:100px;
     background-color: transparent;
     margin-right: 50px;
+    padding-top: 100px;
 
 }

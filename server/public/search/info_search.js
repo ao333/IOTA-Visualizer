@@ -25,9 +25,20 @@ $(function () {
             var value = this.innerHTML;
             if (value.replace(/\s/g, "") != '-')
                 {
-                    $.post("/node_search?search=hash",  {value:value}, function (data) {
-                        update_data_by_id(data);
-                    },"json")
+                    if (this.id != 'address')
+                    {
+                        style_change(1);
+                        $.post("/node_search?search=hash", {value: value}, function (data) {
+                            update_data_by_id(data);
+                        }, "json");
+                    }
+                    else
+                    {
+                        style_change(2);
+                        $.post("/node_search?search=address", {value: value}, function (data) {
+                            update_data_by_address(data);
+                        }, "json")
+                    }
                 }
 
 
@@ -86,7 +97,6 @@ var update_data_by_address = function(data){
 //Function to update the 'search by hash information'
 // once receive requested info from server
 var update_data_by_id = function (data) {
-
     hash = $("#hash")
     address = $("#address")
     amount = $("#amount")
@@ -141,7 +151,7 @@ var update_data_by_id = function (data) {
 function style_change(mode) {//1 for hash 2 for address
     if (mode == 1){
         var search_header = document.getElementById('search_header');
-        search_header.style.paddingBottom = '240px';
+        search_header.style.paddingBottom = '5%';
 
         var search_detail = document.getElementById('search_detail');
         var search_by_add = document.getElementById('search_by_address');
@@ -152,7 +162,7 @@ function style_change(mode) {//1 for hash 2 for address
     {
         var search_header = document.getElementById('search_header');
 
-        search_header.style.paddingBottom = '240px';
+        search_header.style.paddingBottom = '5%';
 
         var search_detail = document.getElementById('search_detail');
         var search_by_add = document.getElementById('search_by_address');

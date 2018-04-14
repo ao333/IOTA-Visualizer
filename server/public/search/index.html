@@ -38,28 +38,30 @@
             </div>
         </header>
         <div class = header_container>
-            <h2 id = 'h2'>IOTA Tango Explorer</h2>
+            <h2 id = 'h2'>IOTA Tangle Explorer</h2>
             <p id = 'h2_desc'>
                 Search the Iota Tangle for a transaction hash, address, or bundle hash using the search box above
             </p>
+            <form id="select_mode">
+                <div>
+
+                    <input type="radio" class="radio" id="by_hash"
+                           name="search" value="hash" checked >
+                    <label class="radio_label" for="by_hash">By Hash</label>
+
+                    <input type="radio" class="radio" id="by_address"
+                           name="search" value="address" unchecked>
+                    <label class="radio_label" for="by_address">By Address</label>
+
+                </div>
+            </form>
+
             <form id = 'main-search' onsubmit="return false;" style = 'margin-bottom: 0' >
                 <button id = 'search_button' type="submit"></button>
                 <input id = 'search_input' placeholder="Search for hash and address" type="text">
             </form>
 
-            <form id="select_mode">
-                    <div>
 
-                        <input type="radio" class="radio" id="by_hash"
-                               name="search" value="hash" checked >
-                        <label class="radio_label" for="by_hash">By Hash</label>
-
-                        <input type="radio" class="radio" id="by_address"
-                               name="search" value="address" unchecked>
-                        <label class="radio_label" for="by_address">By Address</label>
-
-                    </div>
-            </form>
 
 
             <p id = 'search_desc'>
