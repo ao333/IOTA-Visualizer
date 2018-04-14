@@ -10,7 +10,7 @@ body{
 div {
     display: block;
 }
-#search_detail {
+#search_detail, #search_by_address{
 	display: none;
     background: #f4f7f8;
     height: auto;
@@ -23,6 +23,7 @@ div {
     line-height: 1.42857143;
     box-sizing: border-box;
 }
+
 h1, h2, h3, h4, h5, h6 {
     margin: 0;
     font-weight: 400;
@@ -158,3 +159,4 @@ label {
     letter-spacing: -0.3px;
     color: #101010;
 }
+

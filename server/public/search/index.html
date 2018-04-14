@@ -46,6 +46,22 @@
                 <button id = 'search_button' type="submit"></button>
                 <input id = 'search_input' placeholder="Search for hash and address" type="text">
             </form>
+
+            <form id="select_mode">
+                    <div>
+
+                        <input type="radio" class="radio" id="by_hash"
+                               name="search" value="hash" checked >
+                        <label class="radio_label" for="by_hash">By Hash</label>
+
+                        <input type="radio" class="radio" id="by_address"
+                               name="search" value="address" unchecked>
+                        <label class="radio_label" for="by_address">By Address</label>
+
+                    </div>
+            </form>
+
+
             <p id = 'search_desc'>
                 Enter an <b>address </b>or<b> transaction hash</b>
             </p>
@@ -56,14 +72,14 @@
 
 
 
-<section id="search_detail" hidden> 
-    <div class="container bundle" display="none">
+<section id="search_detail">
+    <div class="container bundle">
         <div class="row">
             <div class="col-xs-12">
                 <h3 class="section-title">
-                    Transaction details
+                    Transaction details by HASH
                 </h3>
-                <div class="section-white big-padding" id="information_list">
+                <div class="section-white big-padding">
                     <div class="info-row bb">
                         <label class="info-row__label">
                             Transaction hash
@@ -73,7 +89,7 @@
                         </a>
                     </div>
                     <div class="info-row">
-                        <label class="info-row__label">
+                        <label class="info-row__label" >
                             Iota address
                         </label>
                         <a class="info-row__value linkable" id="address">
@@ -94,7 +110,7 @@
     									Time
     								</span>
                             <span class="summary-info__col-value" id="time">
-    									- days ago
+    									-
     								</span>
                         </div>
                         <div class="summary-info__col">
@@ -150,6 +166,92 @@
     </div>
     <script type="text/javascript" src="info_search.js"></script>
 </section>
+
+
+
+
+
+
+
+
+
+
+<section id="search_by_address">
+    <div class="container bundle">
+        <div class="row">
+            <div class="col-xs-12">
+                <h3 class="section-title">
+                    Transaction details by ADDRESS
+                </h3>
+                <div class="section-white big-padding">
+                    <div class="info-row" >
+                        <label class="info-row__label">
+                            Iota address
+                        </label>
+                        <a class="info-row__value" id="address_by_address">
+                            -
+                        </a>
+                    </div>
+                    <div class="summary-info mb30">
+                        <div class="summary-info__col">
+    								<span class="summary-info__col-title">
+    									Number of transaction
+    								</span>
+                            <span class="summary-info__col-value" id="num_trans">
+    									-
+                            </span>
+                        </div>
+                        <div class="summary-info__col">
+    								<span class="summary-info__col-title">
+                                            Received transaction value
+    								</span>
+                            <span class="summary-info__col-value" id="rece_tran_v">
+    									-
+    								</span>
+                        </div>
+                        <div class="summary-info__col">
+    								<span class="summary-info__col-title">
+    									Sent transaction value
+    								</span>
+                            <span class="summary-info__col-value" id="snt_tran_v">
+    									-
+    								</span>
+                        </div>
+                    </div>
+                    <div class="summary-info mb30">
+                        <div class="summary-info__col">
+    								<span class="summary-info__col-title">
+    									Confirmed/unconfirmed Ratio
+    								</span>
+                            <span class="summary-info__col-value" id="con_uncon_ratio">
+    									-
+    								</span>
+                        </div>
+                        <div class="summary-info__col">
+    								<span class="summary-info__col-title">
+    									Latest transaction date
+    								</span>
+                            <span class="summary-info__col-value" id="latest_date">
+    									-
+    								</span>
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="info_search.js"></script>
+</section>
+
+
+
+
+
+
 </body>
 
 </html>
