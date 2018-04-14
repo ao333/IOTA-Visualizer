@@ -78,3 +78,45 @@ input::-webkit-input-placeholder  {
 b{
     color: #ffff1a;
 }
+
+
+
+
+.radio:checked {
+    border: 6px solid white;
+}
+
+.radio
+{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+
+    border: 2px solid #999;
+    transition: 0.2s all linear;
+    outline: none;
+    margin-right: 5px;
+
+    position: relative;
+    top: 4px;
+}
+
+.radio_label{
+    margin-right: 15px;
+    line-height: 32px;
+    color: #fafafa;
+}
+
+#select_mode{
+    margin-left: 650px;
+    margin-top: 20px;
+    border-radius: 8px;
+    height:100px;
+    background-color: transparent;
+    margin-right: 50px;
+
+}
