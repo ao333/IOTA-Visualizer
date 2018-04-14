@@ -10,9 +10,11 @@
   "license": "ISC",
   "dependencies": {
     "bluebird": "^3.5.1",
+    "clear-require": "^2.0.0",
     "iota.lib.js": "^0.4.7",
     "mongoose": "^5.0.11",
     "neo4j-driver": "^1.5.3",
+    "underscore": "^1.8.3",
     "xmlhttprequest": "^1.8.0"
   }
 }

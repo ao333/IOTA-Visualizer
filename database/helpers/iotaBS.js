@@ -196,21 +196,25 @@ function getUpdateTipHash(callback){
                 }else{
                     let tiphashcopy2 = [].concat(tiphashcopy1);
                     iota.api.findTransactionObjects({'approvees': tiphashcopy1},function (error, objects){
+                      if(error) {
+                        callback(error, null, null);
+                      }else{
                         //console.log(tiphashcopy2.length);
                         let roothashes = util.getTrunkBranchHash(objects);
                         let confirmed = [];
                         let unconfirmed = [];
                         //console.log(isIncluded.length);
                         for(let i = 0; i < isIncluded.length; i++){
-                            if(isIncluded[i]){
-                                confirmed.push(tiphashcopy2[i]);
-                            }else if(roothashes.indexOf(tiphashcopy2[i]) >= 0){
-                                unconfirmed.push(tiphashcopy2[i]);
-                            }
+                          if(isIncluded[i]){
+                            confirmed.push(tiphashcopy2[i]);
+                          }else if(roothashes.indexOf(tiphashcopy2[i]) >= 0){
+                            unconfirmed.push(tiphashcopy2[i]);
+                          }
                         }
                         //console.log(confirmed.length);
                         //console.log(unconfirmed.length);
                         callback(null, confirmed, unconfirmed);
+                      }
                     });
                 }
             });

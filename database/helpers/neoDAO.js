@@ -46,25 +46,25 @@ function findRepli(hashes, callback){
 function getCypher(states, callback){
     if(states == 'tip'){
         let cypher = `UNWIND {objectParam} AS op CREATE (node:Node:tip) SET node.hash = op.hash, 
-    node.address = op.address, node.value = op.value, node.attachmentTimestamp = op.attachmentTimestamp, 
+    node.address = op.address, node.value = op.value, node.attachmentTimestamp = op.timestamp, 
     node.trunkTransaction = op.trunkTransaction, node.branchTransaction = op.branchTransaction, 
-    node.insertTime = timestamp()`;
+    node.insertTime = timestamp(), node.confirmTime = 0`;
         callback(null, cypher);
     }else if(states == 'unconfirmed'){
         let cypher = `UNWIND {objectParam} AS op CREATE (node:Node:unconfirmed) SET node.hash = op.hash, 
-    node.address = op.address, node.value = op.value, node.attachmentTimestamp = op.attachmentTimestamp, 
+    node.address = op.address, node.value = op.value, node.attachmentTimestamp = op.timestamp*1000, 
     node.trunkTransaction = op.trunkTransaction, node.branchTransaction = op.branchTransaction, 
-    node.insertTime = timestamp()`;
+    node.insertTime = timestamp(), node.confirmTime = 0`;
         callback(null, cypher);
     }else if(states == 'confirmed'){
         let cypher = `UNWIND {objectParam} AS op CREATE (node:Node:confirmed) SET node.hash = op.hash, 
-    node.address = op.address, node.value = op.value, node.attachmentTimestamp = op.attachmentTimestamp, 
+    node.address = op.address, node.value = op.value, node.attachmentTimestamp = op.timestamp, 
     node.trunkTransaction = op.trunkTransaction, node.branchTransaction = op.branchTransaction, 
-    node.insertTime = timestamp()`;
+    node.insertTime = timestamp(), node.confirmTime = 0`;
         callback(null, cypher);
     }else if(states == 'tipToConf'){
         let cypher = `UNWIND {hashParam} AS hp WITH DISTINCT hp MATCH (node:tip) WHERE node.hash = hp
-    REMOVE node:tip SET node:confirmed`;
+    REMOVE node:tip SET node:confirmed SET node.confirmTime = timestamp()`;
         callback(null, cypher);
     }else if(states == 'tipToUnconf'){
         let cypher = `UNWIND {hashParam} AS hp WITH DISTINCT hp MATCH (node:tip) WHERE node.hash = hp
@@ -72,7 +72,7 @@ function getCypher(states, callback){
         callback(null, cypher);
     }else if(states == 'unconfToConf'){
         let cypher = `UNWIND {hashParam} AS hp WITH DISTINCT hp MATCH (node:unconfirmed) WHERE node.hash = hp
-    REMOVE node:unconfirmed SET node:confirmed`;
+    REMOVE node:unconfirmed SET node:confirmed SET node.confirmTime = timestamp()`;
         callback(null, cypher);
     }else if(states == 'findTip'){
         let cypher = `MATCH (node:tip) RETURN node.hash AS hash`;
