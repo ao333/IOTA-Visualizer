@@ -15,7 +15,7 @@ function dbTruncate(callback){
 
 function primaryKey(callback){
     let session = driver.session();
-    session.run('CREATE CONSTRAINT ON (n:Node) ASSERT (n.hash) IS NODE KEY')
+  session.run('CREATE CONSTRAINT ON (n:Node) ASSERT (n.hash) IS NODE KEY')
         .then(function(result){
             session.close();
             callback(null);
@@ -52,7 +52,7 @@ function getCypher(states, callback){
         callback(null, cypher);
     }else if(states == 'unconfirmed'){
         let cypher = `UNWIND {objectParam} AS op CREATE (node:Node:unconfirmed) SET node.hash = op.hash, 
-    node.address = op.address, node.value = op.value, node.attachmentTimestamp = op.timestamp*1000, 
+    node.address = op.address, node.value = op.value, node.attachmentTimestamp = op.timestamp, 
     node.trunkTransaction = op.trunkTransaction, node.branchTransaction = op.branchTransaction, 
     node.insertTime = timestamp(), node.confirmTime = 0`;
         callback(null, cypher);

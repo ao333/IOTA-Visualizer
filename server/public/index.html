@@ -12,6 +12,7 @@
 
   <script type="text/javascript" src="helpers/vis.js"></script>
   <link type="text/css" rel="stylesheet" href="./stylesheets/vis-network.min.css">
+
 </head>
 
 <body class="normal_width">
@@ -23,10 +24,10 @@
           <a href="#" class="current">Map</a>
         </li>
         <li>
-          <a href="#">About</a>
+          <a href="/search">Search Hash/Address</a>
         </li>
         <li>
-          <a href="#">Contact Us</a>
+          <a href="/visualization">Visualization</a>
         </li>
       </ul>
       <div class="img">
@@ -44,23 +45,15 @@
         <div id="main_for_show"></div>
         <div class="right-top">
           <div>
-            remove floating
-            <input type="checkbox" class="mybox"/>
-          </div>
-          <div>
-            limit to 4k
-            <input type="checkbox" class = "mybox"/>
-          </div>
-          <div>
-            Toggle Graph Mode
             <input id = "graphmode" type="checkbox" class="mybox"/>
+            Toggle Graph Mode
           </div>
         </div>
 
         <div class="left-top" >
           <div>
             <img src="img/transaction.png" alt="">
-            Transaction
+            Unconfirmed
           </div>
           <div>
             <img src="img/mean_confirmation_time.png" alt="">
@@ -98,26 +91,36 @@
 
   <!-- the area to show statistics in information area -->
   <div id="information" class="normal_width">
+    <a href="/visualization?type=day">
     <div>
-      <img src="img/value_transfer_per_second.png" alt="">
-      <span>Price(GBR)</span>
-      <span class="num">0</span>
+        <img src="img/value_transfer_per_second.png" alt="">
+        <span>Price(GBR)</span>
+        <span class="num">0</span>
     </div>
+    </a>
+
+    <a href="/visualization?type=value_ps">
     <div>
       <img src="img/value_transfer_per_second.png" alt="">
       <span>Value Transfer / Sec</span>
       <span class="num">0</span>
     </div>
+    </a>
+
+    <a href="/visualization?type=mean_con_time">
     <div>
       <img src="img/mean_confirmation_time.png" alt="">
       <span>Confirm Time(Min)</span>
       <span class="num">0</span>
     </div>
+    </a>
+
     <div>
       <img src="img/transaction.png" alt="">
       <span>Total Tips</span>
       <span class="num">0</span>
     </div>
+
     <div>
       <img src="img/value_transfer_per_second.png" alt="">
       <span>Placeholder</span>
@@ -128,11 +131,16 @@
       <span>Placeholder</span>
       <span class="num">0</span>
     </div>
+
+    <a href="/visualization?type=value_pt">
     <div>
       <img src="img/value_transfer_per_second.png" alt="">
       <span>Value/Transaction</span>
       <span class="num">0</span>
     </div>
+    </a>
+
+
     <div>
       <img src="img/value_transfer_per_second.png" alt="">
       <span>None Zero %</span>

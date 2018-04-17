@@ -17,7 +17,7 @@ function dbInsert(callback){
             callback(error);
         }else{
             bs.trunkBranchInsert(hashes1, function(error, hashes2, relatPairs2){
-                if(error){
+              if(error){
                     callback(error);
                 }else{
                     bs.trunkBranchInsert(hashes2, function(error, hashes3, relatPairs3){

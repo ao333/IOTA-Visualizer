@@ -10,16 +10,33 @@
     <script type = "text/javascript" src="value_ps_chart.js"></script>
     <script type = "text/javascript" src="value_pt_chart.js"></script>
     <link rel="stylesheet" type="text/css" href="style.css">
+    <style>
+      #home{
+        float: right ;
+      }
+
+      #home a{
+        color: black ;
+        font-size: 30px ;
+        text-decoration: none;
+        margin-top: -30%;
+      }
+
+      #home a:hover{
+        color:grey;
+      }
+    </style>
   </head>
   <body>
+  <div id="home">
+    <a href="/">Home</a>
+  </div>
     <div class="wrapper">
       <h1>IOTA Data Statistics Visualization</h1>
       <h2>show in GBP</h2>
       <canvas id="Chart" width="1600" height="900"></canvas>
     </div>
-    <script>
-      dayChart();
-    </script>
+  <script type="text/javascript" src="./for_main.js"></script>
     <button id = "btn_day">day</button>
     <button id = "btn_min">min</button>
     <button id = "btn_mean_con_time">mean confirmation time</button>

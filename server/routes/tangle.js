@@ -12,14 +12,15 @@ tangleRouter.use(bodyParser.json());
 tangleRouter.route('/tree_initial')
   .get(cors.corsWithOptions, (req, res, next) => {
     let session = driver.session();
+    console.log(initialString(10));
     session
-      .run(initialTreeString())
+      .run(initialString(10))
       .then(function (result) {
+        console.log();
         let transactions = [];
         result.records.forEach(function (record) {
           let obj = Object.assign({}, record.toObject().item.properties);
-          obj.value = obj.value.toInt();
-          obj.type = record.toObject().item.labels[0];
+          obj.type = extractType(record.toObject().item.labels);
           transactions.push(obj);
         });
         res.statusCode = 200;
@@ -39,13 +40,12 @@ tangleRouter.route('/sphere_initial')
     let time_now = Date.now().toString();
     let session = driver.session();
     session
-      .run('MATCH (tran) RETURN tran')
+      .run(initialString(30))
       .then(function (result) {
         let transactions = [];
         result.records.forEach(function (record) {
-          let obj = Object.assign({}, record.toObject().tran.properties);
-          obj.value = obj.value.toInt();
-          obj.type = record.toObject().tran.labels[0];
+          let obj = Object.assign({}, record.toObject().item.properties);
+          obj.type = extractType(record.toObject().item.labels);
           transactions.push(obj);
         });
         res.statusCode = 200;
@@ -63,22 +63,20 @@ tangleRouter.route('/sphere_initial')
 
 tangleRouter.route('/sphere_update')
   .get(cors.corsWithOptions, (req, res, next) => {
+    let old_data = req.body;
+    let query_string = queryStatement.updateTreeHashString(old_data);
     let session = driver.session();
-    let time_now = Date.now().toString();
-    let old_time = Number(req.cookies.time);
     session
-      .run('MATCH (tran) WHERE tran.time >= ' + old_time + ' RETURN tran')
+      .run(query_string)
       .then(function (result) {
         let transactions = [];
         result.records.forEach(function (record) {
-          let obj = Object.assign({}, record.toObject().tran.properties);
-          obj.value = obj.value.toInt();
-          obj.type = record.toObject().tran.labels[0];
+          let obj = Object.assign({}, record.toObject().item.properties);
+          obj.type = extractType(record.toObject().item.labels);
           transactions.push(obj);
         });
         res.statusCode = 200;
         res.setHeader("Content-Type", "application/json");
-        res.cookie('time', time_now);
         res.json(transactions);
         session.close();
       })
@@ -90,8 +88,7 @@ tangleRouter.route('/sphere_update')
 
 tangleRouter.route('/tree_update')
   .post(cors.corsWithOptions, (req, res, next) => {
-    let old_data = JSON.parse('[' + Object.keys(req.body)[0] + ']');
-
+    let old_data = req.body;
     let query_string = queryStatement.updateTreeHashString(old_data);
     let session = driver.session();
     session
@@ -100,15 +97,28 @@ tangleRouter.route('/tree_update')
         let transactions = [];
         result.records.forEach(function (record) {
           let obj = Object.assign({}, record.toObject().item.properties);
-          obj.value = obj.value.toInt();
-          obj.type = record.toObject().item.labels[0];
+          obj.type = extractType(record.toObject().item.labels);
           transactions.push(obj);
         });
-        res.statusCode = 200;
-        res.setHeader("Content-Type", "application/json");
-        console.log(transactions.length);
-        res.json(transactions);
-        session.close();
+        console.log('11111' , transactions.length);
+        session.run(queryStatement.addMoreHashString(old_data, 1))
+          .then(function (result) {
+            result.records.forEach(function (record) {
+              let obj = Object.assign({}, record.toObject().item.properties);
+              obj.type = extractType(record.toObject().item.labels);
+              transactions.push(obj);
+            });
+            console.log('2222', transactions.length);
+            res.statusCode = 200;
+            res.setHeader("Content-Type", "application/json");
+            res.json(transactions);
+            session.close();
+          })
+          .catch(function (error) {
+            session.close();
+            next(error);
+          });
+
       })
       .catch(function (error) {
         session.close();
@@ -119,11 +129,22 @@ tangleRouter.route('/tree_update')
 
 module.exports = tangleRouter;
 
-function initialTreeString(){
-  return 'MATCH (tip:tip) WITH tip LIMIT 10 MATCH (tip)-[CONFIRMS]->(trans) WITH tip, ' +
+function initialString(num){
+  return 'MATCH (tip:tip) WITH tip LIMIT ' +  num +  ' MATCH (tip)-[CONFIRMS]->(trans) WITH tip, ' +
     'trans MATCH (trans)-[CONFIRMS]->(trans2) WITH tip, trans,trans2 ' +
     'MATCH (trans2)-[CONFIRMS]->(trans3) ' +
     'WITH COLLECT(tip) + COLLECT(trans)+ COLLECT(trans2)+ COLLECT(trans3) ' +
     'AS items UNWIND items AS item ' +
     'return distinct item'
+}
+
+function extractType(arr){
+  for(let i = 0; i < arr.length; i++){
+    if(arr[i] === 'tip')
+      return 'tip';
+    if(arr[i] === 'unconfirmed')
+      return 'unconfirmed';
+    if(arr[i] === 'confirmed')
+      return 'confirmed';
+  }
 }

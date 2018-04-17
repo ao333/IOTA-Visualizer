@@ -282,10 +282,23 @@ $('#graphmode').change(function() {
 
 
 var sphere_graph_timer = setInterval(function () {
-    if (!treeMode)
-        $.getJSON("/tangle/sphere_update", function(data){
-            update_data(data, sphere_nodes, sphere_edges);
-        }, "json")
+    if (!treeMode){
+      updata_hash = [];
+      sphere_nodes.forEach(function (entry) {
+        if (entry["group"] < 2)
+          updata_hash.push(entry['id']);
+
+      });
+      $.ajax({
+        type: "POST",
+        url: "/tangle/sphere_update",
+        data:JSON.stringify(updata_hash),
+        contentType: "application/json; charset=utf-8",
+        success: function(data){
+          update_data(data, sphere_nodes, sphere_edges);
+        }
+      });
+    }
 },10000);
 var updata_hash = [];
 var tree_graph_timer = setInterval(function () {
@@ -297,9 +310,16 @@ var tree_graph_timer = setInterval(function () {
             
         });
 
-        $.post("/tangle/tree_update", JSON.stringify(updata_hash), function (data) {
-            update_data(JSON.parse(data), tree_nodes, tree_edges);
-        },'text')
+      $.ajax({
+        type: "POST",
+        url: "/tangle/tree_update",
+        data:JSON.stringify(updata_hash),
+        contentType: "application/json; charset=utf-8",
+        success: function(data){
+          console.log(data.length);
+          update_data(data, tree_nodes, tree_edges);
+        }
+      });
     }
 
 },10000);

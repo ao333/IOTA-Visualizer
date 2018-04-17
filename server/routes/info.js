@@ -22,14 +22,14 @@ infoRouter.route('/:query')
     let session = driver.session();
     session
       .run('MATCH (tran:' + type + ') WITH tran, rand() AS number ' +
-        'RETURN tran ORDER BY number LIMIT ' + limit)
+        'RETURN tran, tostring(tran.attachmentTimestamp) AS tt ORDER BY number LIMIT ' + limit)
       .then(function (result) {
         let transactions = [];
         result.records.forEach(function (record) {
           let obj = Object.assign({}, record.toObject().tran.properties);
-          obj.value = obj.value.toInt();
-          obj.type = record.toObject().tran.labels[0];
-          obj.time = new Date(Number(obj.time)).toLocaleString();
+          obj.type = extractType(record.toObject().tran.labels);
+          console.log(record.toObject().tt);
+          obj.time = new Date(Number(record.toObject().tt)*1000).toLocaleString();
           transactions.push(obj);
         });
         res.statusCode = 200;
@@ -45,3 +45,14 @@ infoRouter.route('/:query')
   });
 
 module.exports = infoRouter;
+
+function extractType(arr){
+  for(let i = 0; i < arr.length; i++){
+    if(arr[i] === 'tip')
+      return 'tip';
+    if(arr[i] === 'unconfirmed')
+      return 'unconfirmed';
+    if(arr[i] === 'confirmed')
+      return 'confirmed';
+  }
+}

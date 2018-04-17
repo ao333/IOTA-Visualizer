@@ -20,7 +20,7 @@ function updateMeanCon(callback){
       let sum = 0;
       let amount = 0;
       result.records.forEach(function (record) {
-        sum += Number(record.toObject().n1) -  Number(record.toObject().n2);
+        sum += Number(record.toObject().n1) -  Number(record.toObject().n2*1000);
         amount++;
       });
       if(amount !== 0){

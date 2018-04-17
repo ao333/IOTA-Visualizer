@@ -61,7 +61,7 @@ function extractDataForDb(arr, type){
       'type':type,
       'value':arr[i].value,
       'address' : arr[i].address,
-      'create_time' : arr[i].attachmentTimestamp
+      'create_time' : arr[i].timestamp * 1000
     };
     results.push(transaction);
   }
