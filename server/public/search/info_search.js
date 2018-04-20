@@ -3,48 +3,67 @@ var items = $(" .linkable");
 //Initialization Function
 $(function () {
 
-    var search_button = document.getElementById("search_button");
-
-    var value = document.getElementById("search_input").value;
-
-    search_button.onclick = function() {
-        value = document.getElementById("search_input").value;
-        send_post(value);
-    };
-    document.onkeydown = function (event) {
-        value = document.getElementById("search_input").value;
-        var key = event || window.event || arguments.callee.caller.arguments[0];
-        //if click enter
-        if (key === 13 )
-            send_post(value)
-    };
-
-
-    for (var index = 0; index < items.length; index++) {
-        items.eq(index).click( function () {
-            var value = this.innerHTML;
-            if (value.replace(/\s/g, "") != '-')
-                {
-                    if (this.id != 'address')
-                    {
-                        style_change(1);
-                        $.post("/node_search?search=hash", {value: value}, function (data) {
-                            update_data_by_id(data);
-                        }, "json");
-                    }
-                    else
-                    {
-                        style_change(2);
-                        $.post("/node_search?search=address", {value: value}, function (data) {
-                            update_data_by_address(data);
-                        }, "json")
-                    }
-                }
-
-
-        });
+    let hashpara = getParameterByName('hash');
+    let addresspara = getParameterByName('address');
+    exemain();
+    if(hashpara){
+      style_change(1);
+      $.post("/node_search?search=hash", {value: hashpara}, function (data) {
+        update_data_by_id(data);
+      }, "json");
     }
+    else if(addresspara){
+      style_change(2);
+      $.post("/node_search?search=address", {value: addresspara}, function (data) {
+        update_data_by_address(data);
+      }, "json")
+    }
+
 })
+
+function exemain(){
+  var search_button = document.getElementById("search_button");
+
+  var value = document.getElementById("search_input").value;
+
+  search_button.onclick = function() {
+    value = document.getElementById("search_input").value;
+    send_post(value);
+  };
+  document.onkeydown = function (event) {
+    value = document.getElementById("search_input").value;
+    var key = event || window.event || arguments.callee.caller.arguments[0];
+    //if click enter
+    if (key === 13 )
+      send_post(value)
+  };
+
+
+  for (var index = 0; index < items.length; index++) {
+    items.eq(index).click( function () {
+      var value = this.innerHTML;
+      if (value.replace(/\s/g, "") != '-')
+      {
+        if (this.id != 'address')
+        {
+          style_change(1);
+          $.post("/node_search?search=hash", {value: value}, function (data) {
+            update_data_by_id(data);
+          }, "json");
+        }
+        else
+        {
+          style_change(2);
+          $.post("/node_search?search=address", {value: value}, function (data) {
+            update_data_by_address(data);
+          }, "json")
+        }
+      }
+
+
+    });
+  }
+}
 
 
 //Function to post value to server either search by hash or address depending on the radio button
@@ -169,6 +188,16 @@ function style_change(mode) {//1 for hash 2 for address
         search_detail.style.display = 'none';
         search_by_add.style.display = 'block'
     }
+}
+
+function getParameterByName(name, url) {
+  if (!url) url = window.location.href;
+  name = name.replace(/[\[\]]/g, "\\$&");
+  let regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+    results = regex.exec(url);
+  if (!results) return null;
+  if (!results[2]) return '';
+  return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
 

@@ -310,6 +310,7 @@ var tree_graph_timer = setInterval(function () {
             
         });
 
+      console.log(updata_hash.length);
       $.ajax({
         type: "POST",
         url: "/tangle/tree_update",

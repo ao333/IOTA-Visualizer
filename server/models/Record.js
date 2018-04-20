@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const meancontime = new Schema({
+const record = new Schema({
   MeanConTime:{
     type:Number,
     default:0
@@ -22,5 +22,5 @@ const meancontime = new Schema({
   timestamps:true
 });
 
-let Meancontime = mongoose.model('meancontime', meancontime);
-module.exports = Meancontime;
+let Record = mongoose.model('Record', record);
+module.exports = Record;

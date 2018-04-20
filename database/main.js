@@ -58,12 +58,12 @@ connection.then(function () {
 
 
 setTimeout(function init() {
-  // dbAction.dbInit(function (error) {
-  //   if(error){
-  //     console.log(6, error);
-  //     setTimeout(init, 1000);
-  //     return;
-  //   }
+  dbAction.dbInit(function (error) {
+    if(error){
+      console.log(6, error);
+      setTimeout(init, 1000);
+      return;
+    }
     console.log('init');
     setTimeout(function insert() {
       dbAction.dbInsert(function (error) {
@@ -83,7 +83,7 @@ setTimeout(function init() {
         }, 1000);
       })
     }, 1000)
-  //})
+  })
 }, 10);
 
 

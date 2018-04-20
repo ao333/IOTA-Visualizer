@@ -42,12 +42,25 @@
     <a href="#" id="warp"></a>
     <div class="all">
       <div class="Home normal_width">
+
         <div id="main_for_show"></div>
         <div class="right-top">
           <div>
             <input id = "graphmode" type="checkbox" class="mybox"/>
             Toggle Graph Mode
           </div>
+          <form class="form-style-4">
+            <label>
+              <input type="text" name="field1" required="true" placeholder="Search Hash" />
+              <input id="search_hash" type="submit" value="Search" />
+            </label>
+          </form>
+          <form class="form-style-4">
+            <label>
+              <input type="text" name="field1" required="true" placeholder="Search Address" />
+              <input id="search_address" type="submit" value="Search" />
+            </label>
+          </form>
         </div>
 
         <div class="left-top" >
@@ -237,5 +250,12 @@
   <!--use vis.helpers library to show our iota nodes-->
   <script type="text/javascript" src="helpers/show_nodes.js"></script>
   <script type="text/javascript" src="helpers/info_table.js"></script>
+  <script type="text/javascript">
+    //auto expand textarea
+    function adjust_textarea(h) {
+      h.style.height = "20px";
+      h.style.height = (h.scrollHeight)+"px";
+    }
+  </script>
 </body>
 </html>

@@ -42,6 +42,18 @@ $(function () {
   }, function () {
     $(this).children().css('background-color', 'black');
   })
+
+  $('#search_hash').click(function () {
+    let value = $(this).prev().val();
+    $(location).attr('href', '/search?hash='+value);
+    return false;
+  });
+
+  $('#search_address').click(function () {
+    let value = $(this).prev().val();
+    $(location).attr('href', '/search?address='+value);
+    return false;
+  });
 });
 
 
