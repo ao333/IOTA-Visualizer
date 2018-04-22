@@ -1,8 +1,6 @@
 var items = $("#table .item");
 $(function () {
 
-    // force numbers in "information" to change randomly. This is just for current showing.
-    // We will delete this later
     var dataList = [];
     $.getJSON("/info/infor_table_initial", function (data) {
         for (var index = 0; index < 9; index++) {
@@ -29,7 +27,7 @@ $(function () {
         }, 500)
 
 
-    }, 2000)
+    }, 4000)
 
 });
 
@@ -43,6 +41,7 @@ var resetColor = function (index) {
 
 var updateTable = function(lst){
     for (var index = 0; index < 9; index++) {
+        items.eq(index).parent().attr("href", "/search?hash="+lst[index]['hash']);
         items.eq(index).children().eq(0).html(lst[index]['hash']);
         items.eq(index).children().eq(1).html(lst[index]['type']);
         items.eq(index).children().eq(2).html(lst[index]['value']);

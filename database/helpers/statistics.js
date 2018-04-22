@@ -20,8 +20,10 @@ function updateMeanCon(callback){
       let sum = 0;
       let amount = 0;
       result.records.forEach(function (record) {
-        sum += Number(record.toObject().n1) -  Number(record.toObject().n2*1000);
-        amount++;
+        if(((Number(record.toObject().n1) -  Number(record.toObject().n2*1000)) / 1000 / 60) <= 60){
+          sum += Number(record.toObject().n1) -  Number(record.toObject().n2*1000);
+          amount++;
+        }
       });
       if(amount !== 0){
         let minute = sum / amount / 1000 / 60;

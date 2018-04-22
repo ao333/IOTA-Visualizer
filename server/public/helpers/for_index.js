@@ -1,6 +1,4 @@
 $(function () {
-  // force numbers in "information" to change randomly. This is just for current showing.
-  // We will delete this later
   var nums = $("#information .num");
   setInterval(function () {
       for (var index = 0; index < 8; index++) {
@@ -44,13 +42,21 @@ $(function () {
   })
 
   $('#search_hash').click(function () {
-    let value = $(this).prev().val();
+    let value = $(this).prev().prev().val();
+    $(this).prev().prev().val('');
     $(location).attr('href', '/search?hash='+value);
+    return false;
+  });
+
+  $('#search_hash_this').click(function(){
+    let value = $(this).prev().prev().prev().val();
+    $(location).attr('href', '/?hash='+value);
     return false;
   });
 
   $('#search_address').click(function () {
     let value = $(this).prev().val();
+    $(this).prev().val('');
     $(location).attr('href', '/search?address='+value);
     return false;
   });

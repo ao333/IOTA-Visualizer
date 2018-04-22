@@ -28,7 +28,6 @@ infoRouter.route('/:query')
         result.records.forEach(function (record) {
           let obj = Object.assign({}, record.toObject().tran.properties);
           obj.type = extractType(record.toObject().tran.labels);
-          console.log(record.toObject().tt);
           obj.time = new Date(Number(record.toObject().tt)*1000).toLocaleString();
           transactions.push(obj);
         });

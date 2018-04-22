@@ -1,4 +1,5 @@
 const driver = require('../config/config_neo4j');
+const util = require('./util');
 
 function dbTruncate(callback){
     let session = driver.session();

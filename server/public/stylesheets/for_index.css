@@ -44,7 +44,7 @@ body{
 }
 
 .nav_bar li a{
-  font: 26px "georgia";
+  font: 26px "Arial";
   color: white;
 }
 
@@ -72,7 +72,7 @@ body{
   height: 100%;
   color: white;
   font-size: 20px;
-  font-family: "Futura Bk BT";
+  font-family: "Arial";
   line-height: 1.5;
 }
 
@@ -84,12 +84,12 @@ body{
   height: 100%;
   color: white;
   font-size: 20px;
-  font-family: "Futura Bk BT";
+  font-family: "Arial";
   line-height: 1.5;
 }
 
 #node_map .Members .name{
-  font: bold 30px "Trebuchet MS";
+  font: bold 30px "Arial";
   color: white;
 
 }
@@ -101,7 +101,7 @@ body{
 
 #node_map .right-top{
   position: absolute;
-  left: 77%;
+  left: 75%;
   top: 2%;
 }
 
@@ -124,6 +124,14 @@ body{
 }
 #node_map .left-top div{
   padding-top: 5px;
+}
+
+#right_bottom{
+  position: absolute;
+  left: 80%;
+  top: 95%;
+  color: white;
+  font-size: 100%;
 }
 
 /*---------------------------------------------------------------------------*/
@@ -150,11 +158,14 @@ body{
 #information span{
   color: white;
   font-size: 20px;
-  font-family: "Trebuchet MS";
+  font-family: "Arial";
 }
 #information img{
-  height: 100px;
-  width: 33%;
+  height: 70px;
+  width: 25%;
+  position: relative;
+  left: 5%;
+  top: 13%;
 }
 
 #information span{
@@ -171,7 +182,7 @@ body{
   position: absolute;
   left: 35%;
   top: 40px;
-  font-family: "Lucida Bright";
+  font-family: "Arial";
 }
 
 /*-------------------------------------------------------------------------------------*/
@@ -189,7 +200,7 @@ body{
 }
 
 tr{
-  font: 30px "Comic Sans MS";
+  font: 30px "Arial";
   color: white;
 }
 
@@ -227,7 +238,7 @@ tr:hover{
   width: 450px;
   font-size: 16px;
   position: relative;
-  left: -2%;
+  left: 3%;
 }
 .form-style-4 input[type=submit],
 .form-style-4 input[type=button],
@@ -306,4 +317,8 @@ tr:hover{
 }
 :-moz-placeholder { /* Firefox 18- */
   font-size: 20px;
+}
+
+#search_hash_this, #search_hash{
+  margin-top: 5px;
 }
