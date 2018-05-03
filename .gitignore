@@ -2,6 +2,7 @@
 config_neo4j.js
 config_mongo.js
 */node_modules/
+database2
 
 *.DS_Store
 testfiles

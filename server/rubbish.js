@@ -31,24 +31,8 @@ const iota = require('./config/config_iota');
 // }
 //
  let driver = require('./config/config_neo4j')
-// let session = driver.session();
-// session
-//   .run(initialString(10))
-//   .then(function (result) {
-//     result.records.forEach(function (record) {
-//       let obj = Object.assign({}, record.toObject().item.properties);
-//       obj.type = record.toObject().item.labels;
-//       console.log(obj.type);
-//     });
-//     session.close();
-//   })
-//   .catch(function (error) {
-//     console.log(error);
-//   });
+let session = driver.session();
 
-// iota.api.findTransactionObjects({'addresses':['OHBXNCIMPMJSUSYNT9CMFHKRCEUSAZLFDUWZMR9AWHWTDWMDFTURLUBQZUFGIPPUXZQCKVFHQGTBPMLRA']}, function(error, hashes){
-//   console.log(error);
-//   console.log(hashes);
-// });
+ let query = require('./helpers/QueryStatement');
 
-console.log(Math.floor(Math.random()*2));
+console.log(query.initialString(6));

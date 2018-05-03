@@ -8,10 +8,8 @@ const bodyParser = require('body-parser');
 
 // require routers
 const index = require('./routes/index');
-const users = require('./routes/users');
 const tanglerouter = require('./routes/tangle');
 const statRouter = require('./routes/stat');
-const infoRouter = require('./routes/info');
 const searchRouter = require('./routes/node_search');
 const chartRouter = require('./routes/chart');
 
@@ -37,10 +35,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //set all routers as middlewares of express
 app.use('/', index);
-app.use('/users', users);
 app.use('/tangle', tanglerouter);
 app.use('/stat', statRouter);
-app.use('/info',infoRouter);
 app.use('/node_search', searchRouter);
 app.use('/chart', chartRouter);
 

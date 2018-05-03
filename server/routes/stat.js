@@ -1,3 +1,7 @@
+/**
+ * This file is used to serve /stat router, serving statistics in main page
+ */
+
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require('./cors');

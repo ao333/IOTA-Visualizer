@@ -1,3 +1,7 @@
+/**
+ * This file is used to serve /node_search router, serving search staff
+ */
+
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require('./cors');

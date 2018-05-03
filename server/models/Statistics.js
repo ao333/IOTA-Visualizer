@@ -1,3 +1,8 @@
+/**
+ * MongoDB database Record Schema
+ * this schema collection stores current records for statistics so that we can show
+ * current status of statistics in front end
+ */
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 

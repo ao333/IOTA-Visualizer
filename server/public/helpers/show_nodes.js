@@ -17,6 +17,8 @@ let update_hash = []; // store the hashes of nodes that are likely to be updated
 let search_click = false; // record if button of search_click is selected
 let treeMode = true; // record if button of switching modes is selected
 
+let current_data;  // all data current exists
+
 // main function
 $(function () {
   prepareTree();
@@ -28,6 +30,9 @@ $(function () {
     $.getJSON("/tangle/tree_initial", function (data) {
       init_graph(data, tree_nodes, tree_edges, 0);
       redrawAll(0);
+      updateInterval(); // start the interval timers to update graph periodically
+      current_data = data;
+      Table('initial');
     });
 
     $.getJSON("/tangle/sphere_initial", function (data) {
@@ -47,14 +52,15 @@ $(function () {
       treeMode = true;
       init_graph(data, tree_nodes, tree_edges, 0, this_hash);
       redrawAll(0);
+      updateInterval(); // start the interval timers to update graph periodically
+      current_data = data;
+      Table('initial');
     });
 
     $.getJSON("/tangle/sphere_initial?hash=" + this_hash, function (data) {
       init_graph(data, sphere_nodes, sphere_edges, 1, this_hash);
     });
   }
-
-  updateInterval(); // start the interval timers to update graph periodically
 });
 
 /**
@@ -241,7 +247,7 @@ function updateInterval() {
       });
     }
 
-  }, 8000);
+  }, 5000);
 }
 
 /**
@@ -293,12 +299,16 @@ let init_title = function (lst) {
   br = document.createElement('br');
   para.appendChild(node);
   para.appendChild(br);
-  node = document.createTextNode("Address: " + lst["address"])
+  node = document.createTextNode("Address: " + lst["address"]);
   para.appendChild(node);
   br = document.createElement('br');
   para.appendChild(node);
   para.appendChild(br);
-  node = document.createTextNode("Node Type: " + lst["type"])
+  node = document.createTextNode("Node Type: " + lst["type"]);
+  br = document.createElement('br');
+  para.appendChild(node);
+  para.appendChild(br);
+  node = document.createTextNode("Source: " + lst["source"]);
   para.appendChild(node);
   return para
 };
@@ -441,6 +451,7 @@ let update_data = function (data, nodeList, edgeList) {
         "group": gro,
       });
     else {
+      Table("update", data[i]);
       nodeList.add(
         {
           "id": data[i]["hash"],
@@ -491,11 +502,63 @@ let update_data = function (data, nodeList, edgeList) {
  *
  * @param properties
  */
+let dataList = [];
 function clicknodeSearch(properties) {
   let id = properties.nodes[0];
   if (!id)
     return;
   $(location).attr('href', '/search?hash=' + id);
+}
+
+function Table(operation, new_data){
+  let items = $("#table .item");
+  if(operation === 'initial'){
+    current_data.sort(function(a,b){
+      if (new Date(a.time).getTime() > new Date(b.time).getTime())
+        return -1;
+      else if(new Date(a.time).getTime() > new Date(b.time).getTime())
+        return 1;
+      else return 0;
+    });
+
+    for (let index = 0; index < 9; index++) {
+      dataList.push({'hash':current_data[index]['hash'],
+        'type':current_data[index]['type'],
+        'value':current_data[index]['value'],
+        'confirmation_time':new Date(current_data[index]['time']).toLocaleString()})
+    }
+
+    updateTable(dataList);
+  }else if(operation === 'update'){
+      dataList.pop();
+      dataList.unshift({'hash':new_data['hash'],
+        'type':new_data['type'],
+        'value':new_data['value'],
+        'confirmation_time':new Date(new_data['time']).toLocaleString()});
+      updateTable(dataList);
+      changeColor(0);
+      setTimeout(function () {
+        resetColor(0);
+      }, 2000);
+  }
+
+  function changeColor(index) {
+    items[index].style.backgroundColor =  '#404142';
+  }
+
+  function resetColor(index) {
+    items[index].style.backgroundColor = '#000000';
+  }
+
+  function updateTable(lst){
+    for (let index = 0; index < 9; index++) {
+      items.eq(index).parent().attr("href", "/search?hash="+lst[index]['hash']);
+      items.eq(index).children().eq(0).html(lst[index]['hash']);
+      items.eq(index).children().eq(1).html(lst[index]['type']);
+      items.eq(index).children().eq(2).html(lst[index]['value']);
+      items.eq(index).children().eq(3).html(lst[index]['confirmation_time']);
+    }
+  }
 }
 
 /**

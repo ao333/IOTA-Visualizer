@@ -58,12 +58,12 @@ setTimeout(function(){
 
 
   setTimeout(function init() {
-    // dbAction.dbInit(function (error) {
-    //   if(error){
-    //     console.log(6, error);
-    //     setTimeout(init, 1000);
-    //     return;
-    //   }
+   // dbAction.dbInit(function (error) {
+     // if(error){
+       // console.log(6, error);
+        //setTimeout(init, 1000);
+        //return;
+      //}
       console.log('init');
       setTimeout(function insert() {
         dbAction.dbInsert(function (error) {
@@ -83,12 +83,13 @@ setTimeout(function(){
           }, 1000);
         })
       }, 1000)
-    //})
+   // })
   }, 10);
 
   setTimeout(function delete999(){
     let session = driver.session();
-    session.run('MATCH (n) where n.hash = "999999999999999999999999999999999999999999999999999999999999999999999999999999999" DETACH DELETE n')
+    session.run('MATCH (n) where n.hash = "999999999999999999999999999999999999999999999999999999999999999999999999999999999" ' +
+      ' OR n.attachmentTimestamp<0 OR n.address = "999999999999999999999999999999999999999999999999999999999999999999999999999999999" DETACH DELETE n')
       .then(function () {
         session.close();
         setTimeout(delete999, 5000);
@@ -114,6 +115,39 @@ setTimeout(function(){
       })
   },60000);
 
+  setTimeout(function deletemore(){
+    let session = driver.session();
+    session.run('MATCH (n) RETURN count (n) AS cc')
+      .then(function (result) {
+        let count;
+        result.records.forEach(function (record) {
+          count = record.toObject().cc;
+        });
+
+        if(count.toInt){
+          count = count.toInt();
+        }
+
+        if(count > 100000){
+          session.run('MATCH (n) WITH n ORDER BY n.attachmentTimestamp LIMIT ' + (count-100000) + ' DETACH DELETE n')
+            .then(function (result) {
+              session.close();
+            })
+            .catch(function(err){
+              console.log(err);
+              session.close();
+              setTimeout(deletemore, 100);
+            })
+        }else{
+          session.close();
+        }
+      })
+      .catch(function(err){
+        console.log(err);
+        session.close();
+        setTimeout(deletemore, 100);
+      })
+  },200000);
 
 }, 60000);
 

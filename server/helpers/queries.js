@@ -3,77 +3,6 @@
  */
 
 const iota = require('../config/config_iota');
-const utils = require('./utils');
-
-/**
- * get {amount} number of tips, tips are returned in form of array of hashes
- * callback(error, tips)
- * @param amount
- * @param callback
- */
-function getTips(amount, callback){
-  //query tips using iota api
-  iota.api.getTips(function (error, tips){
-    if(error){
-      callback(error,null);
-    }else{
-      let real_amount = tips.length;
-      if(amount)
-        real_amount = Math.min(real_amount, amount);
-      let result = utils.getArrayItems(tips, real_amount);
-      callback(null, result);
-    }
-  });
-}
-
-/**
- * add transactions specified by {hash} with type {tip} into {final_results} array.
- * This function is prepared(called) for function getInitialDataToShow(callback).
- * @param hash
- * @param final_results
- * @param type
- * @param callback1
- * @param callback2
- */
-function addTransactionsIntoArray(hash, final_results, type, callback1, callback2) {
-  iota.api.getTransactionsObjects(hash, function (error, tip_objects) {
-    if(error){
-      callback2(error, null);
-      return;
-    }
-    let final_results_db = utils.extractDataForDb(tip_objects, type);
-    final_results.push(...final_results_db);
-    let branch_and_trunk = utils.getBranchAndTrunckHash(tip_objects);
-    callback1(final_results, branch_and_trunk);
-  });
-}
-
-
-/**
- * This is function is used to query initial data so that later we could store these data into database
- * We will get tips and transactions these tips confirm, repeat this three cycles.
- * @param callback
- *  callback(error, data)
- */
-function getInitialDataToShow(callback) {
-  getTips(20, function (error, tips) { //choose 65 tips initially
-    if(error)
-      callback(error, null);
-    else{
-      let final_results = [];
-      addTransactionsIntoArray(tips, final_results, 'tip', function (final_results, branch_and_trunk) {
-        addTransactionsIntoArray(branch_and_trunk, final_results, 'unconfirmed', function (final_results, branch_and_trunk) {
-          addTransactionsIntoArray(branch_and_trunk, final_results, 'unconfirmed', function (final_results, branch_and_trunk) {
-            addTransactionsIntoArray(branch_and_trunk, final_results, 'unconfirmed', function (final_results) {
-              final_results = utils.deleteDuplicates(final_results);
-              callback(null, final_results);
-            }, callback);
-          }, callback);
-        }, callback);
-      }, callback);
-    }
-  });
-}
 
 /**
  * To determine the states (tip, unconfirmed, confirmed) of hashes given
@@ -121,6 +50,5 @@ function determineState(hashes, callback){
 }
 
 module.exports = {
-  getInitialDataToShow,
   determineState
 };

@@ -1,3 +1,8 @@
+/**
+ * This file is used to serve /chart router. Essentially it is responsible for sending transactions
+ * for our graph page with history
+ */
+
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require('./cors');
