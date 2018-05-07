@@ -27,6 +27,43 @@ IMPORTANT: if you would like to test the database functions, please modify the f
 
 ![ScreenShot](https://lh3.googleusercontent.com/dZ9vo78-VukeKudwWEaqxQMuQnZCAqFsS-B2vt1VmMzMg2yrUxqkI7HosHfIcxbSgRAAvgRjrZU "IOTA")
 
+## Formats of config files
+
+### config_neo4j.js
+
+    const neo4j = require('neo4j-driver').v1;  
+    
+    let uri = '<url of neo4j database>';  
+    let user = '<username>';  
+    let password = '<password>';  
+  
+    const driver = neo4j.driver(uri, neo4j.auth.basic(user, password));  
+    module.exports = driver;
+
+### config_mongo
+
+	let constr = {  
+	  'mongoUrl':'<url of mongodb>',  
+	  'user':"<username>",  
+	  'password':"<password>"  
+	};   
+	const mongoose = require('mongoose');  
+	mongoose.Promise = require('bluebird');   
+	const connect = mongoose.connect(constr.mongoUrl,{  
+	  auth:{  
+	    user:constr.user,  
+	    password:constr.password  
+	  },  
+	  keepAlive: 120  
+	});  
+	connect.then(()=>{  
+	  console.log('Connected correctly to mongodb');  
+	}, (err) => {console.log(err);});
+
+### config_iota and config_sour
+These two files are just shown in database folder. They are used to config iota server. All need modifying is 'Source' in config_sour.js file. This Source is the address of iota server.
+
+
    
 
 

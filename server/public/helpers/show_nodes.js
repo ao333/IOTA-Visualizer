@@ -207,7 +207,7 @@ function prepareSphere() {
  *  update the graph periodically
  */
 function updateInterval() {
-  sphere_graph_timer = setInterval(function () {
+  setTimeout(function updatesphere() {
     if (!treeMode) {
       update_hash = [];
       sphere_nodes.forEach(function (entry) {
@@ -222,12 +222,18 @@ function updateInterval() {
         contentType: "application/json; charset=utf-8",
         success: function (data) {
           update_data(data, sphere_nodes, sphere_edges);
+          setTimeout(updatesphere, 500);
+        },
+        error: function(){
+          setTimeout(updatesphere, 500);
         }
       });
+    }else{
+      setTimeout(updatesphere, 500);
     }
-  }, 5000);
+  }, 500);
 
-  tree_graph_timer = setInterval(function () {
+  setTimeout(function updatetree() {
     if (treeMode) {
       update_hash = [];
       tree_nodes.forEach(function (entry) {
@@ -235,7 +241,6 @@ function updateInterval() {
           update_hash.push(entry['id']);
 
       });
-
       $.ajax({
         type: "POST",
         url: "/tangle/tree_update",
@@ -243,11 +248,16 @@ function updateInterval() {
         contentType: "application/json; charset=utf-8",
         success: function (data) {
           update_data(data, tree_nodes, tree_edges);
+          setTimeout(updatetree, 500);
+        },
+        error:function(){
+          setTimeout(updatetree, 500);
         }
       });
+    }else{
+      setTimeout(updatetree, 500);
     }
-
-  }, 5000);
+  }, 500);
 }
 
 /**
