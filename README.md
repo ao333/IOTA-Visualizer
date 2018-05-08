@@ -56,9 +56,7 @@ IMPORTANT: if you would like to test the database functions, please modify the f
 	  },  
 	  keepAlive: 120  
 	});  
-	connect.then(()=>{  
-	  console.log('Connected correctly to mongodb');  
-	}, (err) => {console.log(err);});
+	module.exports = connect;
 
 ### config_iota and config_sour
 These two files are just shown in database folder. They are used to config iota server. All need modifying is 'Source' in config_sour.js file. This Source is the address of iota server.

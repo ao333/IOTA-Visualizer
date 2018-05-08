@@ -15,6 +15,10 @@ const chartRouter = require('./routes/chart');
 
 const mongo_db = require('./config/config_mongo');
 
+mongo_db.then(()=>{
+  console.log('Connected correctly to mongodb');
+}, (err) => {console.log(err);});
+
 //start to serve the website-------------------------------------------------------
 
 let app = express();
