@@ -16,6 +16,7 @@ let tree_graph_timer;
 let update_hash = []; // store the hashes of nodes that are likely to be updated
 let search_click = false; // record if button of search_click is selected
 let treeMode = true; // record if button of switching modes is selected
+let addAllNew = false;
 
 let current_data;  // all data current exists
 
@@ -27,6 +28,30 @@ $(function () {
 
   let this_hash = getParameterByName("hash"); // if we choose specific node with hash as center
   if (!this_hash) {
+    // $.ajax({
+    //   url: "/tangle/tree_initial",
+    //   dataType: "json",
+    //   success:function(data){
+    //     if(!data || data.length === 0){
+    //       setTimeout(function(){
+    //         location.reload(true);
+    //       }, 2000);
+    //       return;
+    //     }
+    //     init_graph(data, tree_nodes, tree_edges, 0);
+    //     redrawAll(0);
+    //     updateInterval(); // start the interval timers to update graph periodically
+    //     current_data = data;
+    //     Table('initial');
+    //   },
+    //   error: function(){
+    //     setTimeout(function(){
+    //       location.reload(true);
+    //     }, 2000);
+    //
+    //   }
+    // });
+
     $.getJSON("/tangle/tree_initial", function (data) {
       init_graph(data, tree_nodes, tree_edges, 0);
       redrawAll(0);
@@ -217,7 +242,7 @@ function updateInterval() {
       });
       $.ajax({
         type: "POST",
-        url: "/tangle/sphere_update",
+        url: "/tangle/sphere_update" + (addAllNew? "?add_all=t" : ""),
         data: JSON.stringify(update_hash),
         contentType: "application/json; charset=utf-8",
         success: function (data) {
@@ -243,7 +268,7 @@ function updateInterval() {
       });
       $.ajax({
         type: "POST",
-        url: "/tangle/tree_update",
+        url: "/tangle/tree_update"+ (addAllNew? "?add_all=t" : ""),
         data: JSON.stringify(update_hash),
         contentType: "application/json; charset=utf-8",
         success: function (data) {
@@ -425,6 +450,14 @@ function initialButtons() {
     else {
       treeMode = false;
       redrawAll(1);
+    }
+  });
+
+  $("#add_all_new").change(function(){
+    if(!this.checked){
+      addAllNew = false;
+    }else{
+      addAllNew = true;
     }
   });
 

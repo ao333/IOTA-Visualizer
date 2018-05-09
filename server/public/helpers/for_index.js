@@ -3,8 +3,7 @@ $(function () {
   setInterval(function () {
       for (var index = 0; index < 8; index++) {
       	(function(index){
-      	  if(index === 4 || index === 5)
-      	    return;
+      	  if(index === 4) return;
 			$.getJSON("/stat/" + index, function (data) {
 			        //console.log("data: " + data);
               nums[index].innerHTML = data + "";

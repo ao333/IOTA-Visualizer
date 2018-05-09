@@ -8,82 +8,50 @@ const dbAction = require('./helpers/dbAction');
 const statistics = require('./helpers/statistics');
 const connection = require('./config/config_mongo');
 const driver = require('./config/config_neo4j');
+const Statistics = require('./models/Statistics');
 
 setTimeout(function(){
-  connection.then(function () {
+  connection.then(function startmongo() {
     console.log('connect to mongodb');
-    setTimeout(function update() {
-      statistics.updateMeanCon(function (error) {
-        if(error){
-          console.log(1,error);
-          setTimeout(update, 1000);
-          return;
-        }
-        statistics.updateValuePerSecond(function (error) {
+    Statistics.findOne({}, function (error, doc) {
+      if(error){
+        setTimeout(startmongo, 2000);
+        return;
+      }
+      if(!doc || doc.length === 0){
+        Statistics.create({}, function(error, success){
           if(error){
-            console.log(2,error);
-            setTimeout(update, 1000);
+            setTimeout(startmongo, 2000);
             return;
           }
-          statistics.updateTips(function (error) {
-            if(error){
-              console.log(3,error);
-              setTimeout(update,1000);
-              return;
-            }
-            statistics.updatePrice(function (error) {
-              if(error){
-                console.log(4, error);
-                setTimeout(update,1000);
-                return;
-              }
-              setTimeout(update,1000);
-            })
-          })
+          statistics.updateMongoDb();
         })
-      })
-    }, 1);
-
-    setTimeout(function copy() {
-      statistics.copyAndStore(function (error) {
-        if(error){
-          console.log(5, error);
-          setTimeout(copy, 1000);
-          return;
-        }
-      })
-    }, 600000);
-  },);
-
-
+      }else{
+        statistics.updateMongoDb();
+      }
+    });
+  });
 
   setTimeout(function init() {
-   // dbAction.dbInit(function (error) {
-     // if(error){
-       // console.log(6, error);
-        //setTimeout(init, 1000);
-        //return;
-      //}
-      console.log('init');
+      console.log('init. Notice: Initialization process may take a long time');
       setTimeout(function insert() {
         dbAction.dbInsert(function (error) {
           if(error){
-            console.log(7, error);
             setTimeout(insert, 1000);
             return;
           }
+          console.log("insert success");
           setTimeout(function update() {
             dbAction.dbUpdate(function update(error) {
               if(error){
-                console.log(8, error);
                 setTimeout(update, 1000);
               }
+              console.log("update success");
               setTimeout(insert, 1000);
             })
           }, 1000);
         })
       }, 1000)
-   // })
   }, 10);
 
   setTimeout(function delete999(){
@@ -95,7 +63,6 @@ setTimeout(function(){
         setTimeout(delete999, 5000);
       })
       .catch(function(err){
-        console.log(err);
         session.close();
         setTimeout(delete999, 5000);
       })
@@ -109,7 +76,6 @@ setTimeout(function(){
         setTimeout(correctTip, 60000);
       })
       .catch(function(err){
-        console.log(err);
         session.close();
         setTimeout(correctTip, 60000);
       })
@@ -128,13 +94,14 @@ setTimeout(function(){
           count = count.toInt();
         }
 
-        if(count > 100000){
-          session.run('MATCH (n) WITH n ORDER BY n.attachmentTimestamp LIMIT ' + (count-100000) + ' DETACH DELETE n')
+        //This is to make sure there are no more than 200000 transactions in database, you can change it later
+        if(count > 200000){
+          session.run('MATCH (n) WITH n ORDER BY n.attachmentTimestamp LIMIT ' + (count-200000) + ' DETACH DELETE n')
             .then(function (result) {
+              setTimeout(deletemore, 200000);
               session.close();
             })
             .catch(function(err){
-              console.log(err);
               session.close();
               setTimeout(deletemore, 100);
             })
@@ -143,7 +110,6 @@ setTimeout(function(){
         }
       })
       .catch(function(err){
-        console.log(err);
         session.close();
         setTimeout(deletemore, 100);
       })

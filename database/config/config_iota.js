@@ -3,7 +3,7 @@ const Source = require('./config_sour');
 
 let iota = new IOTA({
   'host': Source.Source,
-  'port': 14265
+  'port': Source.Port
 });
 
 module.exports = iota;

@@ -6,6 +6,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require('./cors');
 const Statistics = require('../models/Statistics');
+const iota = require('../config/config_iota');
 
 const statRouter = express.Router();
 statRouter.use(bodyParser.json());
@@ -24,24 +25,39 @@ statRouter.route('/:id')
         next(error);
         return;
       }
-      if(req.params.id === "3"){
+      if(!doc || doc.length === 0){
+        let e = new Error('cannot find fields');
+        e.status = 404;
+        next(e);
+        return;
+      }
+      if(req.params.id === "3" && doc["TotalTips"]){
         res.json(doc["TotalTips"]);
       }
 
-      else if(req.params.id === "2"){
+      else if(req.params.id === "2" && doc["MeanConTime"]){
         res.json(doc["MeanConTime"].toFixed(2));
       }
-      else if(req.params.id === "1"){
-        res.json(doc["ValuePerSec"].toExponential(3));
+      else if(req.params.id === "1" && doc["ValuePerSec"]){
+        res.json((doc["ValuePerSec"]*3600).toFixed(4));
       }
-      else if(req.params.id === '0'){
+      else if(req.params.id === '0' && doc["Price"]){
         res.json(doc["Price"]);
       }
-      else if(req.params.id === '7'){
+      else if(req.params.id === '7' && doc["Non_value_Percent"]){
         res.json((doc["Non_value_Percent"] * 100).toFixed(2) + '%');
       }
-      else if(req.params.id === '6'){
-        res.json(doc["ValuePerTran"].toExponential(3));
+      else if(req.params.id === '6' && doc["ValuePerTran"]){
+        res.json((doc["ValuePerTran"]/(1E6)).toFixed(2));
+      }
+      else if(req.params.id === '5'){
+        iota.api.getNodeInfo(function(error, success) {
+          if (error) {
+            next(error);
+          } else {
+            res.json(success.latestMilestone);
+          }
+        });
       }
       else{
           next();

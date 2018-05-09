@@ -44,22 +44,32 @@ IMPORTANT: if you would like to test the database functions, please modify the f
 
 	let constr = {  
 	  'mongoUrl':'<url of mongodb>',  
-	  'user':"<username>",  
-	  'password':"<password>"  
+	  //'user':"<username>",  
+	  //'password':"<password>"  
 	};   
 	const mongoose = require('mongoose');  
 	mongoose.Promise = require('bluebird');   
 	const connect = mongoose.connect(constr.mongoUrl,{  
-	  auth:{  
-	    user:constr.user,  
-	    password:constr.password  
-	  },  
+	  //auth:{  
+	  //  user:constr.user,  
+	  //  password:constr.password  
+	  //},  
 	  keepAlive: 120  
 	});  
 	module.exports = connect;
+Notice: if you run mongoDb locally, maybe you do not need user and password. If you need user and password configuration for mongodb (remotely or set password locally), please uncomment authentication configures above.
 
-### config_iota and config_sour
-These two files are just shown in database folder. They are used to config iota server. All need modifying is 'Source' in config_sour.js file. This Source is the address of iota server.
+### config_sour
+	let Source = "http://node.deviceproof.org";
+	let Port = 14265;
+	let Label = "Node2";  
+	module.exports = {
+	  Source,
+	  Label,
+	  Port
+	};
+Notice: Source is address of iota server, port is port of the server. Please change Label when you add more source servers
+
 
 
    

@@ -163,43 +163,6 @@ function updateValuePerSecond(callback){
     });
 }
 
-/**
- * put newly confirmed transaction into MongoDb
- * @param update_transactions
- */
-// function extractConfirmed(update_transactions) {
-//   if(update_transactions.length === 0)
-//     return;
-//   let session = driver.session();
-//   let query_string = update.queryTransactionsFromHashString(update_transactions);
-//   let transactions = [];
-//   session
-//     .run(query_string)
-//     .then(function (result) {
-//       result.records.forEach(function (record) {
-//         if(record.toObject().tran.labels[0] === "confirmed"){
-//           let obj = {};
-//           obj.create_time = record.toObject().tran.properties.create_time;
-//           obj.confirm_time = record.toObject().tran.properties.time;
-//           transactions.push(obj);
-//         }
-//       });
-//       if(transactions.length > 0){
-//         ConfirmTime.create(transactions, function (error, doc) {
-//           if(error){
-//             console.log(error);
-//             session.close();
-//           }else{
-//           }
-//         })
-//       }
-//     })
-//     .catch(function (error) {
-//       session.close();
-//       console.log(error);
-//     });
-// }
-
 function updatePrice(callback){
   let xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
@@ -247,10 +210,46 @@ function copyAndStore(callback){
   })
 }
 
+function updateMongoDb(){
+  setTimeout(function update() {
+    updateMeanCon(function (error) {
+      if(error){
+        setTimeout(update, 1000);
+        return;
+      }
+      updateValuePerSecond(function (error) {
+        if(error){
+          setTimeout(update, 1000);
+          return;
+        }
+        updateTips(function (error) {
+          if(error){
+            setTimeout(update,1000);
+            return;
+          }
+          updatePrice(function (error) {
+            if(error){
+              setTimeout(update,1000);
+              return;
+            }
+            setTimeout(update,1000);
+          })
+        })
+      })
+    })
+  }, 1);
+
+  setTimeout(function copy() {
+    copyAndStore(function (error) {
+      if(error){
+        setTimeout(copy, 1000);
+        return;
+      }
+      setTimeout(copy, 600000);
+    })
+  }, 600000);
+}
+
 module.exports = {
-  updateMeanCon,
-  updateTips,
-  updateValuePerSecond,
-  updatePrice,
-  copyAndStore
+  updateMongoDb
 };

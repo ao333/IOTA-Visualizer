@@ -1,10 +1,14 @@
 const IOTA = require('iota.lib.js');
 
 let iota = new IOTA({
-  'host': 'http://146.169.47.20',
-  'port': 14700
+  'host': 'http://node01.iotatoken.nl',
+  'port': 14265
 });
 
-iota.api.getTips(function(error, tips){
-  console.log(error,tips);
+iota.api.getNodeInfo(function(error, success) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log(success);
+  }
 });

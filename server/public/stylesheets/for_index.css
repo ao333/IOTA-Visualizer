@@ -157,7 +157,7 @@ body{
 
 #information span{
   color: white;
-  font-size: 20px;
+  font-size: 120%;
   font-family: "Arial";
 }
 
@@ -185,6 +185,20 @@ body{
   top: 40px;
   font-family: "Arial";
 }
+
+#milestone{
+  display: block;
+  position: relative !important;
+  top: -60% !important;
+  width: 220px;
+  font-size: 15px !important;
+  word-wrap: break-word;
+  word-break: break-all;
+  overflow: hidden;
+}
+/*#milestone:hover{*/
+  /*overflow: auto;*/
+/*}*/
 
 /*-------------------------------------------------------------------------------------*/
 /*for table*/

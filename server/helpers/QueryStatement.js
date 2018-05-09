@@ -43,7 +43,10 @@ function addNewString(old_data, amount, label){
     result += ' AND item.hash <> "' + old_data[i] + '" ';
   }
 
-  result += 'return distinct item ORDER BY item.attachmentTimestamp DESC LIMIT ' + amount;
+  result += 'return distinct item';
+  if(amount){
+    result +=  ' ORDER BY item.attachmentTimestamp DESC LIMIT ' + amount;
+  }
   return result;
 }
 
@@ -53,13 +56,13 @@ function addNewString(old_data, amount, label){
  * @returns {string}
  */
 function initialString(num){
-  return 'MATCH (tip:tip:Node1)-[:CONFIRMS]-(rubbish:unconfirmed) WITH tip ORDER BY tip.attachmentTimestamp DESC LIMIT ' +  (num/2) +  ' MATCH (tip)-[:CONFIRMS]->(trans) WITH tip, ' +
+  return 'MATCH (tip:tip:Node1) WITH tip ORDER BY tip.attachmentTimestamp DESC LIMIT ' +  (num/2) +  ' MATCH (tip)-[:CONFIRMS]->(trans) WITH tip, ' +
     'trans MATCH (trans)-[:CONFIRMS]->(trans2) WITH tip, trans,trans2 ' +
     'MATCH (trans2)-[:CONFIRMS]->(trans3) ' +
     'WITH COLLECT(tip) + COLLECT(trans)+ COLLECT(trans2)+ COLLECT(trans3)[..10] ' +
     'AS items UNWIND items AS item ' +
     'return distinct item' +
-    ' UNION MATCH (tip:tip:Node2)-[:CONFIRMS]-(rubbish:unconfirmed) WITH tip LIMIT ' +  (num/2) +  ' MATCH (tip)-[:CONFIRMS]->(trans) WITH tip, ' +
+    ' UNION MATCH (tip:tip:Node2) WITH tip ORDER BY tip.attachmentTimestamp DESC LIMIT ' +  (num/2) +  ' MATCH (tip)-[:CONFIRMS]->(trans) WITH tip, ' +
     'trans MATCH (trans)-[:CONFIRMS]->(trans2) WITH tip, trans,trans2 ' +
     'MATCH (trans2)-[:CONFIRMS]->(trans3) ' +
     'WITH COLLECT(tip) + COLLECT(trans)+ COLLECT(trans2)+ COLLECT(trans3)[..10] ' +

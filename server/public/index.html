@@ -6,7 +6,7 @@
   <script type="text/javascript" src="helpers/tools.js"></script>
   <link rel="stylesheet" href="./stylesheets/for_index.css">
   <link rel="stylesheet" href="./stylesheets/styles.css">
-  <link rel="stylesheet" href="./css/simple-switch.min.css">
+  <link rel="stylesheet" href="./stylesheets/simple-switch.min.css">
   <script type="text/javascript" src="./helpers/jquery.simpleswitch.min.js"></script>
   <script type="text/javascript" src="helpers/for_index.js"></script>
 
@@ -52,7 +52,11 @@
           <div>
           <input id = "search_click" type="checkbox" class="mybox"/>
           Search when click the node
-        </div>
+          </div>
+          <div>
+            <input id = "add_all_new" type="checkbox" class="mybox"/>
+            Add all new nodes
+          </div>
           <form class="form-style-4">
             <label>
               <input type="text" name="field1" required="true" placeholder="Search Hash" /><br>
@@ -128,7 +132,7 @@
     <a href="/visualization?type=value_ps">
     <div>
       <img src="img/data_show.png" alt="">
-      <span>Value Transfer / Sec</span>
+      <span>Value Transfer / Hour</span>
       <span class="num">0</span>
     </div>
     </a>
@@ -149,19 +153,20 @@
 
     <div>
       <img src="img/data_show.png" alt="">
-      <span>Placeholder</span>
-      <span class="num">0</span>
+      <span>IOTA servers</span>
+      <span class="num">2</span>
     </div>
+
     <div>
       <img src="img/data_show.png" alt="">
-      <span>Placeholder</span>
-      <span class="num">0</span>
+      <span>Latest Solid MileStone</span>
+      <p class="num" id="milestone">0</p>
     </div>
 
     <a href="/visualization?type=value_pt">
     <div>
       <img src="img/data_show.png" alt="">
-      <span>Value/Transaction</span>
+      <span>Value/Transaction(x10<sup>6</sup>)</span>
       <span class="num">0</span>
     </div>
     </a>
@@ -268,7 +273,6 @@
     $(".mybox").simpleSwitch();
   </script>
 
-  <script type="text/javascript" src="helpers/info_table.js"></script>
   <script type="text/javascript">
     //auto expand textarea
     function adjust_textarea(h) {
@@ -278,6 +282,7 @@
   </script>
   <!--use vis.helpers library to show our iota nodes-->
   <script type="text/javascript" src="helpers/show_nodes.js"></script>
+
 
 </body>
 </html>
