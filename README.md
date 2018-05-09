@@ -39,6 +39,7 @@ IMPORTANT: if you would like to test the database functions, please modify the f
   
     const driver = neo4j.driver(uri, neo4j.auth.basic(user, password));  
     module.exports = driver;
+Notice: Put it in config folder both in server and in database.
 
 ### config_mongo
 
@@ -57,7 +58,7 @@ IMPORTANT: if you would like to test the database functions, please modify the f
 	  keepAlive: 120  
 	});  
 	module.exports = connect;
-Notice: if you run mongoDb locally, maybe you do not need user and password. If you need user and password configuration for mongodb (remotely or set password locally), please uncomment authentication configures above.
+Notice: Put it in config folder both in server and in database. if you run mongoDb locally, maybe you do not need user and password. If you need user and password configuration for mongodb (remotely or set password locally), please uncomment authentication configures above.
 
 ### config_sour
 	let Source = "http://node.deviceproof.org";
@@ -68,7 +69,7 @@ Notice: if you run mongoDb locally, maybe you do not need user and password. If 
 	  Label,
 	  Port
 	};
-Notice: Source is address of iota server, port is port of the server. Please change Label when you add more source servers
+Notice: You do not need this file in server config folder. Just need it in database's config folder. Source is address of iota server, port is port of the server. Please change Label when you add more source servers
 
 
 
