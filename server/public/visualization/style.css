@@ -1,3 +1,43 @@
+/*for header*/
+
+.normal_width{
+  width: 100%;
+  margin: auto;
+}
+
+#header{
+  width: 100%;
+  height: 86px;
+  background-color: #333;
+}
+
+
+#header img{
+  padding-top: 10px;
+  height: 67px;
+  position: absolute;
+  left: 25px;
+
+}
+
+.nav_bar{
+  padding-top: 30px;
+  float: right;
+}
+
+.nav_bar li{
+  float: left;
+  margin: 0px 30px;
+}
+
+.nav_bar .current{
+  color: #c0c0c0;
+}
+
+.nav_bar li a{
+  font: 26px "Arial";
+  color: white;
+}
 body {
   font-family: Helvetica Neue, Arial, sans-serif;
   text-align: center;
@@ -22,7 +62,7 @@ h2 {
 }
 
 a {
-  margin-top: 50px;
+  /*margin-top: 50px;*/
   display: block;
   color: #3e95cd;
 }

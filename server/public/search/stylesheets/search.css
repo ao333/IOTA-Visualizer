@@ -1,11 +1,53 @@
+/*for header*/
+
+.normal_width{
+    width: 100%;
+    margin: auto;
+}
+
+#header{
+    width: 100%;
+    height: 86px;
+    background-color: #333;
+}
+
+
+#header img{
+    padding-top: 10px;
+    height: 67px;
+}
+
+.nav_bar{
+    padding-top: 30px;
+    float: right;
+}
+
+.nav_bar li{
+    float: left;
+    margin: 0px 30px;
+}
+
+.nav_bar .current{
+    color: #c0c0c0;
+}
+
+.nav_bar li a{
+    font: 26px "Arial";
+    color: white;
+}
+
+
 #search_header{
-    background-image: url("../img/bk_for_search.jpg");
+    /*background-image: url("../img/bk_for_search.jpg");*/
     background-repeat: no-repeat;
     background-size: cover;
     height: 100%;
     width: 100%;
     margin: 0px 0px 0px 0;
-    padding-bottom: 400px;
+}
+
+.header_container{
+    background-color: white;
 }
 
 #h1{
@@ -16,7 +58,7 @@
 }
 
 #h2{
-    color: #fafafa;
+    color: black;
     padding-top: 70px;
     margin-bottom: 0px;
     text-align:center;
@@ -29,7 +71,7 @@
     margin-top: 5px;
     padding-top: 1px;
     font-size: 16px;
-    color: #cee1ea;
+    color: black;
 }
 
 form{
@@ -55,35 +97,38 @@ form{
 #search_input{
     margin-left: 10px;
     background-color: transparent;
-    border: 0px;
-    color: #cee1ea;
-    outline:none;
-    width: 80%;
-    height: 100px;
+    border: 1px solid grey;
+    color: black;
+    /*outline:none;*/
+    width: 90%;
+    height: 50px;
     font-size:20px;
+    position: relative;
+    top: 28%;
+    border-radius: 5px;
 }
 
 input::-webkit-input-placeholder  {
     font-size: 20px;
-    color: #cee1ea;
+    color: black;
 
 }
 
 #search_desc{
     margin-left: 75px;
-    color: #cee1ea;
+    color: black;
     font-size: 15px;
 }
 
 b{
-    color: #ffff1a;
+    color: black;
 }
 
 
 
 
 .radio:checked {
-    border: 6px solid white;
+    border: 6px solid black;
 }
 
 .radio
@@ -96,7 +141,7 @@ b{
     width: 16px;
     height: 16px;
 
-    border: 2px solid #999;
+    border: 2px solid black;
     transition: 0.2s all linear;
     outline: none;
     margin-right: 5px;
@@ -108,7 +153,7 @@ b{
 .radio_label{
     margin-right: 15px;
     line-height: 32px;
-    color: #fafafa;
+    color: black;
     font-size:20px;
 }
 
