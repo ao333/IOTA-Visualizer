@@ -11,11 +11,11 @@ const Record = require('../models/Record');
 const chartRouter = express.Router();
 chartRouter.use(bodyParser.json());
 
-//send general statistics to client
 chartRouter.route('/')
   .get(cors.corsWithOptions, (req, res, next) => {
-    Record.find({}, function (error, docs) {
+    Record.find({}).where('createdAt').gt(Date.now()-604800000).lt(Date.now()).exec(function (error, docs) {
       if(error){
+        console.log(error);
         return next(error);
       }
       let submit_content = {};

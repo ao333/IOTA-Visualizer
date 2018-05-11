@@ -510,7 +510,7 @@ let update_data = function (data, nodeList, edgeList) {
             "title": title,
             "group": group,
           })
-        }, 2000);
+        }, 4000);
       })(data[i]["hash"], para, gro);
 
       let to = data[i]["hash"];
