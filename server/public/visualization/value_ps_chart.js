@@ -2,9 +2,10 @@ value_ps_chart = () => {
             $.get('/chart', function(data) {
                 var date_label = [];
                 var unix_time = data.time;
+                console.log(data);
                 var mct = data.MeanConTime;
-                length = Math.min(unix_time.length, 60);
-                for (var i = 0; i < length; i++) {
+                //length = Math.min(unix_time.length, 60);
+                for (var i = 0; i < unix_time.length; i++) {
                     var dt = new Date(unix_time[i]);
                     var year = dt.getFullYear();
                     var month = dt.getMonth() + 1;
@@ -20,7 +21,6 @@ value_ps_chart = () => {
                 $("#Chart").remove();
                 $(".wrapper").append('<canvas id="Chart" width="1600" height="900"></canvas>');
                 var ctx = $("#Chart");
-                console.log(data.ValuePerSec)
                 var myChart = new Chart(ctx, {
                     type: 'line',
                     data: {
