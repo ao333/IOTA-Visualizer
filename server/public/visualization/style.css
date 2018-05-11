@@ -1,5 +1,9 @@
 /*for header*/
 
+body{
+  margin: 0;
+}
+
 .normal_width{
   width: 100%;
   margin: auto;
@@ -10,7 +14,9 @@
   height: 86px;
   background-color: #333;
 }
-
+#header a{
+  text-decoration: none;
+}
 
 #header img{
   padding-top: 10px;
@@ -65,4 +71,18 @@ a {
   /*margin-top: 50px;*/
   display: block;
   color: #3e95cd;
+}
+
+#footer{
+  margin-top: 20px;
+  height: 60px;
+  width: 100%;
+  background: #333;
+  border-top: 10px solid #4c4c4c;
+  padding-top: 20px;
+  color: white;
+  line-height: 1.5;
+}
+#footer .copy{
+  float: right;
 }

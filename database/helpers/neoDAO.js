@@ -17,7 +17,7 @@ function dbTruncate(callback){
 
 function primaryKey(callback){
     let session = driver.session();
-  session.run('CREATE CONSTRAINT ON (n:' + Label + ') ASSERT (n.hash) IS NODE KEY')
+  session.run('CREATE CONSTRAINT ON (n:Node) ASSERT (n.hash) IS NODE KEY')
         .then(function(result){
             session.close();
             callback(null);
@@ -31,7 +31,7 @@ function primaryKey(callback){
 function findRepli(hashes, callback){
     let session = driver.session();
     session.readTransaction(function (transaction) {
-        let result = transaction.run(`UNWIND {hashParam} AS hp WITH DISTINCT hp MATCH (node:${Label})
+        let result = transaction.run(`UNWIND {hashParam} AS hp WITH DISTINCT hp MATCH (node:Node)
          WHERE node.hash = hp RETURN node.hash AS hash`, {hashParam: hashes});
         return result;
     }).then(function (result) {
@@ -47,19 +47,19 @@ function findRepli(hashes, callback){
 
 function getCypher(states, callback){
     if(states == 'tip'){
-        let cypher = `UNWIND {objectParam} AS op CREATE (node:${Label}:tip) SET node.hash = op.hash, 
+        let cypher = `UNWIND {objectParam} AS op CREATE (node:Node:tip) SET node.hash = op.hash, 
     node.address = op.address, node.value = op.value, node.attachmentTimestamp = op.timestamp, 
     node.trunkTransaction = op.trunkTransaction, node.branchTransaction = op.branchTransaction, 
     node.insertTime = timestamp(), node.confirmTime = 0`;
         callback(null, cypher);
     }else if(states == 'unconfirmed'){
-        let cypher = `UNWIND {objectParam} AS op CREATE (node:${Label}:unconfirmed) SET node.hash = op.hash, 
+        let cypher = `UNWIND {objectParam} AS op CREATE (node:Node:unconfirmed) SET node.hash = op.hash, 
     node.address = op.address, node.value = op.value, node.attachmentTimestamp = op.timestamp, 
     node.trunkTransaction = op.trunkTransaction, node.branchTransaction = op.branchTransaction, 
     node.insertTime = timestamp(), node.confirmTime = 0`;
         callback(null, cypher);
     }else if(states == 'confirmed'){
-        let cypher = `UNWIND {objectParam} AS op CREATE (node:${Label}:confirmed) SET node.hash = op.hash, 
+        let cypher = `UNWIND {objectParam} AS op CREATE (node:Node:confirmed) SET node.hash = op.hash, 
     node.address = op.address, node.value = op.value, node.attachmentTimestamp = op.timestamp, 
     node.trunkTransaction = op.trunkTransaction, node.branchTransaction = op.branchTransaction, 
     node.insertTime = timestamp(), node.confirmTime = 0`;
@@ -178,7 +178,7 @@ function relatEstabBackward(hashes, callback){
 */
 function relatEstab(pairs, callback){
     let session = driver.session();
-    session.run(`UNWIND {pairParam} as pp MATCH (n1:${Label}), (n2:${Label}) 
+    session.run(`UNWIND {pairParam} as pp MATCH (n1:Node), (n2:Node) 
     WHERE n1.hash = pp.start AND n2.hash = pp.end MERGE (n1)-[:CONFIRMS]->(n2)`, {pairParam: pairs})
         .then(function(result){
             session.close();

@@ -20,13 +20,13 @@ tangleRouter.use(bodyParser.json());
 // send tree data(initial amount of tips is 10) to client
 tangleRouter.route('/tree_initial')
   .get(cors.corsWithOptions, (req, res, next) => {
-    initial(req, res, next, 20);
+    initial(req, res, next, 10);
   });
 
 //send sphere data(initial amount of tips is 30) to client
 tangleRouter.route('/sphere_initial')
   .get(cors.corsWithOptions, (req, res, next) => {
-    initial(req, res, next, 60);
+    initial(req, res, next, 40);
   });
 
 //update transactions for tree graph
@@ -83,6 +83,7 @@ function initial(req, res, next, amount){
         session.close();
       })
       .catch(function (error) {
+        console.log(error);
         session.close();
         next(error);
       });

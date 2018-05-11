@@ -140,7 +140,7 @@ function updateValuePerSecond(callback){
           session.close();
           return;
         }
-        if(meanPerSecond !== 0)
+        if(meanPerSecond !== 0 && meanPerSecond <= 1e-6)
           doc["ValuePerSec"] = meanPerSecond;
         if(non_zero_percent !== 0)
           doc["Non_value_Percent"] = non_zero_percent;

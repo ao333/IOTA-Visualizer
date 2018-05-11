@@ -56,15 +56,15 @@ function addNewString(old_data, amount, label){
  * @returns {string}
  */
 function initialString(num){
-  return 'MATCH (tip:tip:Node1) WITH tip ORDER BY tip.attachmentTimestamp DESC LIMIT ' +  (num/2) +  ' MATCH (tip)-[:CONFIRMS]->(trans) WITH tip, ' +
-    'trans MATCH (trans)-[:CONFIRMS]->(trans2) WITH tip, trans,trans2 ' +
-    'MATCH (trans2)-[:CONFIRMS]->(trans3) ' +
+  return 'MATCH (tip:tip:Node1) WHERE exists((tip)-[:CONFIRMS]-()) WITH tip ORDER BY tip.attachmentTimestamp DESC LIMIT ' +  (num/2) +  ' OPTIONAL MATCH (tip)-[:CONFIRMS]->(trans) WITH tip, ' +
+    'trans OPTIONAL MATCH (trans)-[:CONFIRMS]->(trans2) WITH tip, trans,trans2 ' +
+    'OPTIONAL MATCH (trans2)-[:CONFIRMS]->(trans3) ' +
     'WITH COLLECT(tip) + COLLECT(trans)+ COLLECT(trans2)+ COLLECT(trans3)[..10] ' +
     'AS items UNWIND items AS item ' +
     'return distinct item' +
-    ' UNION MATCH (tip:tip:Node2) WITH tip ORDER BY tip.attachmentTimestamp DESC LIMIT ' +  (num/2) +  ' MATCH (tip)-[:CONFIRMS]->(trans) WITH tip, ' +
-    'trans MATCH (trans)-[:CONFIRMS]->(trans2) WITH tip, trans,trans2 ' +
-    'MATCH (trans2)-[:CONFIRMS]->(trans3) ' +
+    ' UNION MATCH (tip:tip:Node2) WHERE exists((tip)-[:CONFIRMS]-()) WITH tip ORDER BY tip.attachmentTimestamp DESC LIMIT ' +  (num/2) +  ' OPTIONAL  MATCH (tip)-[:CONFIRMS]->(trans) WITH tip, ' +
+    'trans OPTIONAL MATCH (trans)-[:CONFIRMS]->(trans2) WITH tip, trans,trans2 ' +
+    ' OPTIONAL MATCH (trans2)-[:CONFIRMS]->(trans3) ' +
     'WITH COLLECT(tip) + COLLECT(trans)+ COLLECT(trans2)+ COLLECT(trans3)[..10] ' +
     'AS items UNWIND items AS item ' +
     'return distinct item';

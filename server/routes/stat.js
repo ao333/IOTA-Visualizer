@@ -31,26 +31,26 @@ statRouter.route('/:id')
         next(e);
         return;
       }
-      if(req.params.id === "3" && doc["TotalTips"]){
+      if(req.params.id === "4" && doc["TotalTips"]){
         res.json(doc["TotalTips"]);
       }
 
-      else if(req.params.id === "2" && doc["MeanConTime"]){
+      else if(req.params.id === "3" && doc["MeanConTime"]){
         res.json(doc["MeanConTime"].toFixed(2));
       }
-      else if(req.params.id === "1" && doc["ValuePerSec"]){
-        res.json((doc["ValuePerSec"]*3600).toFixed(4));
+      else if(req.params.id === "2" && doc["ValuePerSec"]){
+        res.json((doc["ValuePerSec"]*3600).toExponential(2));
       }
-      else if(req.params.id === '0' && doc["Price"]){
+      else if(req.params.id === '1' && doc["Price"]){
         res.json(doc["Price"]);
       }
       else if(req.params.id === '7' && doc["Non_value_Percent"]){
         res.json((doc["Non_value_Percent"] * 100).toFixed(2) + '%');
       }
-      else if(req.params.id === '6' && doc["ValuePerTran"]){
-        res.json((doc["ValuePerTran"]/(1E6)).toFixed(2));
+      else if(req.params.id === '0' && doc["ValuePerTran"]){
+        res.json((doc["ValuePerTran"]).toExponential(2));
       }
-      else if(req.params.id === '5'){
+      else if(req.params.id === '6'){
         iota.api.getNodeInfo(function(error, success) {
           if (error) {
             next(error);

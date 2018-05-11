@@ -3,8 +3,7 @@ value_pt_chart = () => {
                 var date_label = [];
                 var unix_time = data.time;
                 var mct = data.MeanConTime;
-                length = Math.min(unix_time.length, 60);
-                for (var i = 0; i < length; i++) {
+                for (var i = 0; i < unix_time.length; i++) {
                     var dt = new Date(unix_time[i]);
                     var year = dt.getFullYear();
                     var month = dt.getMonth() + 1;
