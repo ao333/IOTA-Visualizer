@@ -1,4 +1,8 @@
 $(function(){
+  if($(window).height() >top + $("#footer").height()){
+    $("#footer").css("position", "absolute");
+    $("#footer").css("bottom", 0);
+  }
   let parameter = getParameterByName('type');
   if(!parameter || parameter === 'day')
     dayChart();

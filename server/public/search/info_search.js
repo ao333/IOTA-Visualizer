@@ -2,6 +2,11 @@ var items = $(" .linkable");
 
 //Initialization Function
 $(function () {
+  let top = $("#footer").position().top;
+  if($(window).height() >top + $("#footer").height()){
+    $("#footer").css("position", "absolute");
+    $("#footer").css("bottom", 0);
+  }
 
     let hashpara = getParameterByName('hash');
     let addresspara = getParameterByName('address');
@@ -73,6 +78,7 @@ var send_post = function (value)
     {
         style_change(1);
         $.post("/node_search?search=hash", {value: value}, function (data) {
+          console.log(data);
             update_data_by_id(data);
         }, "json");
     }
@@ -162,13 +168,13 @@ var update_data_by_id = function (data) {
         bundle.html('-');
         signiture.html('-');
     }
-
 }
 
 
 //Change the webpage layout due to different information to show
 function style_change(mode) {//1 for hash 2 for address
-    if (mode == 1){
+  $("#footer").css("position", "relative");
+  if (mode == 1){
         var search_header = document.getElementById('search_header');
         search_header.style.paddingBottom = '5%';
 

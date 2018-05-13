@@ -9,10 +9,6 @@ let sphere_edges;
 let sphere_options;
 
 // other tools ----------------------------------------------------------------------------------
-// two timers to update the graph periodically, one for tree, one for sphere
-let sphere_graph_timer;
-let tree_graph_timer;
-
 let update_hash = []; // store the hashes of nodes that are likely to be updated
 let search_click = false; // record if button of search_click is selected
 let treeMode = true; // record if button of switching modes is selected
@@ -28,31 +24,8 @@ $(function () {
 
   let this_hash = getParameterByName("hash"); // if we choose specific node with hash as center
   if (!this_hash) {
-    // $.ajax({
-    //   url: "/tangle/tree_initial",
-    //   dataType: "json",
-    //   success:function(data){
-    //     if(!data || data.length === 0){
-    //       setTimeout(function(){
-    //         location.reload(true);
-    //       }, 2000);
-    //       return;
-    //     }
-    //     init_graph(data, tree_nodes, tree_edges, 0);
-    //     redrawAll(0);
-    //     updateInterval(); // start the interval timers to update graph periodically
-    //     current_data = data;
-    //     Table('initial');
-    //   },
-    //   error: function(){
-    //     setTimeout(function(){
-    //       location.reload(true);
-    //     }, 2000);
-    //
-    //   }
-    // });
-
     $.getJSON("/tangle/tree_initial", function (data) {
+      console.log(1, data);
       init_graph(data, tree_nodes, tree_edges, 0);
       redrawAll(0);
       updateInterval(); // start the interval timers to update graph periodically
@@ -228,11 +201,13 @@ function prepareSphere() {
   };
 }
 
+let timer1;
+let timer2;
 /**
  *  update the graph periodically
  */
-function updateInterval() {
-  setTimeout(function updatesphere() {
+function updateInterval(non_zero) {
+  timer1 = setTimeout(function updatesphere() {
     if (!treeMode) {
       update_hash = [];
       sphere_nodes.forEach(function (entry) {
@@ -242,23 +217,23 @@ function updateInterval() {
       });
       $.ajax({
         type: "POST",
-        url: "/tangle/sphere_update" + (addAllNew? "?add_all=t" : ""),
+        url: "/tangle/sphere_update" + (addAllNew? "?add_all=t" + (non_zero?"&non_zero=t":"") : (non_zero?"?non_zero=t":"")),
         data: JSON.stringify(update_hash),
         contentType: "application/json; charset=utf-8",
         success: function (data) {
           update_data(data, sphere_nodes, sphere_edges);
-          setTimeout(updatesphere, 500);
+          timer1 = setTimeout(updatesphere, 500);
         },
         error: function(){
-          setTimeout(updatesphere, 500);
+          timer1 = setTimeout(updatesphere, 500);
         }
       });
     }else{
-      setTimeout(updatesphere, 500);
+      timer1 = setTimeout(updatesphere, 500);
     }
   }, 500);
 
-  setTimeout(function updatetree() {
+  timer2 = setTimeout(function updatetree() {
     if (treeMode) {
       update_hash = [];
       tree_nodes.forEach(function (entry) {
@@ -268,19 +243,19 @@ function updateInterval() {
       });
       $.ajax({
         type: "POST",
-        url: "/tangle/tree_update"+ (addAllNew? "?add_all=t" : ""),
+        url: "/tangle/tree_update"+ (addAllNew? "?add_all=t" + (non_zero?"&non_zero=t":"") : (non_zero?"?non_zero=t":"")),
         data: JSON.stringify(update_hash),
         contentType: "application/json; charset=utf-8",
         success: function (data) {
           update_data(data, tree_nodes, tree_edges);
-          setTimeout(updatetree, 500);
+          timer2 = setTimeout(updatetree, 500);
         },
         error:function(){
-          setTimeout(updatetree, 500);
+          timer2 = setTimeout(updatetree, 500);
         }
       });
     }else{
-      setTimeout(updatetree, 500);
+      timer2 = setTimeout(updatetree, 500);
     }
   }, 500);
 }
@@ -438,6 +413,7 @@ let init_graph = function (data, nodeList, edgeList, mode, search_hash) {
   }
 };
 
+let non_zero_check = false;
 /**
  * set click event to all buttons
  */
@@ -461,6 +437,20 @@ function initialButtons() {
     }
   });
 
+  $("#remove_all_zero").change(function(){
+    if(!this.checked){
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+      getInitialData(0);
+      non_zero_check = false
+    }else{
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+      getInitialData(1);
+      non_zero_check = true;
+    }
+  });
+
   $('#search_click').change(function () {
     if (!this.checked) {
       search_click = false;
@@ -470,6 +460,31 @@ function initialButtons() {
       search_click = true;
       network.on('click', clicknodeSearch);
     }
+  });
+}
+
+/**
+ * get initial data. type=0: all transactions are potential
+ * type=1: only non-zero transactions
+ * @param type
+ */
+function getInitialData(type){
+  tree_nodes = new vis.DataSet();
+  tree_edges = new vis.DataSet();
+  $.getJSON("/tangle/tree_initial" + (type===1?"?non_zero=yes":""), function (data) {
+    init_graph(data, tree_nodes, tree_edges, 0);
+    redrawAll(0);
+    if(type == 1)
+      updateInterval("non_zero");
+    else
+      updateInterval();
+    current_data = data;
+    Table('initial');
+  });
+  sphere_nodes = new vis.DataSet();
+  sphere_edges = new vis.DataSet();
+  $.getJSON("/tangle/sphere_initial"+(type===1?"?non_zero=yes":""), function (data) {
+    init_graph(data, sphere_nodes, sphere_edges, 1);
   });
 }
 
@@ -556,6 +571,7 @@ function clicknodeSearch(properties) {
 function Table(operation, new_data){
   let items = $("#table .item");
   if(operation === 'initial'){
+    dataList = [];
     current_data.sort(function(a,b){
       if (new Date(a.time).getTime() > new Date(b.time).getTime())
         return -1;
@@ -563,14 +579,12 @@ function Table(operation, new_data){
         return 1;
       else return 0;
     });
-
     for (let index = 0; index < 9; index++) {
       dataList.push({'hash':current_data[index]['hash'],
         'type':current_data[index]['type'],
         'value':current_data[index]['value'],
         'confirmation_time':new Date(current_data[index]['time']).toLocaleString()})
     }
-
     updateTable(dataList);
   }else if(operation === 'update'){
       dataList.pop();

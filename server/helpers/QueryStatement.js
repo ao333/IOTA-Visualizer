@@ -28,7 +28,7 @@ function updateString(old_data){
  * @param label  whether we want new unconfirmed data or tip data
  * @returns {string}
  */
-function addNewString(old_data, amount, label){
+function addNewString(old_data, amount, label, non_zero){
   let result = 'MATCH (item)-[:CONFIRMS]-(tran) WHERE ';
   for(let i = 0; i < old_data.length; i++){
     if(i !== 0)
@@ -41,6 +41,10 @@ function addNewString(old_data, amount, label){
   result = result + ' AND (item:' + label + ') ';
   for(let i = 0; i < old_data.length; i++){
     result += ' AND item.hash <> "' + old_data[i] + '" ';
+  }
+
+  if(non_zero){
+    result += ' AND item.value <> 0 '
   }
 
   result += 'return distinct item';
@@ -77,13 +81,30 @@ function initialString(num){
  * @returns {string}
  */
 function initialStringWithHash(hash){
-  return 'MATCH (n3)-[:CONFIRMS]-(n1)-[:CONFIRMS]-(n:Node)-[:CONFIRMS]-(n2)-[:CONFIRMS]-(n4) WHERE n.hash = "' + hash + '" WITH COLLECT(n1)[..10] + ' +
+  return 'MATCH (n3)-[:CONFIRMS]-(n1)-[:CONFIRMS]-(n)-[:CONFIRMS]-(n2)-[:CONFIRMS]-(n4) WHERE n.hash = "' + hash + '" WITH COLLECT(n1)[..10] + ' +
     'COLLECT(n2)[..10]+COLLECT(n3)[..10]+ COLLECT(n4)[..10] + COLLECT(n) AS items UNWIND items AS item return distinct item'
+}
+
+function nonZeroString(amount){
+  return 'MATCH (tip:tip:Node1) WHERE exists((tip)-[:CONFIRMS]-()) AND tip.value <> 0 WITH tip ORDER BY ' +
+    ' tip.attachmentTimestamp DESC LIMIT ' + amount +' OPTIONAL MATCH (tip)-[:CONFIRMS]->(trans) WHERE trans.value <> 0 WITH tip, ' +
+    ' trans OPTIONAL MATCH (trans)-[:CONFIRMS]->(trans2) WHERE trans2.value <> 0 WITH tip, trans, trans2 ' +
+    ' OPTIONAL MATCH (trans2)-[:CONFIRMS]->(trans3) WHERE trans3.value <> 0 ' +
+    ' WITH COLLECT(tip) + COLLECT(trans)+ COLLECT(trans2)+ COLLECT(trans3)[..10] AS items UNWIND items ' +
+    ' AS item return distinct item union MATCH (tip:tip:Node2) WHERE exists((tip)-[:CONFIRMS]-())' +
+    ' AND tip.value <> 0 WITH tip ORDER BY tip.attachmentTimestamp DESC LIMIT ' + amount +' OPTIONAL MATCH (tip)' +
+    '-[:CONFIRMS]->(trans) WHERE trans.value <> 0 WITH tip,' +
+    ' trans OPTIONAL MATCH (trans)-[:CONFIRMS]->(trans2) WHERE trans2.value <> 0 WITH tip, trans,trans2' +
+    ' OPTIONAL MATCH (trans2)-[:CONFIRMS]->(trans3) WHERE trans3.value <> 0' +
+    ' WITH COLLECT(tip) + COLLECT(trans)+ COLLECT(trans2)+ COLLECT(trans3)[..10] AS items UNWIND' +
+    ' items AS item return distinct item'
+
 }
 
 module.exports = {
   updateString,
   addNewString,
   initialString,
-  initialStringWithHash
+  initialStringWithHash,
+  nonZeroString
 };

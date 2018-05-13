@@ -16,6 +16,7 @@ searchRouter.route('/')
   .post(cors.corsWithOptions, (req, res, next) => {
     if(req.query.search === 'hash'){
       let search_hash = req.body.value;
+      console.log(search_hash);
       iota.api.getTransactionsObjects([search_hash], function (error, trans) {
         if(error){
           res.statusCode = 200;

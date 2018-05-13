@@ -101,7 +101,6 @@ body{
 
 #node_map .right-top{
   position: absolute;
-  left: 75%;
   top: 2%;
 }
 
@@ -109,6 +108,7 @@ body{
   margin: 10px 10px;
   font-size: 20px;
   color: white;
+  position: relative;
 }
 
 .left-top img{
@@ -208,7 +208,7 @@ body{
 }
 
 #table table{
-  width: 100%;
+  width: 99.9%;
   border-collapse: collapse;
   table-layout:fixed;
   word-break: break-all;

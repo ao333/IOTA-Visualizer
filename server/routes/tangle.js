@@ -63,57 +63,31 @@ module.exports = tangleRouter;
  */
 function initial(req, res, next, amount){
   // determine if we will search for specific hash or it's a general graph
-  if(!req.query.hash){
+  if(!req.query.hash && !req.query.non_zero){
     let session = driver.session();
     session
       .run(queryStatement.initialString(amount))
       .then(function (result) {
-        let transactions = [];
-        result.records.forEach(function (record) {
-          let obj = Object.assign({}, record.toObject().item.properties);
-          obj.type = utils.extractType(record.toObject().item.labels, 'status');
-          obj.source = utils.extractType(record.toObject().item.labels, 'source');
-          obj.time = new Date(Number(obj.attachmentTimestamp)*1000);
-          transactions.push(obj);
-        });
-        transactions = utils.deleteDuplicates(transactions);
-        res.statusCode = 200;
-        res.setHeader("Content-Type", "application/json");
-        res.json(transactions);
-        session.close();
+        sendResponse(session, res, result)
       })
       .catch(function (error) {
-        console.log(error);
         session.close();
         next(error);
       });
-  }else{
+  }else if(req.query.hash){
     let session = driver.session();
     session
-      .run('match (n:Node) where n.hash = "' + req.query.hash + '" return count(n) AS num')
+      .run('match (n) where n.hash = "' + req.query.hash + '" return count(n) AS num')
       .then(function (result) {
         let count;
         result.records.forEach(function (record) {
           count = record.toObject().num.toInt();
         });
         if(count !== 0){
-          console.log(req.query.hash);
           session
             .run(queryStatement.initialStringWithHash(req.query.hash))
             .then(function (result) {
-              let transactions = [];
-              result.records.forEach(function (record) {
-                let obj = Object.assign({}, record.toObject().item.properties);
-                obj.type = utils.extractType(record.toObject().item.labels, 'status');
-                obj.source = utils.extractType(record.toObject().item.labels, 'source');
-                obj.time = new Date(Number(obj.attachmentTimestamp)*1000);
-                transactions.push(obj);
-              });
-              transactions = utils.deleteDuplicates(transactions);
-              res.statusCode = 200;
-              res.setHeader("Content-Type", "application/json");
-              res.json(transactions);
-              session.close();
+              sendResponse(session, res, result);
             })
             .catch(function (error) {
               session.close();
@@ -125,6 +99,17 @@ function initial(req, res, next, amount){
           res.json({novalid: true});
           session.close();
         }
+      })
+      .catch(function (error) {
+        session.close();
+        next(error);
+      });
+  }else if(req.query.non_zero){
+    let session = driver.session();
+    session
+      .run(queryStatement.nonZeroString(amount))
+      .then(function (result) {
+        sendResponse(session, res, result)
       })
       .catch(function (error) {
         session.close();
@@ -144,7 +129,6 @@ function initial(req, res, next, amount){
  * @param amount:  there will be {amount} amount of new transactions added into front end graph
  */
 function update(req, res, next, amount){
-
   let choice = ['tip', 'unconfirmed'];
   let choice_index = Math.floor(Math.random()*2);
   let first = choice[choice_index];
@@ -164,7 +148,7 @@ function update(req, res, next, amount){
         obj.time = new Date(Number(obj.attachmentTimestamp)*1000);
         transactions.push(obj);
       });
-      session.run(queryStatement.addNewString(old_data, amount, first))
+      session.run(queryStatement.addNewString(old_data, amount, first, req.query.non_zero))
         .then(function (result) {
           let result1 = 0;
           result.records.forEach(function (record) {
@@ -211,5 +195,22 @@ function update(req, res, next, amount){
       session.close();
       next(error);
     });
+}
+
+
+function sendResponse(session, res, result){
+  let transactions = [];
+  result.records.forEach(function (record) {
+    let obj = Object.assign({}, record.toObject().item.properties);
+    obj.type = utils.extractType(record.toObject().item.labels, 'status');
+    obj.source = utils.extractType(record.toObject().item.labels, 'source');
+    obj.time = new Date(Number(obj.attachmentTimestamp)*1000);
+    transactions.push(obj);
+  });
+  transactions = utils.deleteDuplicates(transactions);
+  res.statusCode = 200;
+  res.setHeader("Content-Type", "application/json");
+  res.json(transactions);
+  session.close();
 }
 
