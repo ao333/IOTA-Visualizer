@@ -7,10 +7,12 @@ $(function () {
     $("#footer").css("position", "absolute");
     $("#footer").css("bottom", 0);
   }
-
+  	//Extract the query string from url 
     let hashpara = getParameterByName('hash');
     let addresspara = getParameterByName('address');
+    //Initialize the search page
     exemain();
+    //The url includes a query string, then use the hash id/address in query string as the search entry
     if(hashpara){
       style_change(1);
       $.post("/node_search?search=hash", {value: hashpara}, function (data) {
@@ -25,7 +27,7 @@ $(function () {
     }
 
 })
-
+//Initialize the search page
 function exemain(){
   var search_button = document.getElementById("search_button");
 
@@ -35,6 +37,7 @@ function exemain(){
     value = document.getElementById("search_input").value;
     send_post(value);
   };
+  //When ENTER key pressed down
   document.onkeydown = function (event) {
     value = document.getElementById("search_input").value;
     var key = event || window.event || arguments.callee.caller.arguments[0];
@@ -43,11 +46,12 @@ function exemain(){
       send_post(value)
   };
 
-
+  //When click on the hash id or address of trunk/branch/bundle transaction in the detailed information 
+  //section of page, then redirect page to a new search page for this transation 
   for (var index = 0; index < items.length; index++) {
     items.eq(index).click( function () {
       var value = this.innerHTML;
-      if (value.replace(/\s/g, "") != '-')
+      if (value.replace(/\s/g, "") != '-')//Check if it is a valid address/hash id
       {
         if (this.id != 'address')
         {
@@ -195,7 +199,7 @@ function style_change(mode) {//1 for hash 2 for address
         search_by_add.style.display = 'block'
     }
 }
-
+//Extract the query string from url 
 function getParameterByName(name, url) {
   if (!url) url = window.location.href;
   name = name.replace(/[\[\]]/g, "\\$&");

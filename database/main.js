@@ -37,7 +37,6 @@ setTimeout(function(){
       setTimeout(function insert() {
         dbAction.dbInsert(function (error) {
           if(error){
-            console.log(1, error);
             setTimeout(insert, 1000);
             return;
           }
@@ -45,7 +44,6 @@ setTimeout(function(){
           setTimeout(function update() {
             dbAction.dbUpdate(function update(error) {
               if(error){
-                console.log(1, error);
                 setTimeout(update, 1000);
               }
               console.log("update success");
@@ -96,20 +94,20 @@ setTimeout(function(){
           count = count.toInt();
         }
 
-        // //This is to make sure there are no more than 200000 transactions in database, you can change it later
-        // if(count > 200000){
-        //   session.run('MATCH (n) WITH n ORDER BY n.attachmentTimestamp LIMIT ' + (count-200000) + ' DETACH DELETE n')
-        //     .then(function (result) {
-        //       setTimeout(deletemore, 200000);
-        //       session.close();
-        //     })
-        //     .catch(function(err){
-        //       session.close();
-        //       setTimeout(deletemore, 100);
-        //     })
-        // }else{
-        //   session.close();
-        // }
+        //This is to make sure there are no more than 200000 transactions in database, you can change it later
+        if(count > 200000){
+          session.run('MATCH (n) WITH n ORDER BY n.attachmentTimestamp LIMIT ' + (count-200000) + ' DETACH DELETE n')
+            .then(function (result) {
+              setTimeout(deletemore, 200000);
+              session.close();
+            })
+            .catch(function(err){
+              session.close();
+              setTimeout(deletemore, 100);
+            })
+        }else{
+          session.close();
+        }
       })
       .catch(function(err){
         session.close();

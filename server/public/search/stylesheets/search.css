@@ -1,5 +1,9 @@
 /*for header*/
 
+body{
+    font-family: "Times New Roman" !important;
+}
+
 .normal_width{
     width: 100%;
     margin: auto;
@@ -38,7 +42,7 @@
 }
 
 .nav_bar li a{
-    font: 26px "Arial";
+    font: 26px "Times New Roman";
     color: white;
 }
 
@@ -112,6 +116,7 @@ form{
     position: relative;
     top: 28%;
     border-radius: 5px;
+    font-family: "Times New Roman";
 }
 
 input::-webkit-input-placeholder  {

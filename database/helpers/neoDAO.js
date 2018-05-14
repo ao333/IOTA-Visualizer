@@ -2,6 +2,10 @@ const driver = require('../config/config_neo4j');
 const util = require('./util');
 const Label = require('../config/config_sour').Label;
 
+/**
+ * truncate all nodes in database
+ * @param callback
+ */
 function dbTruncate(callback){
     let session = driver.session();
     session.run(`MATCH (n) DETACH DELETE n`)
@@ -15,9 +19,30 @@ function dbTruncate(callback){
     });
 }
 
+/**
+ * set hash as the primary key of Node
+ * @param callback
+ */
 function primaryKey(callback){
     let session = driver.session();
-  session.run('CREATE CONSTRAINT ON (n:Node) ASSERT (n.hash) IS NODE KEY')
+    session.run('CREATE CONSTRAINT ON (n:Node) ASSERT (n.hash) IS NODE KEY')
+        .then(function(result){
+            session.close();
+            callback(null);
+        })
+        .catch(function(error){
+            session.close();
+            callback(error);
+    });
+}
+
+/**
+ * create index on attachTimestamp
+ * @param callback
+ */
+function timeIndex(callback){
+    let session = driver.session();
+    session.run('CREATE INDEX ON :Node(attachmentTimestamp)')
         .then(function(result){
             session.close();
             callback(null);
@@ -28,6 +53,11 @@ function primaryKey(callback){
         });
 }
 
+/**
+ * return hashes already exists in database
+ * @param hashes
+ * @param callback
+ */
 function findRepli(hashes, callback){
     let session = driver.session();
     session.readTransaction(function (transaction) {
@@ -45,24 +75,44 @@ function findRepli(hashes, callback){
     });
 }
 
+/**
+ * return the number of Nodes in database
+ * @param callback
+ */
+function nodeCount(callback){
+    let session = driver.session();
+    session.readTransaction(function (transaction) {
+        let result = transaction.run(`MATCH (n:Node) RETURN count (n) AS nodeCount`);
+        return result;
+    }).then(function (result) {
+        session.close();
+        callback(null, result.records.map(function (record) {
+            return record.get('nodeCount');
+        }));
+    }).catch(function (error) {
+        session.close();
+        callback(error);
+    });
+}
+
 function getCypher(states, callback){
     if(states == 'tip'){
         let cypher = `UNWIND {objectParam} AS op CREATE (node:Node:tip) SET node.hash = op.hash, 
     node.address = op.address, node.value = op.value, node.attachmentTimestamp = op.timestamp, 
     node.trunkTransaction = op.trunkTransaction, node.branchTransaction = op.branchTransaction, 
-    node.insertTime = timestamp(), node.confirmTime = 0`;
+    node.source = {sourceParam}, node.insertTime = timestamp(), node.confirmTime = 0`;
         callback(null, cypher);
     }else if(states == 'unconfirmed'){
         let cypher = `UNWIND {objectParam} AS op CREATE (node:Node:unconfirmed) SET node.hash = op.hash, 
     node.address = op.address, node.value = op.value, node.attachmentTimestamp = op.timestamp, 
     node.trunkTransaction = op.trunkTransaction, node.branchTransaction = op.branchTransaction, 
-    node.insertTime = timestamp(), node.confirmTime = 0`;
+    node.source = {sourceParam}, node.insertTime = timestamp(), node.confirmTime = 0`;
         callback(null, cypher);
     }else if(states == 'confirmed'){
         let cypher = `UNWIND {objectParam} AS op CREATE (node:Node:confirmed) SET node.hash = op.hash, 
     node.address = op.address, node.value = op.value, node.attachmentTimestamp = op.timestamp, 
     node.trunkTransaction = op.trunkTransaction, node.branchTransaction = op.branchTransaction, 
-    node.insertTime = timestamp(), node.confirmTime = 0`;
+    node.source = {sourceParam}, node.insertTime = timestamp(), node.confirmTime = 0`;
         callback(null, cypher);
     }else if(states == 'tipToConf'){
         let cypher = `UNWIND {hashParam} AS hp WITH DISTINCT hp MATCH (node:tip) WHERE node.hash = hp
@@ -87,6 +137,11 @@ function getCypher(states, callback){
     }
 }
 
+/**
+ * return hashes of all tips or all unconfirmed Nodes in database
+ * @param states = {'findTip', 'findUnconf'}
+ * @param callback
+ */
 function findTipAndUnconfirmed(states, callback){
     getCypher(states, function(error, cypher){
         if(error){
@@ -109,13 +164,19 @@ function findTipAndUnconfirmed(states, callback){
     });
 }
 
+/**
+ * do batch addition
+ * @param objects: transaction objects
+ * @param states = {'tips', 'unconfirmed', 'confirmed'}
+ * @param callback
+ */
 function batchAddition(objects, states, callback){
     getCypher(states, function(error, cypher){
         if(error){
             callback(error);
         }else{
             let session = driver.session();
-            session.run(cypher, {objectParam: objects})
+            session.run(cypher, {objectParam: objects, sourceParam: Label})
                 .then(function(result){
                     session.close();
                     callback(null);
@@ -128,6 +189,12 @@ function batchAddition(objects, states, callback){
     });
 }
 
+/**
+ * update the states of tip or unconfirmed transactions with hash in @param hashes
+ * @param hashes
+ * @param states = {'tipToConf', 'tipToUnconf', 'unconfToConf'}
+ * @param callback
+ */
 function stateUpdate(hashes, states, callback){
     getCypher(states, function(error, cypher){
         if(error){
@@ -146,36 +213,12 @@ function stateUpdate(hashes, states, callback){
         }
     });
 }
-/*
-function relatEstabForward(hashes, callback){
-    let session = driver.session();
 
-    session.run(`UNWIND {hashParam} as hp MATCH (newNode:Node) MATCH (node:Node) WHERE newNode.hash = hp 
-    AND (node.hash = newNode.trunkTransaction OR node.hash = newNode.branchTransaction)
-    MERGE (newNode)-[:CONFIRMS]->(node)`, {hashParam: hashes})
-        .then(function(result){
-            session.close();
-            callback(null);
-        }).catch(function(error){
-            session.close();
-            callback(error);
-        });
-}
-
-function relatEstabBackward(hashes, callback){
-    let session = driver.session();
-    session.run(`UNWIND {hashParam} as hp MATCH (newNode:Node) MATCH (node:Node) WHERE newNode.hash = hp 
-    AND (node.trunkTransaction = hp OR node.branchTransaction = hp)
-    MERGE (node)-[:CONFIRMS]->(newNode)`, {hashParam: hashes})
-        .then(function(result){
-            session.close();
-            callback(null);
-        }).catch(function(error){
-            session.close();
-            callback(error);
-        });
-}
-*/
+/**
+ * build relationship between each member in @param pairs
+ * @param pairs
+ * @param callback
+ */
 function relatEstab(pairs, callback){
     let session = driver.session();
     session.run(`UNWIND {pairParam} as pp MATCH (n1:Node), (n2:Node) 
@@ -188,26 +231,53 @@ function relatEstab(pairs, callback){
             callback(error);
         });
 }
-/*
+
+/**
+ * delete null node in database
+ * @param callback
+ */
 function delNullNode(callback){
     let session = driver.session();
     session.run(`MATCH (node:Node) WHERE node.hash = 
-    '999999999999999999999999999999999999999999999999999999999999999999999999999999999' DELETE node`)
+    '999999999999999999999999999999999999999999999999999999999999999999999999999999999' 
+    OR node.attachmentTimestamp < 0 DETACH DELETE node`)
         .then(function(result){
             session.close();
             callback(null);
         }).catch(function(error){
-            seesion.close();
+            session.close();
             callback(error);
     });
 }
-*/
+
+/**
+ * delete earliest added {@param extraNode} number of Nodes
+ * @param extraNode
+ * @param callback
+ */
+function delExtraNode(extraNode, callback){
+    let session = driver.session();
+    session.run(`MATCH (n) WITH n ORDER BY n.attachmentTimestamp LIMIT {countParam}
+     DETACH DELETE n`, {countParam: extraNode})
+        .then(function(result){
+            session.close();
+            callback(null);
+        }).catch(function(error){
+            session.close();
+            callback(error);
+    });
+}
+
 module.exports = {
     dbTruncate,
     primaryKey,
+    timeIndex,
     findRepli,
+    nodeCount,
     findTipAndUnconfirmed,
     batchAddition,
     stateUpdate,
-    relatEstab
+    relatEstab,
+    delNullNode,
+    delExtraNode
 };

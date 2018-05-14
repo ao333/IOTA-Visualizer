@@ -1,6 +1,10 @@
 const bs = require('./iotaBS');
 const underscore = require('underscore');
 
+/**
+ * truncate all Nodes, add primary key and index to database
+ * @param callback
+ */
 function dbInit(callback){
     bs.dbInit(function(error){
         if(error){
@@ -11,6 +15,10 @@ function dbInit(callback){
     });
 }
 
+/**
+ * insert tips and its parents within fifth generation
+ * @param callback
+ */
 function dbInsert(callback){
     bs.tipInsert(function(error, hashes, hashes1, relatPairs1){
         if(error){
@@ -36,20 +44,12 @@ function dbInsert(callback){
                                                 if(error){
                                                     callback(error);
                                                 }else{
-                                                    // console.log('0 ' + hashes.length);
-                                                    // console.log('1 ' + hashes1.length + ' ' + relatPairs1.length);
-                                                    // console.log('2 ' + hashes2.length + ' ' + relatPairs2.length);
-                                                    // console.log('3 ' + hashes3.length + ' ' + relatPairs3.length);
-                                                    // console.log('4 ' + hashes4.length + ' ' + relatPairs4.length);
-                                                    // console.log('5 ' + hashes5.length + ' ' + relatPairs5.length);
                                                     let relatPairs = relatPairs1.concat(relatPairs2).concat(relatPairs3)
                                                         .concat(relatPairs4).concat(relatPairs5).concat(relatPairs6);
-                                                    //console.log('total ' + relatPairs.length);
                                                     bs.relatEstablish(relatPairs, function(error){
                                                         if(error){
                                                             callback(error);
                                                         }else{
-                                                            //console.log('total ' + relatPairs.length);
                                                             callback(null);
                                                         }
                                                     });
@@ -67,8 +67,33 @@ function dbInsert(callback){
     });
 }
 
+/**
+ * update the states of all tips and unconfirmed transactions
+ * @param callback
+ */
 function dbUpdate(callback){
     bs.stateUpdate(function(error){
+        if(error){
+            callback(error);
+        }else{
+            bs.delNullNode(function(error){
+                if(error){
+                    callback(error);
+                }else{
+                    callback(null);
+                }
+            });
+        }
+    });
+}
+
+/**
+ * set the upper bound of Nodes in database to be @param upperBound
+ * @param upperBound
+ * @param callback
+ */
+function dbLimit(upperBound, callback){
+    bs.delExtra(upperBound, function(error){
         if(error){
             callback(error);
         }else{
@@ -80,5 +105,6 @@ function dbUpdate(callback){
 module.exports = {
     dbInit,
     dbInsert,
-    dbUpdate
+    dbUpdate,
+    dbLimit
 };

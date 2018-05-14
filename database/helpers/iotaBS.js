@@ -6,7 +6,6 @@ const underscore = require('underscore');
 /**
  * get {amount} number of tips, tips are returned in form of array of hashes
  * callback(error, tips)
- * @param amount
  * @param callback
  */
 function getTips(callback){
@@ -27,6 +26,12 @@ function getTips(callback){
     });
 }
 
+/**
+ * return the hashes of the trunk transactions and branch transactions which
+ * did not appear in database
+ * @param objects
+ * @param callback
+ */
 function getTrunkBranchHash(objects, callback){
     let hashes = util.getTrunkBranchHash(objects);
     neo.findRepli(hashes, function(error, reps){
@@ -39,6 +44,11 @@ function getTrunkBranchHash(objects, callback){
     });
 }
 
+/**
+ * query whether the state of objects with hash in @param hashes is confirmed or unconfirmed
+ * @param hashes
+ * @param callback
+ */
 function getTrunkBranchInitState(hashes, callback){
     let hashcopy = [].concat(hashes);
     iota.api.getLatestInclusion(hashes, function(error, isIncluded){
@@ -59,6 +69,10 @@ function getTrunkBranchInitState(hashes, callback){
     });
 }
 
+/**
+ * Initialize the database
+ * @param callback
+ */
 function dbInit(callback){
     neo.dbTruncate(function(error){
         if(error){
@@ -68,31 +82,43 @@ function dbInit(callback){
                 if(error){
                     callback(error);
                 }else{
-                    callback(null);
+                    neo.timeIndex(function(error){
+                        if(error){
+                            callback(error);
+                        }else{
+                            callback(null);
+                        }
+                    });
                 }
             });
         }
     });
 }
 
+/**
+ * get tips from iota api, insert tip transactions which do no appear in database
+ * and return the following attributes of those transaction objects
+ * tiphash: hashes of tips; tbhashes: trunk and branch transactions; relatPairs: (tip, trunkBranchHash)
+ * @param callback
+ */
 function tipInsert(callback){
     getTips(function(error, hashes){
         if(error){
-            callback(error, null, null);
+            callback(error, null, null, null);
         }else{
             let tiphash = [].concat(hashes);
             iota.api.getTransactionsObjects(hashes, function(error, tip_objects){
                 if(error){
-                    callback(error, null, null);
+                    callback(error, null, null, null);
                 }else{
                     let relatPairs = util.getRelationPairs(tip_objects);
                     neo.batchAddition(tip_objects, 'tip', function(error){
                         if(error){
-                            callback(error, null, null);
+                            callback(error, null, null, null);
                         }else{
                             getTrunkBranchHash(tip_objects, function(error, tbhashes){
                                 if(error){
-                                    callback(error, null, null);
+                                    callback(error, null, null, null);
                                 }else{
                                     callback(null, tiphash, tbhashes, relatPairs);
                                 }
@@ -105,6 +131,12 @@ function tipInsert(callback){
     });
 }
 
+/**
+ * get transactions objects with hashes in @param hashes and insert those
+ * which do not appear in database
+ * @param hashes
+ * @param callback
+ */
 function trunkBranchInsert(hashes, callback){
     getTrunkBranchInitState(hashes, function(error, confirmed, unconfirmed){
         if(error){
@@ -115,7 +147,6 @@ function trunkBranchInsert(hashes, callback){
                     callback(error, null);
                 }else{
                     let confPairs = util.getRelationPairs(conf_objects);
-                    //console.log('C'+confPairs.length);
                     neo.batchAddition(conf_objects, 'confirmed', function(error){
                         if(error){
                             callback(error, null);
@@ -126,9 +157,7 @@ function trunkBranchInsert(hashes, callback){
                                 }else{
                                     let unconf_objects = util.arrayRemove(raw_unconf_objects);
                                     let unconfPairs = util.getRelationPairs(unconf_objects);
-                                    //console.log('U'+unconfPairs.length);
                                     let relatPairs = confPairs.concat(unconfPairs);
-                                    //console.log('R'+relatPairs.length);
                                     neo.batchAddition(unconf_objects, 'unconfirmed', function(error){
                                         if(error){
                                             callback(error, null);
@@ -142,8 +171,6 @@ function trunkBranchInsert(hashes, callback){
                                                             callback(error, null);
                                                         }else{
                                                             let tbhashes = underscore.union(confHashes, unconfHashes);
-                                                            //console.log('TB'+tbhashes.length);
-                                                            //console.log('R'+relatPairs.length);
                                                             callback(null, tbhashes, relatPairs);
                                                         }
                                                     });
@@ -161,6 +188,10 @@ function trunkBranchInsert(hashes, callback){
     });
 }
 
+/**
+ * return the hashes whose states change from unconfirmed to confirmed
+ * @param callback
+ */
 function getUpdateUnconfirmedHash(callback){
     neo.findTipAndUnconfirmed('findUnconf', function(error, unconf){
         if(error){
@@ -184,6 +215,10 @@ function getUpdateUnconfirmedHash(callback){
     });
 }
 
+/**
+ * return the hashes of tips whose states change to unconfirmed and confirmed, respectively
+ * @param callback
+ */
 function getUpdateTipHash(callback){
     neo.findTipAndUnconfirmed('findTip', function(error, tiphashes){
         if(error){
@@ -199,11 +234,9 @@ function getUpdateTipHash(callback){
                       if(error) {
                         callback(error, null, null);
                       }else{
-                        //console.log(tiphashcopy2.length);
                         let roothashes = util.getTrunkBranchHash(objects);
                         let confirmed = [];
                         let unconfirmed = [];
-                        //console.log(isIncluded.length);
                         for(let i = 0; i < isIncluded.length; i++){
                           if(isIncluded[i]){
                             confirmed.push(tiphashcopy2[i]);
@@ -211,8 +244,6 @@ function getUpdateTipHash(callback){
                             unconfirmed.push(tiphashcopy2[i]);
                           }
                         }
-                        //console.log(confirmed.length);
-                        //console.log(unconfirmed.length);
                         callback(null, confirmed, unconfirmed);
                       }
                     });
@@ -222,6 +253,10 @@ function getUpdateTipHash(callback){
     });
 }
 
+/**
+ * update states of all tips and unconfirmed transactions in database
+ * @param callback
+ */
 function stateUpdate(callback){
     getUpdateUnconfirmedHash(function(error, unconfToConf){
         if(error){
@@ -266,6 +301,43 @@ function relatEstablish(pairs, callback){
     });
 }
 
+/**
+ * delete null nodes in database
+ * @param callback
+ */
+function delNullNode(callback){
+    neo.delNullNode(function(error){
+        if(error){
+            callback(error);
+        }else{
+            callback(null);
+        }
+    });
+}
+
+/**
+ * delete earliest added Nodes until the number of Nodes fall below upperBound
+ * @param upperBound
+ * @param callback
+ */
+function delExtra(upperBound, callback){
+    neo.nodeCount(function(error, nodeNo){
+        if(error){
+            callback(error);
+        }else{
+            if(nodeNo - upperBound > 0){
+                neo.delExtraNode(nodeNo - upperBound, function(error){
+                    if(error){
+                        callback(error);
+                    }else{
+                        callback(null);
+                    }
+                });
+            }
+        }
+    });
+}
+
 module.exports = {
     dbInit,
     tipInsert,
@@ -273,5 +345,7 @@ module.exports = {
     getTrunkBranchInitState,
     trunkBranchInsert,
     stateUpdate,
-    relatEstablish
+    relatEstablish,
+    delNullNode,
+    delExtra
 };

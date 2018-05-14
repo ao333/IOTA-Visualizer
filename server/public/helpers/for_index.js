@@ -3,7 +3,7 @@ $(function () {
 
   let width_rt = $('#node_map .right-top').width();
   let width_wd = $(window).width();
-  let width = (width_wd - width_rt)+100;
+  let width = (width_wd - width_rt)+150;
   $('#node_map .right-top').css("left", width);
   setInterval(function () {
     for (var index = 0; index < 8; index++) {

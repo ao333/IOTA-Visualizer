@@ -2,6 +2,7 @@
 
 body{
   margin: 0;
+  font-family: "Times New Roman" !important;
 }
 
 .normal_width{
@@ -41,7 +42,7 @@ body{
 }
 
 .nav_bar li a{
-  font: 26px "Arial";
+  font: 26px "Times New Roman";
   color: white;
 }
 body {
@@ -85,4 +86,8 @@ a {
 }
 #footer .copy{
   float: right;
+}
+
+button{
+  font-family: "Times New Roman";
 }
