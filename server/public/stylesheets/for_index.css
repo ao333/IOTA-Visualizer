@@ -164,8 +164,8 @@ body{
 }
 
 #information img{
-  height: 85%;
-  width: 25%;
+  height: 80px;
+  width: 80px;
   position: relative;
   left: 5%;
   top: 13%;

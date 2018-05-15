@@ -7,23 +7,26 @@ In this project, we try to design and implement a system to display real-time in
  - **server**: our main http server, dealing with requests and responses with client side.
  - **database**: interacting with IOTA api and database. Insert data into database, update the data and add more new data.
 
+ **Before you run the codes, please make sure newest version of node.js and npm package manager have been installed**
+
 ## Server
-To run the server, go into server folder initialize project and run npm start:
+**in 'server' folder**
+To run the server, go into server folder, initialize project and run npm start:
 
     cd server
     npm install
     npm start
-Notice:  We have git-ignored file config_neo4j.js and config_mongo.js which contains connection username and password of our database in azure. Please ask for these two files and put them in server folder before you run the file to test.
+**IMPORTANT**:  There are two files, config_neo4j.js and config_mongo.js, in 'config' folder which contain connection username and password of our database. If you want to use your own local database, please change these two files to your own username and password. If these two files are missing, please create them in 'config' folder following formats shown below.
 
 ## Database
+**in 'database' folder**
 To begin database updating, go into the database folder:
 
     cd database
     npm install
     npm start
-Suggestion: We have git-ignored the config_neo4j.js and config_mongo.js.  Please ask for these two files and put them in subfolder 'config' before you run the file to test.
+**IMPORTANT**: There are two files, config_neo4j.js and config_mongo.js, in 'config' folder which contain connection username and password of our database. If you want to use your own local database, please change these two files to your own username and password. If these two files are missing, please create them in 'config' folder following formats shown below.
 
-IMPORTANT: if you would like to test the database functions, please modify the file config_mongo.js and config_neo4j.js to your local database. (Firstly install these two databases into your local machine)
 
 ![ScreenShot](https://lh3.googleusercontent.com/dZ9vo78-VukeKudwWEaqxQMuQnZCAqFsS-B2vt1VmMzMg2yrUxqkI7HosHfIcxbSgRAAvgRjrZU "IOTA")
 

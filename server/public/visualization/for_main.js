@@ -1,4 +1,5 @@
 $(function(){
+  let top = $("#footer").position().top;
   if($(window).height() >top + $("#footer").height()){
     $("#footer").css("position", "absolute");
     $("#footer").css("bottom", 0);

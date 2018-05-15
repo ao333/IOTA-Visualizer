@@ -1,8 +1,8 @@
 const IOTA = require('iota.lib.js');
 
 let iota = new IOTA({
-  'host': 'http://mainnet.necropaz.com',
-  'port': 14500
+  'host': 'http://node.deviceproof.org',
+  'port': 14265
 });
 
 iota.api.getTransactionsObjects(['VCCEYLUOMZNQJCHUOLJOQSXFSUCNXEWPSBNZGYYMZHBNXUN9PNHYTJXODOPBYSUBQWRWAQXKINPHA9999'], function(error ,objs){
