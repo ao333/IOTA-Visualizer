@@ -260,7 +260,6 @@ function delExtraNode(extraNode, callback){
     session.run(`MATCH (n:Node) WITH n ORDER BY n.attachmentTimestamp LIMIT {countParam}
      DETACH DELETE n`, {countParam: extraNode})
         .then(function(result){
-            console.log(2,result);
             session.close();
             callback(null);
         }).catch(function(error){

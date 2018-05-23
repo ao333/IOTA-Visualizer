@@ -326,7 +326,6 @@ function delExtra(upperBound, callback){
         if(error){
             callback(error);
         }else{
-            console.log(1, nodeNo);
             if(nodeNo - upperBound > 0){
                 neo.delExtraNode(nodeNo - upperBound, function(error){
                     if(error){
