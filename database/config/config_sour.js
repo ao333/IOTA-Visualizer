@@ -1,6 +1,6 @@
-let Source = "http://node.deviceproof.org";
+let Source = "https://peanut.iotasalad.org";
 let Port = 14265;
-let Label = "Node2";  //Please change this label when you add more source servers
+let Label = "https://peanut.iotasalad.org";  //Please change this label when you add more source servers
 
 module.exports = {
   Source,

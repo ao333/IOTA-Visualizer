@@ -106,6 +106,7 @@ function tipInsert(callback){
         if(error){
             callback(error, null, null, null);
         }else{
+            hashes = hashes.splice(0, Math.min(hashes.length, 200));
             let tiphash = [].concat(hashes);
             iota.api.getTransactionsObjects(hashes, function(error, tip_objects){
                 if(error){
@@ -325,6 +326,7 @@ function delExtra(upperBound, callback){
         if(error){
             callback(error);
         }else{
+            console.log(1, nodeNo);
             if(nodeNo - upperBound > 0){
                 neo.delExtraNode(nodeNo - upperBound, function(error){
                     if(error){

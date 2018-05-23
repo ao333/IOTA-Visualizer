@@ -192,3 +192,25 @@ b{
 #footer .copy{
     float: right;
 }
+
+.loader {
+    border: 4px solid grey; /* Light grey */
+    border-top: 4px solid white; /* Blue */
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 2s linear infinite;
+    position: absolute;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+#for_loader{
+    visibility: hidden;
+    width: 750px;
+    margin: 0 auto;
+    height: 60px;
+}

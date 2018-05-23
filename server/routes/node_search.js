@@ -50,8 +50,6 @@ searchRouter.route('/')
         submit.num_trans = hashes.length;
         let receive_value = 0;
         let send_value = 0;
-        let connum = 0;
-        let unconnum = 0;
         let date = 0;
         for(let i = 0; i < hashes.length; i++){
           if(hashes[i].value > 0)
@@ -65,7 +63,13 @@ searchRouter.route('/')
         submit.received_t_value = receive_value;
         submit.sent_t_value = send_value;
         submit.latest_date = new Date(date).toLocaleString();
-        iota.api.getLatestInclusion(hashes, function(error, bools){
+        let incluhashes = [];
+        for(let i = 0; i < hashes.length; i++){
+          if(hashes[i].hash !== '999999999999999999999999999999999999999999999999999999999999999999999999999999999'){
+            incluhashes.push(hashes[i].hash);
+          }
+        }
+        iota.api.getLatestInclusion(incluhashes, function(error, bools){
           if(error || !bools){
             submit.valid = true;
             submit.con_uncon_ratio = 0;
@@ -81,16 +85,16 @@ searchRouter.route('/')
               truenum++;
             else
               falsenum++;
-            submit.valid = true;
-            if(falsenum){
-              submit.con_uncon_ratio = truenum/falsenum ;
-            }else{
-              submit.con_uncon_ratio = 0;
-            }
-            res.statusCode = 200;
-            res.setHeader("Content-Type", "application/json");
-            res.json(submit);
           }
+          submit.valid = true;
+          if(falsenum){
+            submit.con_uncon_ratio = (truenum/falsenum).toFixed(2);
+          }else{
+            submit.con_uncon_ratio = 0;
+          }
+          res.statusCode = 200;
+          res.setHeader("Content-Type", "application/json");
+          res.json(submit);
         });
 
 

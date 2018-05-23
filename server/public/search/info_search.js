@@ -7,6 +7,13 @@ $(function () {
     $("#footer").css("position", "absolute");
     $("#footer").css("bottom", 0);
   }
+
+  //position of loader
+  let space = $('#for_loader');
+  let loader = $('.loader');
+  loader.css("left",space.position().left + space.outerWidth(true)/2 - loader.width()/2)
+    .css("top", space.position().top);
+
   	//Extract the query string from url 
     let hashpara = getParameterByName('hash');
     let addresspara = getParameterByName('address');
@@ -14,19 +21,29 @@ $(function () {
     exemain();
     //The url includes a query string, then use the hash id/address in query string as the search entry
     if(hashpara){
-      style_change(1);
+      $('#for_loader').css('visibility', 'visible');
+      window.scrollTo({
+        top: $('#for_loader').position().top,
+        behavior: "smooth"
+      });
       $.post("/node_search?search=hash", {value: hashpara}, function (data) {
+        style_change(1);
         update_data_by_id(data);
       }, "json");
     }
     else if(addresspara){
-      style_change(2);
+      $('#for_loader').css('visibility', 'visible');
+      window.scrollTo({
+        top: $('#for_loader').position().top,
+        behavior: "smooth"
+      });
       $.post("/node_search?search=address", {value: addresspara}, function (data) {
+        style_change(2);
         update_data_by_address(data);
       }, "json")
     }
 
-})
+});
 //Initialize the search page
 function exemain(){
   var search_button = document.getElementById("search_button");
@@ -55,15 +72,26 @@ function exemain(){
       {
         if (this.id != 'address')
         {
-          style_change(1);
+          $('#for_loader').css('visibility', 'visible');
+          window.scrollTo({
+            top: $('#for_loader').position().top,
+            behavior: "smooth"
+          });
           $.post("/node_search?search=hash", {value: value}, function (data) {
+            style_change(1);
             update_data_by_id(data);
           }, "json");
         }
         else
         {
-          style_change(2);
+          $('#search_detail').css('display', 'none');
+          $('#for_loader').css('visibility', 'visible');
+          window.scrollTo({
+            top: $('#for_loader').position().top,
+            behavior: "smooth"
+          });
           $.post("/node_search?search=address", {value: value}, function (data) {
+            style_change(2);
             update_data_by_address(data);
           }, "json")
         }
@@ -80,16 +108,25 @@ var send_post = function (value)
 {
     if ($("#by_hash").is(":checked"))
     {
-        style_change(1);
+      $('#for_loader').css('visibility', 'visible');
+      window.scrollTo({
+        top: $('#for_loader').position().top,
+        behavior: "smooth"
+      });
         $.post("/node_search?search=hash", {value: value}, function (data) {
-          console.log(data);
+          style_change(1);
             update_data_by_id(data);
         }, "json");
     }
     else
     {
-        style_change(2);
+      $('#for_loader').css('visibility', 'visible');
+      window.scrollTo({
+        top: $('#for_loader').position().top,
+        behavior: "smooth"
+      });
         $.post("/node_search?search=address", {value: value}, function (data) {
+          style_change(2);
             update_data_by_address(data);
         }, "json")
     }
@@ -178,6 +215,7 @@ var update_data_by_id = function (data) {
 //Change the webpage layout due to different information to show
 function style_change(mode) {//1 for hash 2 for address
   $("#footer").css("position", "relative");
+  $('#for_loader').css('visibility', 'hidden');
   if (mode == 1){
         var search_header = document.getElementById('search_header');
         search_header.style.paddingBottom = '5%';
@@ -186,6 +224,10 @@ function style_change(mode) {//1 for hash 2 for address
         var search_by_add = document.getElementById('search_by_address');
         search_detail.style.display = 'block';
         search_by_add.style.display = 'none'
+      window.scrollTo({
+        top: $('#search_detail').position().top,
+        behavior: "smooth"
+      });
     }
     else
     {
@@ -197,6 +239,10 @@ function style_change(mode) {//1 for hash 2 for address
         var search_by_add = document.getElementById('search_by_address');
         search_detail.style.display = 'none';
         search_by_add.style.display = 'block'
+      window.scrollTo({
+        top: $('#search_by_address').position().top,
+        behavior: "smooth"
+      });
     }
 }
 //Extract the query string from url 

@@ -24,40 +24,61 @@ $(function () {
 
   let this_hash = getParameterByName("hash"); // if we choose specific node with hash as center
   if (!this_hash) {
-    $.getJSON("/tangle/tree_initial", function (data) {
-      console.log(1, data);
-      init_graph(data, tree_nodes, tree_edges, 0);
-      redrawAll(0);
-      updateInterval(); // start the interval timers to update graph periodically
-      current_data = data;
-      Table('initial');
-    });
-
-    $.getJSON("/tangle/sphere_initial", function (data) {
-      init_graph(data, sphere_nodes, sphere_edges, 1);
-    });
-
-  }else{
-    $.getJSON("/tangle/tree_initial?hash=" + this_hash, function (data) {
-      if (data.novalid) {
-        let isOK = confirm('The transaction you search is not in our database, do you want to' +
-          'check this transaction details?');
-        if (isOK) {
-          $(location).attr('href', '/search?hash=' + this_hash);
+    (function localinitial(){
+      $.ajax({
+        url: '/tangle/tree_initial',
+        dataType: 'json',
+        success: function(data){
+          if(!data || data.length === 0){
+            localinitial();
+            return;
+          }
+          $('.loader').remove();
+          init_graph(data, tree_nodes, tree_edges, 0);
+          redrawAll(0);
+          updateInterval(); // start the interval timers to update graph periodically
+          current_data = data;
+          Table('initial');
+        },
+        error:function(){
+          console.log("error is here");
+          localinitial();
         }
-        return;
-      }
-      treeMode = true;
-      init_graph(data, tree_nodes, tree_edges, 0, this_hash);
-      redrawAll(0);
-      updateInterval(); // start the interval timers to update graph periodically
-      current_data = data;
-      Table('initial');
-    });
+      });
 
-    $.getJSON("/tangle/sphere_initial?hash=" + this_hash, function (data) {
-      init_graph(data, sphere_nodes, sphere_edges, 1, this_hash);
-    });
+      $.getJSON("/tangle/sphere_initial", function (data) {
+        init_graph(data, sphere_nodes, sphere_edges, 1);
+      });
+    })();
+  }else{
+    (function localinitialHash(){
+      $.getJSON("/tangle/tree_initial?hash=" + this_hash, function (data) {
+        if(!data || (!data.novalid && data.length === 0)){
+          localinitialHash();
+          return;
+        }
+        $('.loader').remove();
+        if (data.novalid) {
+          let isOK = confirm('The transaction you search is not in our database, do you want to' +
+            'check this transaction details?');
+          if (isOK) {
+            $(location).attr('href', '/search?hash=' + this_hash);
+          }
+          return;
+        }
+        treeMode = true;
+        init_graph(data, tree_nodes, tree_edges, 0, this_hash);
+        redrawAll(0);
+        updateInterval(); // start the interval timers to update graph periodically
+        current_data = data;
+        Table('initial');
+      });
+
+      $.getJSON("/tangle/sphere_initial?hash=" + this_hash, function (data) {
+        init_graph(data, sphere_nodes, sphere_edges, 1, this_hash);
+      });
+    })();
+
   }
 });
 
@@ -215,21 +236,25 @@ function updateInterval(non_zero) {
           update_hash.push(entry['id']);
 
       });
+      let localAddAllNew = addAllNew;
+      let localNonZero = non_zero_check;
       $.ajax({
         type: "POST",
         url: "/tangle/sphere_update" + (addAllNew? "?add_all=t" + (non_zero?"&non_zero=t":"") : (non_zero?"?non_zero=t":"")),
         data: JSON.stringify(update_hash),
         contentType: "application/json; charset=utf-8",
         success: function (data) {
-          update_data(data, sphere_nodes, sphere_edges);
-          timer1 = setTimeout(updatesphere, 500);
+          if(localAddAllNew === addAllNew && non_zero_check === localNonZero)
+            update_data(data, sphere_nodes, sphere_edges);
+          if(non_zero_check === localNonZero)
+            timer1 = setTimeout(updatesphere, 3500);
         },
         error: function(){
           timer1 = setTimeout(updatesphere, 500);
         }
       });
     }else{
-      timer1 = setTimeout(updatesphere, 500);
+      timer1 = setTimeout(updatesphere, 3500);
     }
   }, 500);
 
@@ -241,21 +266,25 @@ function updateInterval(non_zero) {
           update_hash.push(entry['id']);
 
       });
+      let localAddAllNew = addAllNew;
+      let localNonZero = non_zero_check;
       $.ajax({
         type: "POST",
         url: "/tangle/tree_update"+ (addAllNew? "?add_all=t" + (non_zero?"&non_zero=t":"") : (non_zero?"?non_zero=t":"")),
         data: JSON.stringify(update_hash),
         contentType: "application/json; charset=utf-8",
         success: function (data) {
-          update_data(data, tree_nodes, tree_edges);
-          timer2 = setTimeout(updatetree, 500);
+          if(localAddAllNew === addAllNew && non_zero_check === localNonZero)
+            update_data(data, tree_nodes, tree_edges);
+          if(non_zero_check === localNonZero)
+            timer2 = setTimeout(updatetree, 3500);
         },
         error:function(){
           timer2 = setTimeout(updatetree, 500);
         }
       });
     }else{
-      timer2 = setTimeout(updatetree, 500);
+      timer2 = setTimeout(updatetree, 3500);
     }
   }, 500);
 }
@@ -441,13 +470,13 @@ function initialButtons() {
     if(!this.checked){
       clearTimeout(timer1);
       clearTimeout(timer2);
+      non_zero_check = false;
       getInitialData(0);
-      non_zero_check = false
     }else{
       clearTimeout(timer1);
       clearTimeout(timer2);
-      getInitialData(1);
       non_zero_check = true;
+      getInitialData(1);
     }
   });
 
@@ -565,7 +594,7 @@ function clicknodeSearch(properties) {
   let id = properties.nodes[0];
   if (!id)
     return;
-  $(location).attr('href', '/search?hash=' + id);
+  window.open('/search?hash=' + id, '_blank');
 }
 
 function Table(operation, new_data){

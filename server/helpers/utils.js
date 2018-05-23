@@ -21,13 +21,6 @@ function extractType(arr, type){
       if(arr[i] === 'confirmed')
         return 'confirmed';
     }
-  }else if(type === 'source'){
-    for(let i = 0; i < arr.length; i++){
-      if(arr[i] === 'Node1')
-        return 'http://node01.iotatoken.nl';
-      if(arr[i] === 'Node2')
-        return 'http://node.deviceproof.org';
-    }
   }
 }
 

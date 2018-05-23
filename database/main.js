@@ -10,41 +10,57 @@ const connection = require('./config/config_mongo');
 const driver = require('./config/config_neo4j');
 const Statistics = require('./models/Statistics');
 
-  connection.then(function startmongo() {
-    console.log('connect to mongodb');
-    Statistics.findOne({}, function (error, doc) {
-      if(error){
-        setTimeout(startmongo, 2000);
-        return;
-      }
-      if(!doc || doc.length === 0){
-        Statistics.create({}, function(error, success){
-          if(error){
-            setTimeout(startmongo, 2000);
-            return;
-          }
-          statistics.updateMongoDb();
-        })
-      }else{
+connection.then(function startmongo() {
+  console.log('connect to mongodb');
+  Statistics.findOne({}, function (error, doc) {
+    if(error){
+      setTimeout(startmongo, 2000);
+      return;
+    }
+    if(!doc || doc.length === 0){
+      Statistics.create({}, function(error, success){
+        if(error){
+          setTimeout(startmongo, 2000);
+          return;
+        }
         statistics.updateMongoDb();
-      }
-    });
+      })
+    }else{
+      statistics.updateMongoDb();
+    }
   });
+});
 
   setTimeout(function insert() {
     dbAction.dbInsert(function (error) {
       if(error){
         console.log(7,error);
       }
+      else{
+        console.log("insertion success!");
+      }
       setTimeout(insert, 3000);
     })
   }, 1000);
+
 
   setTimeout(function update() {
     dbAction.dbUpdate(function (error) {
       if(error){
         console.log(8,error);
+      }else {
+        console.log('update success');
       }
-      setTimeout(update, 1000);
+      setTimeout(update, 5000);
     })
-  }, 1000);
+  }, 5000);
+
+
+  setTimeout(function deleteMore(){
+    dbAction.dbLimit(200000, function(error){
+      if(error){
+        console.log(9,error);
+      }
+      setTimeout(deleteMore, 600000);
+    })
+  }, 600000);

@@ -44,9 +44,11 @@ function dbInsert(callback){
                                                 if(error){
                                                     callback(error);
                                                 }else{
+
                                                     let relatPairs = relatPairs1.concat(relatPairs2).concat(relatPairs3)
                                                         .concat(relatPairs4).concat(relatPairs5).concat(relatPairs6);
                                                     bs.relatEstablish(relatPairs, function(error){
+
                                                         if(error){
                                                             callback(error);
                                                         }else{
@@ -72,19 +74,21 @@ function dbInsert(callback){
  * @param callback
  */
 function dbUpdate(callback){
-    bs.stateUpdate(function(error){
+  bs.delNullNode(function(error){
+    if(error){
+      callback(error);
+    }else{
+      bs.stateUpdate(function(error){
         if(error){
-            callback(error);
+          callback(error);
         }else{
-            bs.delNullNode(function(error){
-                if(error){
-                    callback(error);
-                }else{
-                    callback(null);
-                }
-            });
+            callback(null);
         }
-    });
+      });
+    }
+  });
+
+
 }
 
 /**

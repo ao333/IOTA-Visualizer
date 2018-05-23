@@ -16,7 +16,7 @@ To run the server, go into server folder, initialize project and run npm start:
     cd server
     npm install
     npm start
-**IMPORTANT**:  There are two files, config_neo4j.js and config_mongo.js, in 'config' folder which contain connection username and password of our database. If you want to use your own local database, please change these two files to your own username and password. If these two files are missing, please create them in 'config' folder following formats shown below.
+**IMPORTANT**:  There are two files, config_neo4j.js and config_mongo.js, in 'config' folder which contain connection username and password of our database. If these files are missing, please create them in 'config' folder following formats shown below.
 
 ## Database
 **in 'database' folder**
@@ -25,10 +25,7 @@ To begin database updating, go into the database folder:
     cd database
     npm install
     npm start
-**IMPORTANT**: There are two files, config_neo4j.js and config_mongo.js, in 'config' folder which contain connection username and password of our database. If you want to use your own local database, please change these two files to your own username and password. If these two files are missing, please create them in 'config' folder following formats shown below.
-
-
-![ScreenShot](https://lh3.googleusercontent.com/dZ9vo78-VukeKudwWEaqxQMuQnZCAqFsS-B2vt1VmMzMg2yrUxqkI7HosHfIcxbSgRAAvgRjrZU "IOTA")
+**IMPORTANT**: There are three configuration files, config_neo4j.js and config_mongo.js and config_sour.js  in 'config' folder which contain connection username and password of our database and iota server. If these files are missing, please create them in 'config' folder following formats shown below.
 
 ## Formats of config files
 
@@ -42,9 +39,9 @@ To begin database updating, go into the database folder:
   
     const driver = neo4j.driver(uri, neo4j.auth.basic(user, password));  
     module.exports = driver;
-Notice: Put it in config folder both in server and in database.
+**IMPORTANT**: Put it in config folder both in server and in database.
 
-### config_mongo
+### config_mongo.js
 
 	let constr = {  
 	  'mongoUrl':'<url of mongodb>',  
@@ -61,18 +58,19 @@ Notice: Put it in config folder both in server and in database.
 	  keepAlive: 120  
 	});  
 	module.exports = connect;
-Notice: Put it in config folder both in server and in database. if you run mongoDb locally, maybe you do not need user and password. If you need user and password configuration for mongodb (remotely or set password locally), please uncomment authentication configures above.
+**IMPORTANT**: Put it in config folder both in server and in database. if you run mongoDb locally, maybe you do not need user and password. If you need user and password configuration for mongodb (remotely or set password locally), please uncomment authentication configures above.
 
-### config_sour
-	let Source = "http://node.deviceproof.org";
+### config_sour.js
+	let Source = "https://peanut.iotasalad.org";
 	let Port = 14265;
-	let Label = "Node2";  
+	let Label = "https://peanut.iotasalad.org";  
 	module.exports = {
 	  Source,
 	  Label,
 	  Port
 	};
-Notice: You do not need this file in server config folder. Just need it in database's config folder. Source is address of iota server, port is port of the server. Please change Label when you add more source servers
+**IMPORTANT**: You do not need this file in server config folder. Just need it in database's config folder. Source is address of iota server, port is port of the server. Please change Source, Port, Label when you add more source servers.
+**If you want to have multiple iota servers connected to our program, just copy the whole database folder, run another database program with modified config_cour.js**
 
 
 

@@ -2,9 +2,9 @@ value_ps_chart = () => {
             $.get('/chart', function(data) {
                 var date_label = [];
                 var unix_time = data.time;
-                console.log(data);
                 var mct = data.MeanConTime;
                 //length = Math.min(unix_time.length, 60);
+              unix_time.sort();
                 for (var i = 0; i < unix_time.length; i++) {
                     var dt = new Date(unix_time[i]);
                     var year = dt.getFullYear();

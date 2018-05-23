@@ -51,13 +51,7 @@ statRouter.route('/:id')
         res.json((doc["ValuePerTran"]).toExponential(2));
       }
       else if(req.params.id === '6'){
-        iota.api.getNodeInfo(function(error, success) {
-          if (error) {
-            next(error);
-          } else {
-            res.json(success.latestMilestone);
-          }
-        });
+        res.json(doc["MileStone"]);
       }
       else{
           next();

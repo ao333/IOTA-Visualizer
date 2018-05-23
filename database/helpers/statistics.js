@@ -14,8 +14,8 @@ const Record = require('../models/Record');
  */
 function updateMeanCon(callback){
   let session = driver.session();
-  session.run('MATCH (n:confirmed) WHERE n.confirmTime <> 0 RETURN toString(n.confirmTime) AS n1, ' +
-    'toString(n.attachmentTimestamp) AS n2 ORDER BY n.confirmTime DESC LIMIT 30')
+  session.run('MATCH (n:confirmed:Node) WHERE n.confirmTime <> 0 RETURN toString(n.confirmTime) AS n1, ' +
+    'toString(n.attachmentTimestamp) AS n2 ORDER BY n.confirmTime DESC LIMIT 100')
     .then(function (result) {
       let sum = 0;
       let amount = 0;
@@ -40,17 +40,18 @@ function updateMeanCon(callback){
           }
           doc['MeanConTime'] = minute;
           doc.save(function (error, aa) {
-              if(error) {
-                callback(error);
-                session.close();
-                return;
-              }
-              callback(null);
+            if(error) {
+              callback(error);
               session.close();
-            })
+              return;
+            }
+            callback(null);
+            session.close();
+          })
         });
       }else{
         callback(null);
+        session.close();
       }
     })
     .catch(function (error) {
@@ -96,7 +97,7 @@ function updateValuePerSecond(callback){
   let session = driver.session();
   session
     .run('MATCH (tran) RETURN tran.value as n1, toString(tran.attachmentTimestamp) ' +
-      'AS n2 ORDER BY tran.attachmentTimestamp DESC LIMIT 200')
+      'AS n2 ORDER BY tran.attachmentTimestamp DESC LIMIT 5000')
     .then(function (result) {
       let latest_time = Number.MAX_SAFE_INTEGER;
       let earliest_time = -1;
@@ -162,6 +163,7 @@ function updateValuePerSecond(callback){
       callback(error);
     });
 }
+
 
 function updatePrice(callback){
   let xhttp = new XMLHttpRequest();
@@ -232,22 +234,55 @@ function updateMongoDb(){
               setTimeout(update,1000);
               return;
             }
-            setTimeout(update,1000);
+            iota.api.getNodeInfo(function(error, success) {
+              if (error) {
+                setTimeout(update,1000);
+                return;
+              }
+              Statistics.findOne({}, function (error, doc) {
+                if(error){
+                  setTimeout(update,1000);
+                  return;
+                }
+                if(!doc){
+                  setTimeout(update,1000);
+                  return;
+                }
+                doc["MileStone"] = success.latestMilestone;
+                doc.save(function (error, aa) {
+                  if(error){
+                    setTimeout(update,1000);
+                    return;
+                  }
+                  setTimeout(update,3000);
+                })
+              })
+            });
           })
         })
       })
     })
   }, 1);
 
-  setTimeout(function copy() {
+  setTimeout(function copyStore(){
     copyAndStore(function (error) {
-      if(error){
-        setTimeout(copy, 1000);
-        return;
-      }
-      setTimeout(copy, 600000);
-    })
-  }, 600000);
+      setTimeout(copyStore, 1800000)
+    });
+  }, 1800000);
+
+  setTimeout(function modifyTips(){
+    let session = driver.session();
+    session
+      .run('match ()-[:CONFIRMS]->(n:tip:Node) WITH n LIMIT 3000 REMOVE n:tip SET n:unconfirmed')
+      .then(function (result) {
+        session.close();
+        setTimeout(modifyTips, 200000);
+      })
+      .catch(function (error) {
+        session.close();
+        setTimeout(modifyTips, 200000);
+      });
+  }, 200000);
 }
 
 module.exports = {

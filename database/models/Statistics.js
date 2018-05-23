@@ -25,6 +25,9 @@ const statistics = new Schema({
   ValuePerTran:{
     type:Number,
     default:0
+  },
+  MileStone:{
+    type:String
   }
 },{
   timestamps:true

@@ -115,22 +115,22 @@ function getCypher(states, callback){
     node.source = {sourceParam}, node.insertTime = timestamp(), node.confirmTime = 0`;
         callback(null, cypher);
     }else if(states == 'tipToConf'){
-        let cypher = `UNWIND {hashParam} AS hp WITH DISTINCT hp MATCH (node:tip) WHERE node.hash = hp
+        let cypher = `UNWIND {hashParam} AS hp WITH DISTINCT hp MATCH (node:Node:tip) WHERE node.hash = hp
     REMOVE node:tip SET node:confirmed SET node.confirmTime = timestamp()`;
         callback(null, cypher);
     }else if(states == 'tipToUnconf'){
-        let cypher = `UNWIND {hashParam} AS hp WITH DISTINCT hp MATCH (node:tip) WHERE node.hash = hp
+        let cypher = `UNWIND {hashParam} AS hp WITH DISTINCT hp MATCH (node:Node:tip) WHERE node.hash = hp
     REMOVE node:tip SET node:unconfirmed`;
         callback(null, cypher);
     }else if(states == 'unconfToConf'){
-        let cypher = `UNWIND {hashParam} AS hp WITH DISTINCT hp MATCH (node:unconfirmed) WHERE node.hash = hp
+        let cypher = `UNWIND {hashParam} AS hp WITH DISTINCT hp MATCH (node:Node:unconfirmed) WHERE node.hash = hp
     REMOVE node:unconfirmed SET node:confirmed SET node.confirmTime = timestamp()`;
         callback(null, cypher);
     }else if(states == 'findTip'){
-        let cypher = `MATCH (node:tip) RETURN node.hash AS hash`;
+        let cypher = `MATCH (node:Node:tip) RETURN node.hash AS hash`;
         callback(null, cypher);
     }else if(states == 'findUnconf'){
-        let cypher = `MATCH (node:unconfirmed) RETURN node.hash AS hash`;
+        let cypher = `MATCH (node:Node:unconfirmed) RETURN node.hash AS hash`;
         callback(null, cypher);
     }else{
         callback('Wrong states:' + states, null);
@@ -257,9 +257,10 @@ function delNullNode(callback){
  */
 function delExtraNode(extraNode, callback){
     let session = driver.session();
-    session.run(`MATCH (n) WITH n ORDER BY n.attachmentTimestamp LIMIT {countParam}
+    session.run(`MATCH (n:Node) WITH n ORDER BY n.attachmentTimestamp LIMIT {countParam}
      DETACH DELETE n`, {countParam: extraNode})
         .then(function(result){
+            console.log(2,result);
             session.close();
             callback(null);
         }).catch(function(error){

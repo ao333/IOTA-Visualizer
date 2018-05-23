@@ -35,7 +35,7 @@ tangleRouter.route('/sphere_update')
     if(req.query.add_all){
       update(req, res, next, null);
     }else{
-      update(req, res, next, 10);
+      update(req, res, next, 5);
     }
   });
 
@@ -43,9 +43,9 @@ tangleRouter.route('/sphere_update')
 tangleRouter.route('/tree_update')
   .post(cors.corsWithOptions, (req, res, next) => {
     if(req.query.add_all){
-      update(req, res, next, null);
+      update(req, res, next, 20);
     }else{
-      update(req, res, next, 5);
+      update(req, res, next, 2);
     }
   });
 
@@ -129,11 +129,7 @@ function initial(req, res, next, amount){
  * @param amount:  there will be {amount} amount of new transactions added into front end graph
  */
 function update(req, res, next, amount){
-  let choice = ['tip', 'unconfirmed'];
-  let choice_index = Math.floor(Math.random()*2);
-  let first = choice[choice_index];
-  let second = first === 'tip'?'unconfirmed':'tip';
-
+  let first = 'tip';
   let old_data = req.body;
   let query_string = queryStatement.updateString(old_data);
   let session = driver.session();
@@ -144,7 +140,6 @@ function update(req, res, next, amount){
       result.records.forEach(function (record) {
         let obj = Object.assign({}, record.toObject().item.properties);
         obj.type = utils.extractType(record.toObject().item.labels, 'status');
-        obj.source = utils.extractType(record.toObject().item.labels, 'source');
         obj.time = new Date(Number(obj.attachmentTimestamp)*1000);
         transactions.push(obj);
       });
@@ -154,37 +149,15 @@ function update(req, res, next, amount){
           result.records.forEach(function (record) {
             let obj = Object.assign({}, record.toObject().item.properties);
             obj.type = utils.extractType(record.toObject().item.labels, 'status');
-            obj.source = utils.extractType(record.toObject().item.labels, 'source');
             obj.time = new Date(Number(obj.attachmentTimestamp)*1000);
             transactions.push(obj);
             result1++;
           });
-          if(result1 === 0){
-            session.run(queryStatement.addNewString(old_data, amount, second))
-              .then(function (result) {
-                result.records.forEach(function (record) {
-                  let obj = Object.assign({}, record.toObject().item.properties);
-                  obj.type = utils.extractType(record.toObject().item.labels, 'status');
-                  obj.source = utils.extractType(record.toObject().item.labels, 'source');
-                  obj.time = new Date(Number(obj.attachmentTimestamp)*1000);
-                  transactions.push(obj);
-                });
-                transactions = utils.deleteDuplicates(transactions);
-                res.statusCode = 200;
-                res.setHeader("Content-Type", "application/json");
-                res.json(transactions);
-                session.close();
-              })
-              .catch(function (error) {
-                session.close();
-                next(error);
-              });
-          }else{
+          transactions = modifyTips(transactions);
             res.statusCode = 200;
             res.setHeader("Content-Type", "application/json");
             res.json(transactions);
             session.close();
-          }
         })
         .catch(function (error) {
           session.close();
@@ -203,14 +176,26 @@ function sendResponse(session, res, result){
   result.records.forEach(function (record) {
     let obj = Object.assign({}, record.toObject().item.properties);
     obj.type = utils.extractType(record.toObject().item.labels, 'status');
-    obj.source = utils.extractType(record.toObject().item.labels, 'source');
     obj.time = new Date(Number(obj.attachmentTimestamp)*1000);
     transactions.push(obj);
   });
   transactions = utils.deleteDuplicates(transactions);
+  transactions = modifyTips(transactions);
   res.statusCode = 200;
   res.setHeader("Content-Type", "application/json");
   res.json(transactions);
   session.close();
+}
+
+function modifyTips(data) {
+  for(let i = 0; i < data.length; i++){
+    for(let j = 0; j < data.length; j++){
+      if((data[j].trunkTransaction === data[i].hash ||
+          data[j].branchTransaction === data[i].hash) && data[i].type === 'tip'){
+        data[i].type = 'unconfirmed';
+      }
+    }
+  }
+  return data;
 }
 

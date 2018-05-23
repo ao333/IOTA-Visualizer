@@ -2,6 +2,7 @@ mean_con_time_chart = () => {
             $.get('/chart', function(data) {
                 var date_label = [];
                 var unix_time = data.time;
+                unix_time.sort();
                 var mct = data.MeanConTime;
                 for (var i = 0; i < unix_time.length; i++) {
                     var dt = new Date(unix_time[i]);
@@ -19,7 +20,6 @@ mean_con_time_chart = () => {
                 $("#Chart").remove();
                 $(".wrapper").append('<canvas id="Chart" width="1600" height="900"></canvas>');
                 var ctx = $("#Chart");
-                console.log(data.MeanConTime);
                 var myChart = new Chart(ctx, {
                     type: 'line',
                     data: {
