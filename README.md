@@ -1,4 +1,6 @@
 ﻿# IOTA Project
+www.iotaimperial.com
+
 [IOTA](https://iota.org/) is a distributed ledger that uses bundles of transactions. IOTA is based on a directed acyclic graph (DAG) called the Tangle. Transactions are directly posted to the network, once the sender has confirmed two other transactions already placed in the network. This allows to send transactions without any fees. Thus, this can be also used to send messages or to transfer value.
 
 In this project, we try to design and implement a system to display real-time information on the IOTA Tangle.  In our website, we display node graph which shows information and relations between transactions. The system is able to display statistics about the Tangle such as the number of current tips, information about transactions, mean confirmation time, and value transfer per second.
